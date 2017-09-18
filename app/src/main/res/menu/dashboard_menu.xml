@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/myprofile" android:title="My Profile"/>
+    <item android:id="@+id/settings" android:title="Settings" />
+    <item android:id="@+id/selfremove" android:title="Exit Entity" />
+    <item android:id="@+id/deleteentity" android:title="Delete Entity" />
+
+</menu>

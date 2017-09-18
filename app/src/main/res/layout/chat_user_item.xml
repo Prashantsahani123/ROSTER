@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:paddingLeft="16dp"
+    android:paddingTop="4dp"
+    >
+
+        <ImageView
+
+            android:id="@+id/ivChatUserDP"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
+            android:src="@drawable/profile_pic" />
+
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:id="@+id/sidearrow"
+            android:src="@drawable/sidearrow" />
+
+
+            <LinearLayout
+                android:id="@+id/llLastMessageWrapper"
+                android:layout_toRightOf="@id/ivChatUserDP"
+                android:layout_toLeftOf="@id/sidearrow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingLeft="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMemberName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Members Name"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/msgStatus"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/message_not_sent_gray"/>
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/tvLastMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="1dp"
+                        android:lineSpacingExtra="1sp"
+                        android:letterSpacing="0.03"
+                        android:textSize="12sp"
+                        android:text="Message"
+                        android:maxLines="1"
+                        android:textColor="#666666" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+    <LinearLayout
+        android:layout_toRightOf="@id/ivChatUserDP"
+        android:layout_below="@id/llLastMessageWrapper"
+
+        android:background="@color/seperator_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+</RelativeLayout>

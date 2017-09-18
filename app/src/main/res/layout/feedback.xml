@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/rl">
+
+    <fragment
+    android:id="@+id/fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    class="com.SampleApp.row.ActionbarFragment"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_below="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color"/>
+
+    <LinearLayout
+        android:layout_below="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:layout_above="@+id/view1">
+
+
+    <EditText
+        android:id="@+id/edt_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_bg_white"
+        android:gravity="top"
+        android:hint="@string/msg_hint_feedback"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="15sp"
+       />
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/view1"
+        android:layout_above="@+id/rl_buttonbackground"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color" />
+
+    <RelativeLayout
+        android:id="@+id/rl_buttonbackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:padding="15dp"
+            android:textColor="@color/view_color_blue"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+</RelativeLayout>

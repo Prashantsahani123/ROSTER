@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/topMargin"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/leftMargin"
+        android:layout_marginRight="@dimen/rightMargin"
+        android:textColor="@color/smallLabelColor"
+        android:letterSpacing="0.03"
+        android:id="@+id/tvProfileAddressTitle"
+        android:text="Address" />
+
+    <TextView
+        android:id="@+id/tvProfileAddressValue"
+        android:text="1st Floor, Building A, Gala Industrial Complex, Deen Dayal Upadhey Marg, Mumbai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/leftMargin"
+        android:layout_marginRight="@dimen/rightMargin"
+        android:layout_marginTop="@dimen/gap"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSize"
+        android:letterSpacing="0.03"
+        />
+    <!--<View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+
+        android:background="@color/seperator_color" />-->
+</LinearLayout>

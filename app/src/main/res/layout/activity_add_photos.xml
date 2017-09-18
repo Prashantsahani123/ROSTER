@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/bottomLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/bottom_button"
+            android:gravity="center">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/separator_height"
+                android:background="@color/seperator_color" />
+            <TextView
+                android:id="@+id/btnDone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Done"
+                android:textColor="@color/view_color_blue"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/gallery"
+            android:layout_above="@id/bottomLayout"
+
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="5dp">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:orientation="horizontal"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                        android:id="@+id/btn_loadmore"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/load_more"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewSeparator"
+            android:layout_above="@id/gallery"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/separator_height"
+            android:background="@color/seperator_color" />
+
+
+        <LinearLayout
+            android:id="@+id/detailLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_above="@id/viewSeparator"
+            android:orientation="vertical">
+
+
+            <EditText
+                style="@style/TBEditText"
+                android:id="@+id/etImageDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:gravity="top|left"
+                android:hint="Type description"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="4"
+                android:minLines="2"
+                android:paddingBottom="7dp"
+                android:paddingLeft="11dp"
+                android:paddingTop="7dp"
+                android:scrollbars="vertical" />
+
+
+        </LinearLayout>
+        <View
+            android:id="@+id/detailLayoutSeperator"
+            android:layout_above="@id/detailLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginTop="8dp"
+            android:background="@color/seperator_color" />
+
+
+            <FrameLayout
+                android:orientation="vertical"
+                android:layout_above="@id/detailLayoutSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <android.support.v4.view.ViewPager
+                    android:src="@drawable/splash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/photoPager"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/g_left_arrow"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/btnPrevious"
+
+                        />
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/g_right_arrow"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/btnNext"
+
+                        />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

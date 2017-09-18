@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Members Name"
+            android:textColor="@color/grey_shade"
+            android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_country_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1.5"
+                    android:background="@color/grey_light_shade"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="+91"
+                    android:visibility="visible" /> <!--change is here 1-->
+
+                <EditText
+                    android:id="@+id/et_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8.5"
+                    android:text="00000000"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:visibility="visible" /> <!--change is here 2-->
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:padding="5dp"
+                android:text="0000000000"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:visibility="visible" /> <!--change is here 2-->
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/bottomMargin"
+    android:layout_marginLeft="@dimen/leftMargin"
+    android:layout_marginRight="@dimen/rightMargin">
+
+    <ImageView
+        android:id="@+id/ivCallIcon"
+        android:src="@drawable/call_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_toLeftOf="@id/ivCallIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/gap">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/rightMargin"
+                android:letterSpacing="0.03"
+                android:text="Title"
+                android:textColor="@color/smallLabelColor" />
+
+            <TextView
+                android:id="@+id/tvExtraInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tvTitle"
+                android:text="Some text goes here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvPhoneNo"
+            style="@style/textClickable"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Some text goes here" />
+    </LinearLayout>
+</RelativeLayout>

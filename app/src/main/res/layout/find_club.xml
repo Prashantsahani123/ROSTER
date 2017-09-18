@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/ll_anyclub"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_anyclub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Any Club"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/view_any_club"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_color_blue" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_near_me"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_near_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Near Me"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/view_near_me"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_color_blue"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_clubform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Keyword"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:hint="Enter Keyword"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Country"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_country"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp" />
+
+                    <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="@drawable/border_bg_white"-->
+                    <!--&gt;-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/et_country"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:hint="Select Country"-->
+                    <!--android:textSize="13sp"-->
+
+                    <!--/>-->
+
+                    <!--<ImageView-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:src="@drawable/drop_arrow"-->
+                    <!--android:paddingRight="10dp"/>-->
+
+                    <!--</RelativeLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="State / Province / City"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_state"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:hint="Search"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="8dp"
+
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="District"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_district"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:hint="Enter District ID"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:padding="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Meeting Day"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+
+                    <Spinner
+                        android:id="@+id/spinner_meetingday_anyclub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp" />
+
+
+                    <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="@drawable/border_bg_white"-->
+                    <!--&gt;-->
+
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/et_meetingday"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:hint="Select Meeting day"-->
+                    <!--android:textSize="13sp"-->
+
+                    <!--/>-->
+
+                    <!--<ImageView-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:src="@drawable/drop_arrow"-->
+                    <!--android:paddingRight="10dp"/>-->
+                    <!--</RelativeLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_near_me_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Range"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:paddingRight="@dimen/margin"
+                            >
+
+
+                            <EditText
+                                android:id="@+id/edt_range"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:textSize="13sp"
+                                android:background="@drawable/border_bg_white"
+                                android:focusable="true"
+                                android:inputType="numberDecimal"
+                                android:hint="40"
+
+                                />
+
+                            <!--<ImageView-->
+                                <!--android:layout_width="30dp"-->
+                                <!--android:layout_height="30dp"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:paddingRight="10dp"-->
+                                <!--android:src="@drawable/drop_arrow" />-->
+                        </RelativeLayout>
+
+
+                        <RadioGroup
+                            android:id="@+id/radio_group_distance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <RadioButton
+                                android:id="@+id/radio_miles"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="Miles"
+                                />
+
+                            <RadioButton
+                                android:id="@+id/radio_kilometers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kms" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Meeting Day"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_meetingday_nearme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp" />
+
+
+                    <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="@drawable/border_bg_white"-->
+                    <!--&gt;-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_meeting_day_nearme"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:hint="Any"-->
+                    <!--android:textSize="13sp"-->
+
+                    <!--/>-->
+
+                    <!--<ImageView-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:src="@drawable/drop_arrow"-->
+                    <!--android:paddingRight="10dp"/>-->
+
+                    <!--</RelativeLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Meeting Time"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+
+                    <Spinner
+                        android:id="@+id/spinner_meetingtime_nearme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+
+                        />
+
+                    <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="@drawable/border_bg_white"-->
+                    <!--&gt;-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_meeting_time_nearme"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:hint="Any"-->
+                    <!--android:textSize="13sp"-->
+
+                    <!--/>-->
+
+                    <!--<ImageView-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:src="@drawable/drop_arrow"-->
+                    <!--android:paddingRight="10dp"/>-->
+
+                    <!--</RelativeLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/view_color" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_above="@+id/tvsearch"
+            android:background="@color/view_color" />
+
+
+        <TextView
+            android:id="@+id/tvsearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:onClick="findAClub"
+            android:padding="15dp"
+            android:text="Search"
+            android:textColor="@color/view_color_blue"
+            android:textSize="19sp"></TextView>
+    </LinearLayout>
+
+
+</LinearLayout>

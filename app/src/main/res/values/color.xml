@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/view_color_blue</color>
+    <color name="colorPrimaryDark">#C51162</color>
+    <color name="tabsScrollColor">#004D40</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="bluecolor">#00AEEF</color>
+    <color name="background">#0099FF</color>
+    <color name="bottom_button">#ffffff</color>
+    <color name="dark_gray">#727272</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="pale_gray">#D9D9D9</color>
+    <color name="peach_color">#FF4C4D</color>
+    <color name="text_color_pale_gray">#EEEEEE</color>
+    <color name="seperator_color">#c9c9c9</color>
+    <color name="tabbar_gray">#D9D9D9</color>
+    <color name="rounded_square">#ECECEC</color>
+    <color name="grey_shade">#bbbbbb</color>
+    <color name="grey_dark_shade">#747474</color>
+    <color name="grey_light_shade">#f5f5f5</color>
+
+    <color name="green">#00a651</color>
+    <color name = "pale_green">#cceddc</color>
+    <color name="coral_blue">#1DAEFA</color>
+    <color name="dark_blue">#125D9D</color>
+    <color name="light_gray">#ABBAC2</color>
+    <color name="red">#FF3333</color>
+    <color name = "pale_red">#FFd6d6</color>
+    <color name="circleProgressCompleteStartGradient">@color/dark_blue</color>
+    <color name="circleProgressCompleteEndGradient">@color/coral_blue</color>
+    <color name="circleProgressIncompleteStartGradient">@color/light_gray</color>
+    <color name="circleProgressIncompleteEndGradient">@color/light_gray</color>
+    <color name="clickableBlueColor">#00AEEF</color>
+
+    <color name="smallLabelColor">#333333</color>
+    <color name="blueonclickcolor">#1875d1</color>
+
+    <color name="crop__button_bar">#f3f3f3</color>
+    <color name="crop__button_text">#666666</color>
+    <color name="crop__selector_pressed">#1a000000</color>
+    <color name="crop__selector_focused">#77000000</color>
+
+    <!--color code for row-->
+    <color name="view_color_blue">#00AEEF</color>
+    <color name="view_color">#cccccc</color>
+    <color name="label_color_gray">#666666</color>
+    <color name="screen_background">#90000000</color>
+    <color name="label_btn_color">#6c6c6c</color>
+    <color name="actionbar_text_color">#505050</color>
+
+    <color name="bigSeperatorColor">#f2f3f5</color>
+
+</resources>
+

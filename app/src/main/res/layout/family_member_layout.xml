@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/memberHeaderLayout"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/topMargin"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/leftMargin"
+                android:layout_marginRight="@dimen/rightMargin"
+                android:src="@drawable/down_arrow_01"
+                android:id="@+id/ivEditFamilyMember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_marginLeft="@dimen/leftMargin"
+                android:layout_marginRight="@dimen/rightMargin"
+                android:src="@drawable/delete"
+                android:id="@+id/ivDeleteFamilyMember"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+
+            android:layout_toLeftOf="@id/memberHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvFamilyMemberTitle"
+                android:hint="Family Member Name"
+                android:textColorHint="@color/black"
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llFamilyDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TBSmallLebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/etFamilyMemberName"
+            style="@style/TBEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter family member name"
+            android:inputType="text"
+            android:maxLines="1"/>
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <TextView
+            style="@style/TBSmallLebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Relationship" />
+
+        <Spinner
+            android:id="@+id/spRelationship"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/leftMargin"
+            android:layout_marginRight="@dimen/rightMargin"
+            android:layout_marginTop="@dimen/gap"
+            android:entries="@array/relation" />
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <TextView
+            style="@style/TBSmallLebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mobile Number" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etCountryCodeFamily"
+                style="@style/TBEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:hint="+91" />
+
+            <EditText
+                android:id="@+id/etFamilyMobNo"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:inputType="phone"
+                android:hint="Enter mobile number" />
+
+
+        </LinearLayout>
+
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <TextView
+            style="@style/TBSmallLebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email ID" />
+
+        <EditText
+            android:id="@+id/etFamilyEmailId"
+            style="@style/TBEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email id" />
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <TextView
+            style="@style/TBSmallLebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blood Group" />
+
+        <Spinner
+            android:id="@+id/spFamilyBloodGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/leftMargin"
+            android:layout_marginRight="@dimen/rightMargin"
+            android:layout_marginTop="@dimen/gap"
+            android:entries="@array/bloodGroup" />
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginTop="@dimen/topMargin" />
+
+        <!--start of DOB Panel-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/dobLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/topMargin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivEditFamilyDob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftMargin"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="@dimen/gap"
+                    android:src="@drawable/edit" />
+
+                <ImageView
+                    android:id="@+id/ivDeleteFamilyDob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftMargin"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="@dimen/gap"
+                    android:src="@drawable/delete" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/dobLayout"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth" />
+
+                <TextView
+                    android:id="@+id/tvFamilyDob"
+                    style="@style/TBLabelBigValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Set date of birth" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <!--End of dob panel-->
+
+        <!--start of anniversary date Panel-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/doaLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/topMargin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivEditFamilyDoa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftMargin"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="@dimen/gap"
+                    android:src="@drawable/edit" />
+
+                <ImageView
+                    android:id="@+id/ivDeleteFamilyDoa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftMargin"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="@dimen/gap"
+                    android:src="@drawable/delete" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/doaLayout"
+                android:layout_marginTop="@dimen/gap"
+
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Anniversary" />
+
+                <TextView
+                    android:id="@+id/tvFamilyDoa"
+                    style="@style/TBLabelBigValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Set date of anniversary" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            style="@style/TBSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <!--End of anniversary panel-->
+
+
+    </LinearLayout>
+
+    <View
+        style="@style/TBSeperator"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+</LinearLayout>

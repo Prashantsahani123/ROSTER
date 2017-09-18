@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/leftMargin"
+    android:layout_marginRight="@dimen/rightMargin"
+    android:layout_marginTop="@dimen/topMargin"
+    >
+
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:textColor="@color/smallLabelColor"
+            android:letterSpacing="0.03"
+            android:id="@+id/tvDynamicFieldTitle"
+            android:text="Title"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvDynamicFieldValue"
+            android:text="Some text goes here"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/gap"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:layout_weight="1" />
+
+</LinearLayout>

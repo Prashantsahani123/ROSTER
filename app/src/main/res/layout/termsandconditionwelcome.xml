@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:lineSpacingMultiplier="1.2"
+                android:text="Suspendisse potenti. Proin non efficitur lorem. Curabitur elementum turpis dui, sed sollicitudin arcu tempus nec. Fusce aliquam risus sit amet ligula ullamcorper posuere sit amet sit amet sem. Suspendisse mollis mi sed condimentum lobortis. Nunc mi tortor, consectetur id urna et, suscipit ornare ligula. Nullam tellus turpis, elementum ut augue quis, accumsan sollicitudin eros. In pharetra sem quis mauris blandit, nec ornare tellus venenatis."
+                android:textSize="17sp" />
+        </ScrollView>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="#b6b6b6" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_terms_conditions"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="15sp"
+            android:text="@string/terms_conditions" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bottom_button"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_agree_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Agree and Continue"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

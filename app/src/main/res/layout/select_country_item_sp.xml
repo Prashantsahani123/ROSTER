@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_country_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/gap"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Item1"
+        android:textColor="@color/black"
+        android:textSize="15.5sp" />
+
+</LinearLayout>

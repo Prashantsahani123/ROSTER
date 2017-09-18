@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/father" android:title="Father" />
+    <item android:id="@+id/mother" android:title="Mother"/>
+    <item android:id="@+id/brother" android:title="Brother"/>
+    <item android:id="@+id/sister" android:title="Sister" />
+    <item android:id="@+id/spouse" android:title="Spouse"/>
+    <item android:id="@+id/son" android:title="Son"/>
+    <item android:id="@+id/daughter" android:title="Daughter" />
+    <item android:id="@+id/son_in_law" android:title="Son-in-law"/>
+    <item android:id="@+id/daughter_in_law" android:title="Daughter-in-law"/>
+</menu>

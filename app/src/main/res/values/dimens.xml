@@ -1,0 +1,56 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="circleProgressRadius">60dp</dimen>
+
+    <dimen name="circleProgressThickness">7dp</dimen>
+
+
+    <dimen name="curvedTextViewTextSize">15sp</dimen>
+
+    <dimen name="curvedTextRadius">70dp</dimen>
+
+    <dimen name="curvedTextPadding">3dp</dimen>
+
+
+    <dimen name="textSize">15.5sp</dimen>
+    <dimen name="lineSpacing">2dp</dimen>
+    <dimen name="leftMargin">16dp</dimen>
+    <dimen name="rightMargin">16dp</dimen>
+    <dimen name="topMargin">20dp</dimen>
+    <dimen name="bottomMargin">20dp</dimen>
+    <dimen name="gap">4dp</dimen>
+    <dimen name="clickableFontSize">17sp</dimen>
+
+    <dimen name="image_width">48dp</dimen>
+    <dimen name="image_height">48dp</dimen>
+    <dimen name="small_image_width">10dp</dimen>
+    <dimen name="small_image_height">10dp</dimen>
+
+    <dimen name="crop__bar_height">56dp</dimen>
+
+    <dimen name="separator_height">0.5dp</dimen>
+
+    <dimen name="margin">16dp</dimen>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="bigSeperatorHeight">6dp</dimen>
+    <dimen name="textpadding">17dp</dimen>
+    <dimen name="dashboardIconPadding">20dp</dimen>
+
+    <dimen name="topMarginSmall">8dp</dimen>
+    <dimen name="leftMarginSmall">8dp</dimen>
+    <dimen name="rightMarginSmall">8dp</dimen>
+    <dimen name="bottomMarginSmall">8dp</dimen>
+
+    <dimen name="topMarginMedium">10dp</dimen>
+    <dimen name="leftMarginMedium">10dp</dimen>
+    <dimen name="rightMarginMedium">10dp</dimen>
+    <dimen name="bottomMarginMedium">10dp</dimen>
+
+    <dimen name="topMarginlarge">20dp</dimen>
+    <dimen name="leftMarginlarge">20dp</dimen>
+    <dimen name="rightMarginlarge">20dp</dimen>
+    <dimen name="bottomMarginlarge">20dp</dimen>
+</resources>

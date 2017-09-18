@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <fragment
+        android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_below="@id/fragment"
+        android:background="@color/view_color" />
+
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_above="@id/bottomLayout"
+        android:background="@color/view_color" />
+
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bottom_button"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/btnDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Update"
+            android:textColor="@color/view_color_blue"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/topSeparator">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Personal Details" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+
+            <EditText
+                android:enabled="false"
+                android:id="@+id/etMemberName"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="textPersonName" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telephone No." />
+
+            <TextView
+                android:id="@+id/tvPrimaryMobNo"
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8989909034" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telephone No." />
+
+            <!-- Start here -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivDeleteSecondaryMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:src="@drawable/delete" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <EditText
+                        android:id="@+id/etCountryCodeSecMob"
+                        style="@style/TBEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="Country Code"
+                        android:minWidth="48dp" />
+
+                    <!--<Spinner
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:id="@+id/spSecMobCountryCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />-->
+                    <EditText
+                        android:id="@+id/etSecondaryMobNo"
+                        style="@style/TBEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:hint="Enter number"
+                        android:inputType="phone" />
+                </LinearLayout>
+            </RelativeLayout>
+            <!-- End Here -->
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/etMemberEmail"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter email id"
+                android:inputType="textEmailAddress" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/etBusinessEmail"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter business email id"
+                android:inputType="textEmailAddress" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bigSeperatorHeight"
+                android:background="@color/bigSeperatorColor" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp" />
+
+            <TextView
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Business Details" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Business Name" />
+
+            <EditText
+                android:id="@+id/etBusinessName"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter business name"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Designation" />
+
+            <EditText
+                android:id="@+id/etBusinessDesignation"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter designation"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address" />
+
+            <EditText
+                android:id="@+id/etBusinessAddress"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top|left"
+                android:hint="Enter business address"
+                android:inputType="textMultiLine"
+                android:maxLines="3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="City" />
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Postal Code" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etBusinessCity"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Enter city"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/etBinessPincode"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:hint="Enter postal code"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="State" />
+
+                <TextView
+                    style="@style/TBSmallLebel"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Country" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etBusinessState"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Enter state"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <Spinner
+                    android:id="@+id/spBusinessCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_weight="0.5" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Business Contact No." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/etBusinessPhoneCountryCode"
+                    style="@style/TBEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:hint="Country Code"
+                    android:minWidth="48dp" />
+
+                <EditText
+                    android:id="@+id/etBusinessContact"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:hint="Enter company number"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bigSeperatorHeight"
+                android:background="@color/bigSeperatorColor" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp" />
+
+            <TextView
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Rotary Details" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Classification" />
+
+            <EditText
+                android:id="@+id/etClassification"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Classification"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Keywords about your profession" />
+
+            <EditText
+                android:id="@+id/etKeywords"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Keywords about your profession"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rotary ID" />
+
+            <EditText
+                android:id="@+id/etRotaryID"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Rotary ID"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Club Designation" />
+
+            <EditText
+                android:id="@+id/etClubDesignation"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Club Designation"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="District Designation" />
+
+            <EditText
+                android:id="@+id/etDTDesignation"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter District Designation"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Donar Recognition" />
+
+            <EditText
+                android:id="@+id/etDonarRecognition"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Donar Recognition"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+            <!--start of DOB Panel-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/dobLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/topMargin"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivEditDob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:layout_marginTop="@dimen/gap"
+                        android:src="@drawable/edit" />
+
+                    <ImageView
+                        android:id="@+id/ivDeleteDob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:layout_marginTop="@dimen/gap"
+                        android:src="@drawable/delete" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/dobLayout"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TBSmallLebel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Date of Birth" />
+
+                    <TextView
+                        android:id="@+id/tvDob"
+                        style="@style/TBLabelBigValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Select Date of Birth" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+            <!--End of dob panel-->
+
+            <!--start of anniversary date Panel-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/doaLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/topMargin"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivEditDoa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:layout_marginTop="@dimen/gap"
+                        android:src="@drawable/edit" />
+
+                    <ImageView
+                        android:id="@+id/ivDeleteDoa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:src="@drawable/delete" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/doaLayout"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TBSmallLebel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Date of Anniversary" />
+
+                    <TextView
+                        android:id="@+id/tvDoa"
+                        style="@style/TBLabelBigValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Select Date of Anniversary" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+            <!--End of anniversary panel-->
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blood Group" />
+
+            <Spinner
+                android:id="@+id/spBloodGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:layout_marginLeft="@dimen/leftMargin"
+                android:layout_marginRight="@dimen/rightMargin"
+                android:entries="@array/bloodGroup" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Residential Address" />
+
+            <EditText
+                android:id="@+id/etPersonalAddress"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top|left"
+                android:hint="Enter address"
+                android:inputType="textMultiLine"
+                android:maxLines="3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="City" />
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Postal Code" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etResidentialCity"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Enter city"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/etResidentialPinCode"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:hint="Enter Postal Code"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="State" />
+
+                <TextView
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Country" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etResidentialState"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Enter state"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <Spinner
+                    android:id="@+id/spPersonalCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="@dimen/gap"
+                    android:layout_weight="0.5" />
+
+
+            </LinearLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Residential Contact Number" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etResidentialCountryCode"
+                    style="@style/TBEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:hint="Country Code"
+                    android:minWidth="48dp" />
+
+                <EditText
+                    android:id="@+id/etResidentialContactNo"
+                    style="@style/TBEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:hint="Enter number"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <!--<TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fax" />
+
+            <EditText
+                android:id="@+id/etFax"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter fax number"
+                android:inputType="textPhonetic" />-->
+
+            <View
+                android:visibility="gone"
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
+            <View
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bigSeperatorHeight"
+                android:background="@color/bigSeperatorColor" />
+
+            <View
+                android:visibility="gone"
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp" />
+            <!--End of personal details-->
+
+            <!--Start of business details-->
+            <TextView
+                android:visibility="gone"
+                style="@style/TBLabelBigValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Business Details" />
+
+
+            <TextView
+                android:visibility="gone"
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fax No." />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/etBusinessFax"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter business fax number"
+                android:inputType="textPhonetic" />
+
+            <View
+                android:visibility="gone"
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <!--End of business details-->
+            <LinearLayout
+                android:id="@+id/llWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/TBSeperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="0dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/bigSeperatorHeight"
+                    android:background="@color/bigSeperatorColor" />
+
+                <View
+                    style="@style/TBSeperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="0dp" />
+
+                <TextView
+                    style="@style/TBLabelBigValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Others" />
+
+                <LinearLayout
+                    android:id="@+id/llDynamicFields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/leftMargin"
+                    android:paddingRight="@dimen/rightMargin"
+                    android:paddingTop="@dimen/topMargin">
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bigSeperatorHeight"
+                android:background="@color/bigSeperatorColor" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp" />
+
+            <LinearLayout
+                android:id="@+id/llFamilyMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TBLabelBigValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/bottomMargin"
+                    android:layout_marginTop="@dimen/topMargin"
+                    android:text="Family Details" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivAddFamilyMember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/margin"
+                    android:src="@drawable/add_blue" />
+
+                <TextView
+                    android:id="@+id/tvAddMember"
+                    style="@style/TBSmallLebel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivAddFamilyMember"
+                    android:layout_toStartOf="@+id/ivAddFamilyMember"
+                    android:text="Add Family Member" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bigSeperatorHeight"
+                android:background="@color/bigSeperatorColor" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

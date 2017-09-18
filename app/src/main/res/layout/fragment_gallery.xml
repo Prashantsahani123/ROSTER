@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_marginTop="@dimen/topMargin"
+        android:background="@color/seperator_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height" />
+
+    <EditText
+        style="@style/TBEditText"
+        android:id="@+id/etSearch"
+        android:hint="Search"
+        android:layout_marginTop="@dimen/topMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="@dimen/topMargin"
+        android:background="@color/seperator_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height" />
+
+    <android.support.v7.widget.RecyclerView
+        android:padding="@dimen/padding"
+        android:id="@+id/rvGallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <Button
+        android:id="@+id/directory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Directory"/>
+
+    <Button
+        android:id="@+id/E_Bulletin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="E-Bulletin"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/Announcement"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Announcement"
+        android:layout_marginTop="10dp"
+
+        android:padding="20dp"
+        />
+
+    <Button
+        android:id="@+id/Events"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Events"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/Profile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/celebration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Celebration"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+
+
+    <Button
+        android:id="@+id/add_member"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Member"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+    <Button
+        android:id="@+id/add_event"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Event"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"/>
+
+        <Button
+            android:id="@+id/create_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Group"
+            android:layout_marginTop="10dp"
+            android:padding="20dp"/>
+
+
+        <Button
+            android:id="@+id/document"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Documents"
+            android:layout_marginTop="10dp"
+            android:padding="20dp"/>
+
+
+        <Button
+            android:id="@+id/doc_upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Documents"
+            android:layout_marginTop="10dp"
+            android:padding="20dp"/>
+
+
+
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

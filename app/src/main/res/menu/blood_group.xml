@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/A_pos" android:title="A +ve" />
+    <item android:id="@+id/A_neg" android:title="A -ve"/>
+    <item android:id="@+id/B_pos" android:title="B +ve"/>
+    <item android:id="@+id/B_neg" android:title="B -ve" />
+    <item android:id="@+id/AB_pos" android:title="AB +ve"/>
+    <item android:id="@+id/AB_neg" android:title="AB -ve"/>
+    <item android:id="@+id/O_pos" android:title="O +ve" />
+    <item android:id="@+id/O_neg" android:title="O -ve"/>
+   />
+</menu>
