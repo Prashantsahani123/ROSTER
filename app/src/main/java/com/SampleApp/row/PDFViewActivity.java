@@ -9,6 +9,7 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.SampleApp.row.Adapter.DocumentAdapter;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -17,8 +18,6 @@ import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.DocumentAdapter;
 
 /**
  * Created by USER1 on 27-10-2016.

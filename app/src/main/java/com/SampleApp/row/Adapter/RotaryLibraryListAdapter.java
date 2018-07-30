@@ -73,6 +73,8 @@ public class RotaryLibraryListAdapter extends RecyclerView.Adapter<RecyclerView.
                 Intent i = new Intent(context, RotaryLibraryDescription.class);
                 i.putExtra("title", list.get(position).getTitle());
                 i.putExtra("description", list.get(position).getDescription());
+                i.putExtra("modulename", list.get(position).getModuleName());
+
                 context.startActivity(i);
             }
         });

@@ -27,10 +27,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.SpinnerAdapter_categoery;
+import com.SampleApp.row.Adapter.SpinnerAdapter_country;
+import com.SampleApp.row.Data.CategoryData;
+import com.SampleApp.row.Data.CountryData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.ImageCompression;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.croputility.Crop;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -55,19 +66,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import com.SampleApp.row.Adapter.SpinnerAdapter_categoery;
-import com.SampleApp.row.Adapter.SpinnerAdapter_country;
-import com.SampleApp.row.Data.CategoryData;
-import com.SampleApp.row.Data.CountryData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.ImageCompression;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.croputility.Crop;
 
 import static com.SampleApp.row.Utils.PreferenceManager.savePreference;
 
@@ -356,6 +354,34 @@ public class CreateGroup extends Activity {
         });
 
         dialog.show();
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroup.this);
+//        View view = getLayoutInflater().inflate(R.layout.popup_confrm_delete, null);
+//        builder.setView(view);
+//
+//        TextView tvYes = (TextView) view.findViewById(R.id.tv_yes);
+//        TextView tvNo = (TextView) view.findViewById(R.id.tv_no);
+//        TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+//        tv_line1.setText("Are you sure you want to go back? All your data will be lost.");
+//        final AlertDialog dialog = builder.create();
+//
+//        tvYes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//                finish();
+//            }
+//        });
+//
+//        tvNo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
+
     }
 
     private void webservices() {

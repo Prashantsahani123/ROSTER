@@ -14,7 +14,6 @@
         android:paddingTop="20dp">
 
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -48,8 +47,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/dark_gray"
             android:text="@string/mobileno_confirm_popupmsg"
+            android:textColor="@color/dark_gray"
             android:textSize="15sp" />
 
 

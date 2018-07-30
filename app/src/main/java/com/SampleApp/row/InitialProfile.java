@@ -19,7 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.SampleApp.row.Utils.CircleTransform;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.croputility.Crop;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -32,15 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Utils.CircleTransform;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.croputility.Crop;
 
 /**
  * Created by USER on 15-12-2015.
@@ -305,7 +303,7 @@ public class InitialProfile extends Activity {
             if (status.equals("0")) {
                 // JSONArray grpsarray = ActivityResult.getJSONArray("MemberDetails");
 
-                Intent ii = new Intent(InitialProfile.this, GroupsListingDashboard.class);
+                Intent ii = new Intent(InitialProfile.this, DashboardActivity.class);
                 startActivity(ii);
                 finish();
 
@@ -392,7 +390,7 @@ public class InitialProfile extends Activity {
                     final String path = Utils.getRealPathFromURI(croppedUri, getApplicationContext());
                     Log.d("==== Path ===", "======" + path);
 
-                    responsefromimageupload = Utils.doFileUploadForProfilePic(new File(path.toString()), memberprofileid, groupId,"profile"); // Upload File to server
+                    responsefromimageupload = Utils.doFileUploadForProfilePic(InitialProfile.this,new File(path.toString()), memberprofileid, groupId,"profile"); // Upload File to server
                     Log.d("TOUCHBASE", "RESPONSE FILE UPLOAD " + responsefromimageupload);
 
                 } catch (IOException e) {

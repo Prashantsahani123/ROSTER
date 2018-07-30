@@ -6,13 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.ModuleData;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.PreferenceManager;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by USER1 on 08-07-2016.
@@ -132,6 +132,15 @@ public class ModuleDataModel
                         list.add(md);
                     }
                 }
+
+                if(moduleId.equalsIgnoreCase(Constant.Module.ATTENDANCE)){
+                    String is_grp_admin = PreferenceManager.getPreference(context,PreferenceManager.IS_GRP_ADMIN);
+                    if(is_grp_admin.equalsIgnoreCase("No")){
+                        list.remove(md);
+                    }
+
+                }
+
             }
             cursor.close();
             //if (list.size() == 0 ) return null;
@@ -230,7 +239,7 @@ public class ModuleDataModel
             while ( deletedIterator.hasNext() ) {
                 //boolean deleted = deleteGroupMasterModel(groupId, masterUid, deletedIterator.next().longValue());
 
-                boolean deleted = updateModuleMasterWithoutChecking(masterUid, deletedIterator.next());
+                boolean deleted = deleteModuleMasterModel(masterUid, deletedIterator.next());
                 if ( ! deleted ) {
                     db.endTransaction();
                     return false;
@@ -314,6 +323,22 @@ public class ModuleDataModel
         return false;
     }
 
+    public boolean deleteModuleMasterModel(long masterUid,ModuleData data) {
+        try {
+            int n = 0;
+            boolean  dataAvailable = moduleExists(masterUid,data.getModuleId());
+            if(dataAvailable) {
+                n = db.delete(Tables.GroupMaster.TABLE_NAME,  "masterUID=? and groupModuleId=? and groupId=? and moduleId=?", new String[]{"" + masterUid, "" + data.getGroupModuleId(),""+data.getGroupId(),""+data.getModuleId()});
+                return n > 0;  // if n = 1 it will return true else will return false
+            }else{
+                return true;
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public boolean moduleExists(ModuleData md) {
         try {

@@ -12,7 +12,6 @@ import com.SampleApp.row.Data.CountryData;
 import com.SampleApp.row.R;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 
 /**
@@ -84,5 +83,9 @@ public class CountrySpAdapter extends BaseAdapter
     @Override
     public long getItemId(int position) {
         return Long.parseLong(list_countryData.get(position).getCountryId());
+    }
+
+    public ArrayList<CountryData> getList(){
+        return list_countryData;
     }
 }

@@ -15,8 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SampleApp.row.Announcement;
-import com.SampleApp.row.AttendanceList;
+import com.SampleApp.row.AttendenceActivity;
 import com.SampleApp.row.BoardOfDirectorsActivity;
+import com.SampleApp.row.CalenderActivity;
 import com.SampleApp.row.ClubHistoryActivity;
 import com.SampleApp.row.DTDirectoryActivity;
 import com.SampleApp.row.Data.ModuleData;
@@ -33,6 +34,8 @@ import com.SampleApp.row.FindRotatrianActivity;
 import com.SampleApp.row.Gallery;
 import com.SampleApp.row.GroupDashboard;
 import com.SampleApp.row.GroupInfo_New;
+import com.SampleApp.row.LeaderBoardActivity;
+import com.SampleApp.row.MonthlyReportListActivity;
 import com.SampleApp.row.MyApplication;
 import com.SampleApp.row.PastPresidentActivity;
 import com.SampleApp.row.R;
@@ -44,7 +47,6 @@ import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.WebLinkActivity;
-import com.SampleApp.row.calendar.MonthActivity;
 import com.SampleApp.row.sql.ReplicaInfoModel;
 import com.squareup.picasso.Picasso;
 
@@ -64,10 +66,10 @@ import static com.SampleApp.row.Utils.PreferenceManager.MY_CATEGORY;
  * Created by user on 01-02-2016.
  */
 public class GroupDashboadAdapter_new extends BaseAdapter {
+
     public static final ArrayList<String> groupIds = new ArrayList<String>();
     public static final ArrayList<String> serviceDirectoryIds = new ArrayList<String>();
     public static final ArrayList<String> attendanceIds = new ArrayList<String>();
-
 
     final long groupId = 0;
 
@@ -75,10 +77,8 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
         groupIds.add(Constant.Module.INFO);     // Info
         groupIds.add(Constant.Module.FAQ);     // FAQ
         groupIds.add(Constant.Module.PROGRAM_SCHEDULE);     // Program Schedule
-
         serviceDirectoryIds.add(Constant.Module.SERVICE_DIRECTORY);
         serviceDirectoryIds.add(Constant.Module.VVIP);
-
         attendanceIds.add(Constant.Module.ATTENDANCE);
     }
 
@@ -91,7 +91,6 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
     int dashPosition;
     String grpId;
     int cnt = 0, cnt_eve = 0, cnt_ann = 0, cnt_bulletin = 0, cnt_doc = 0;
-
     String finalcount_event, finalcount_announcement, finalcount_document;
     long masterUid;
 
@@ -102,6 +101,9 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
         context = cntx;
         groupDashboard = cntx;
         this.grpId = grpId;
+
+        Log.e("Touchbase", "satish GroupDashboardAdapter New Group ID : " + this.grpId);
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -132,26 +134,28 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
+
         final Holder holder = new Holder();
         View rowView;
         ReplicaInfoModel model = new ReplicaInfoModel(context);
+
         final String replicaOf = model.getReplicaOf(listmodule.get(position).getModuleId());
 
         rowView = inflater.inflate(R.layout.groupdashboardgrid_item, null);
+
         holder.tv = (TextView) rowView.findViewById(R.id.text);
         holder.img = (ImageView) rowView.findViewById(R.id.picture);
         holder.group_count = (TextView) rowView.findViewById(R.id.group_count);
+
         holder.tv.setText(listmodule.get(position).getModuleName());
 
         //------------------ Count
 
-
-        Log.e("Touchbase", "♦♦♦♦Group ID : " + this.grpId);
-
         try {
-            if (replicaOf.equals(Constant.Module.EVENTS)) {
-                if (notificationCountDatas.getModuleCount(this.grpId, listmodule.get(position).getModuleId()) <= 0) {
 
+            if (replicaOf.equals(Constant.Module.EVENTS)) {
+
+                if (notificationCountDatas.getModuleCount(this.grpId, listmodule.get(position).getModuleId()) <= 0) {
                     holder.group_count.setVisibility(View.GONE);
                 } else {
                     int count_read_event = EventListAdapter.count_read_events;
@@ -162,12 +166,12 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     holder.group_count.setText(finalcount_event);
                     cnt_eve = Integer.parseInt(holder.group_count.getText().toString());
                     Log.d("======", "........" + cnt_eve);
-
                     holder.group_count.setText("" + notificationCountDatas.getModuleCount(grpId, listmodule.get(position).getModuleId()));
                     holder.group_count.setBackgroundResource(R.drawable.notification_count_event);
                 }
             }
             if (replicaOf.equals(Constant.Module.ANNOUNCEMENTS)) {
+
                 if (notificationCountDatas.getModuleCount(this.grpId, listmodule.get(position).getModuleId()) <= 0) {
                     holder.group_count.setVisibility(View.GONE);
                 } else {
@@ -183,6 +187,7 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     holder.group_count.setBackgroundResource(R.drawable.notification_count_announcement);
                 }
             }
+
             if (replicaOf.equals(Constant.Module.E_BULLETINS)) {
                 if (notificationCountDatas.getModuleCount(this.grpId, listmodule.get(position).getModuleId()) <= 0) {
                     holder.group_count.setVisibility(View.GONE);
@@ -198,6 +203,7 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                 }
             }
             if (replicaOf.equals(Constant.Module.DOCUMENTS)) {
+
                 if (notificationCountDatas.getModuleCount(this.grpId, listmodule.get(position).getModuleId()) <= 0) {
                     holder.group_count.setVisibility(View.GONE);
                 } else {
@@ -241,6 +247,7 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                         .into(holder.img);
             }
         }
+
         rowView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -248,6 +255,7 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                 // TODO Auto-generated method stub
                 //Toast.makeText(context, "You Clicked " , Toast.LENGTH_LONG).show();
                 Log.e("Touchbase", "Replica of value is : " + replicaOf);
+
                 if (replicaOf.equals(Constant.Module.DIRECTORY)) {
                     //Intent i = new Intent(context, Directory.class);
                     String myCategory = PreferenceManager.getPreference(context, MY_CATEGORY, "" + Constant.GROUP_CATEGORY_CLUB);
@@ -284,7 +292,7 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     return;
                 }
                 if (replicaOf.equals(Constant.Module.ATTENDANCE)) {  // 17 means Attendance
-                    Intent i = new Intent(context, AttendanceList.class);
+                    Intent i = new Intent(context, AttendenceActivity.class);
                     i.putExtra("moduleName", listmodule.get(position).getModuleName());
                     i.putExtra("moduleId", listmodule.get(position).getModuleId());
                     PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
@@ -336,7 +344,13 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     context.startActivity(i);
                     return;
                 } else if (replicaOf.equals(Constant.Module.CELEBRATIONS)) {
-                    Intent i = new Intent(context, MonthActivity.class);
+//                    Intent i = new Intent(context, MonthActivity.class);
+//                    i.putExtra("moduleName", listmodule.get(position).getModuleName());
+//                    PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
+//                    PreferenceManager.savePreference(context, PreferenceManager.MODUEL_NAME, listmodule.get(position).getModuleName());
+//                    context.startActivity(i);
+
+                    Intent i = new Intent(context, CalenderActivity.class);
                     i.putExtra("moduleName", listmodule.get(position).getModuleName());
                     PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
                     PreferenceManager.savePreference(context, PreferenceManager.MODUEL_NAME, listmodule.get(position).getModuleName());
@@ -374,7 +388,6 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     Intent i = new Intent(context, Events.class);
                     i.putExtra("moduleName", listmodule.get(position).getModuleName());
                     i.putExtra("GroupID", String.valueOf(listmodule.get(position).getGroupId()));
-
                     PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
                     PreferenceManager.savePreference(context, PreferenceManager.MODUEL_NAME, listmodule.get(position).getModuleName());
                     groupDashboard.startActivityForResult(i, Constant.REQUEST_EVENT);
@@ -463,6 +476,14 @@ public class GroupDashboadAdapter_new extends BaseAdapter {
                     PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
                     PreferenceManager.savePreference(context, PreferenceManager.MODUEL_NAME, listmodule.get(position).getModuleName());
                     context.startActivity(i);
+                }else if(replicaOf.equals(Constant.Module.CLUB_MONTHLY_REPORT)){
+                    Intent i = new Intent(context, MonthlyReportListActivity.class);
+                    i.putExtra("moduleName", listmodule.get(position).getModuleName());
+                    i.putExtra("GroupID", String.valueOf(listmodule.get(position).getGroupId()));
+                    i.putExtra("moduleID", String.valueOf(listmodule.get(position).getModuleId()));
+                    PreferenceManager.savePreference(context, PreferenceManager.MODULE_ID, listmodule.get(position).getModuleId());
+                    PreferenceManager.savePreference(context, PreferenceManager.MODUEL_NAME, listmodule.get(position).getModuleName());
+                    groupDashboard.startActivity(i);
                 } else {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show();
                 }

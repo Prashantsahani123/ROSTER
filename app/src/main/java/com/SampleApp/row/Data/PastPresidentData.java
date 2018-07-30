@@ -1,7 +1,5 @@
 package com.SampleApp.row.Data;
 
-import com.SampleApp.row.PastPresidentActivity;
-
 /**
  * Created by admin on 28-04-2017.
  */

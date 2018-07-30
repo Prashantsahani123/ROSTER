@@ -21,6 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
@@ -38,12 +43,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
 
 /**
  * Created by user on 28-11-2016.
@@ -223,6 +222,9 @@ public class EditPhotoActivity extends Activity {
 
 
     private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 2);
+
 
         final CharSequence[] options;
         options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
@@ -247,7 +249,7 @@ public class EditPhotoActivity extends Activity {
                 }
             }
         });
-        builder.show();
+        //builder.show();
     }
 
     @Override

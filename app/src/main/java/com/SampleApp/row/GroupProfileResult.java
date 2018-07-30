@@ -19,6 +19,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.GroupProfileResultAdapter;
+import com.SampleApp.row.Data.GroupProfileResultData;
+import com.SampleApp.row.Utils.CircleTransform;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -28,13 +34,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.GroupProfileResultAdapter;
-import com.SampleApp.row.Data.GroupProfileResultData;
-import com.SampleApp.row.Utils.CircleTransform;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 /**
  * Created by user on 17-02-2016.

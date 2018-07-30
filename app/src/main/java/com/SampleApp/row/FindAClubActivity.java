@@ -11,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -41,7 +40,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -82,7 +80,7 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
     private EditText edt_range;
     RadioGroup rd_group;
     public int radioSelectedId;
-    public String radioSelectedValue = "Miles";
+    public String radioSelectedValue = "Kilometers";
     String meetingDay = "";
 
 
@@ -249,6 +247,16 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
         } else {
             if (InternetConnection.checkConnection(getApplicationContext())) {
 
+                final ProgressDialog dialog=new ProgressDialog(FindAClubActivity.this);
+                dialog.setMessage("Please wait, checking your current location...");
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(true);
+
+                dialog.setIndeterminate(false);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMax(100);
+
+                dialog.show();
 
                 Handler handler = new Handler() {
                     int ctr = 0;
@@ -268,9 +276,10 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
 
                             } else {
 
+                                dialog.dismiss();
                                 String distance = edt_range.getText().toString();
                                 if (distance.equalsIgnoreCase("") || distance.trim().equalsIgnoreCase("")) {
-                                    distance = "40";// default value should be 40
+                                    distance = "10";// default value should be 10
                                 }
                                 meetingDay = spinner_meetingday_nearme.getSelectedItem().toString();
                                 if (meetingDay.equalsIgnoreCase("Any")) {

@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.ProfileData;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
 
 
 /**

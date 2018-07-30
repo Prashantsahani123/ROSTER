@@ -5,13 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.CountryData;
 import com.SampleApp.row.Data.profiledata.AddressData;
 import com.SampleApp.row.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 /**
  * Created by USER1 on 22-03-2017.

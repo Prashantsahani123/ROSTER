@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.SampleApp.row.Data.DistrictCommitteeData;
-import com.SampleApp.row.NewProfileActivity;
+import com.SampleApp.row.DistrictCommiteeProfile;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.CircleTransform;
-import com.SampleApp.row.holders.BODListHolder;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.DistrictCommitteeHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
 import com.squareup.picasso.Picasso;
@@ -26,14 +28,17 @@ import java.util.ArrayList;
 
 public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
-    ArrayList<DistrictCommitteeData> list;
+    ArrayList<DistrictCommitteeData> list=new ArrayList<>();
+    ArrayList<DistrictCommitteeData> filterList=new ArrayList<>();
     private static final int VIEW_TYPE_EMPTYLIST = 1 ;
     private static final int VIEW_TYPE_DT_ITEM = 2 ;
 
     public DistrictCommitteeRVAdapter(Context context, ArrayList<DistrictCommitteeData> list){
         this.context = context;
         this.list = list;
+        this.filterList.addAll(list);
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType== VIEW_TYPE_EMPTYLIST){
@@ -59,7 +64,7 @@ public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void bindEmptyView(RecyclerView.ViewHolder holder, final int position) {
-        ((EmptyViewHolder) holder).getEmptyView().setText("No records found");
+        ((EmptyViewHolder) holder).getEmptyView().setVisibility(View.GONE);
     }
 
     public void bindNonEmptyView(RecyclerView.ViewHolder holder, final int position) {
@@ -67,12 +72,11 @@ public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerVie
         DistrictCommitteeHolder hol = (DistrictCommitteeHolder) holder;
         hol.getTvMemberName().setText(list.get(position).getMemberName());
         String clubInfo = list.get(position).getMemberDesignation();
-        if (! list.get(position).getClubName().trim().equals("")) {
-            clubInfo = list.get(position).getClubName()+" - "+list.get(position).getMemberDesignation();
+        if (! list.get(position).getDistrictDesignation().trim().equals("")) {
+            clubInfo = list.get(position).getDistrictDesignation();
         }
         clubInfo = clubInfo.trim();
         hol.getTvDesignation().setText(clubInfo);
-
 
         if (list.get(position).getPic().trim().length() == 0 || list.get(position).getPic().equals("") || list.get(position).getPic() == null || list.get(position).getPic().isEmpty()) {
             hol.getIvPic().setImageResource(R.drawable.profile_pic);
@@ -85,7 +89,9 @@ public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerVie
         hol.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NewProfileActivity.class);
+                if (InternetConnection.checkConnection(context)) {
+                    Intent intent = new Intent(context, DistrictCommiteeProfile.class);
+                    //Intent intent = new Intent(context, NewProfileActivity.class);
                 /*i.putExtra("memberprofileid", list.get(position).getProfileID());
                 i.putExtra("groupId", list.get(position).getGrpID());
 
@@ -93,11 +99,16 @@ public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerVie
                 i.putExtra("numberLabel","Mobile Number");
                 i.putExtra("memberName",list.get(position).getMemberName());
                 i.putExtra("memberMobile",list.get(position).getMemberMobile());*/
-                intent.putExtra("memberProfileId", list.get(position).getProfileID());
-                intent.putExtra("groupId", list.get(position).getGrpID());
-                intent.putExtra("fromMainDirectory", "no");
-                intent.putExtra("fromDistrictCommitteeList", "yes");
-                ((Activity) context).startActivityForResult(intent, 1);
+//                    intent.putExtra("memberProfileId", list.get(position).getProfileID());
+//                    intent.putExtra("groupId", list.get(position).getGrpID());
+//                    intent.putExtra("fromMainDirectory", "no");
+//                    intent.putExtra("fromDistrictCommitteeList", "yes");
+
+                    intent.putExtra("districtData",list.get(position));
+                    ((Activity) context).startActivityForResult(intent, 1);
+                } else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -118,6 +129,31 @@ public class DistrictCommitteeRVAdapter extends RecyclerView.Adapter<RecyclerVie
             return VIEW_TYPE_EMPTYLIST;
         }
         return list.size();
+    }
+
+
+    public void filter(String charText) {
+        charText=charText.toLowerCase();
+        list.clear();
+        if (charText.length() == 0) {
+            list.addAll(filterList);
+        }
+        else
+        {
+            for (DistrictCommitteeData wp : filterList)
+            {
+                Utils.log(wp.getMemberName());
+                if (wp.getMemberName().toLowerCase().contains(charText)||wp.getDistrictDesignation().toLowerCase().contains(charText))
+                {
+                    list.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<DistrictCommitteeData> getList(){
+        return list;
     }
 
 }

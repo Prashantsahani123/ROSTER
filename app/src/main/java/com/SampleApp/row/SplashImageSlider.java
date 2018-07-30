@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 public class SplashImageSlider extends AppCompatActivity {
     private static ViewPager mPager;
-
     private static int NUM_PAGES = 0;
     private static final Integer[] IMAGES= {R.drawable.screen1,R.drawable.screen2,R.drawable.screen3,R.drawable.screen4,R.drawable.screen5};
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
@@ -51,9 +50,7 @@ public class SplashImageSlider extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         setContentView(R.layout.splash_image_slider);
 
@@ -62,7 +59,6 @@ public class SplashImageSlider extends AppCompatActivity {
         tv_accept = (TextView)findViewById(R.id.tv_accept);
         view_margin = (View) findViewById(R.id.margin);
         view_terms_and_condition = (View)findViewById(R.id.view_terms_and_condition);
-
 
         sliderHandler = new Handler(){
 
@@ -81,7 +77,9 @@ public class SplashImageSlider extends AppCompatActivity {
 
 
         } else {  // means user is already logged in to the app
+
             Intent intent = getIntent();
+
             if ( intent != null && intent.getStringExtra("fromApp") == null ) {  // fromApp = null means splashimageslider is launched by clicking on invitation link
                 Uri data = intent.getData();
                 String groupId = data.getQueryParameter("groupId");
@@ -91,6 +89,7 @@ public class SplashImageSlider extends AppCompatActivity {
 
                 String sessionMasterId = PreferenceManager.getPreference(SplashImageSlider.this, PreferenceManager.MASTER_USER_ID);
                 boolean otherUserTryingToLogin = false;
+
                 if ( sessionMasterId == null ){
 
                 } else if ( ! sessionMasterId.equals(masterUID)){
@@ -106,18 +105,23 @@ public class SplashImageSlider extends AppCompatActivity {
                     });
 
                 } else {
+
                     PreferenceManager.savePreference(SplashImageSlider.this, PreferenceManager.MASTER_USER_ID, masterUID);
                     PreferenceManager.savePreference(SplashImageSlider.this, PreferenceManager.GROUP_ID, groupId);
                     PreferenceManager.savePreference(SplashImageSlider.this, PreferenceManager.IS_GRP_ADMIN, isGroupAdmin);
                     PreferenceManager.savePreference(SplashImageSlider.this, PreferenceManager.GROUP_NAME, groupName);
-                    Intent i = new Intent(SplashImageSlider.this, GroupsListingDashboard.class);
+//                    Intent i = new Intent(SplashImageSlider.this, GroupsListingDashboard.class);
+//                    i.putExtra("openGroup", "yes");  // this means first show entity listing and then launch dashboard of that entity to which user is invited
+//                    startActivity(i);
+//                    finish();
+                    Intent i = new Intent(SplashImageSlider.this, DashboardActivity.class);
                     i.putExtra("openGroup", "yes");  // this means first show entity listing and then launch dashboard of that entity to which user is invited
                     startActivity(i);
                     finish();
                 }
 
             } else {
-                Intent i = new Intent(getApplicationContext(), GroupsListingDashboard.class);
+                Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -150,8 +154,9 @@ public class SplashImageSlider extends AppCompatActivity {
             }
         });
 
-        for(int i=0;i<IMAGES.length;i++)
+        for(int i=0;i<IMAGES.length;i++) {
             ImagesArray.add(IMAGES[i]);
+        }
 
         mPager = (ViewPager) findViewById(R.id.pager);
 
@@ -209,7 +214,7 @@ public class SplashImageSlider extends AppCompatActivity {
                     tv_term.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           popup();
+                            popup();
                         }
                     });
                 } else {

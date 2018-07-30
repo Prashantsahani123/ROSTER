@@ -13,13 +13,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import com.SampleApp.row.Adapter.AlbumFolderAdapter;
 import com.SampleApp.row.Data.AlbumFolder;
 import com.SampleApp.row.Data.SimplePhotoData;
 import com.SampleApp.row.Utils.PreferenceManager;
+
+import java.io.File;
+import java.util.ArrayList;
 
 
 /**

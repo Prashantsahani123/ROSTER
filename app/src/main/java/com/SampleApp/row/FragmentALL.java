@@ -385,8 +385,8 @@ public class FragmentALL extends Fragment {
                 // This ServerCurrentDate must be sent in api with parameter "updatedOn"
                 // Each time when API is to be called to get the list of new or updated or deleted groups this
                 updatedOn = ActivityResult.getString("curDate");
-                Log.d("TouchBase", "VErsion No" + Float.parseFloat(Constant.versionNo));
-                Log.d("TouchBase", "InterNal Version No" + Float.parseFloat(ActivityResult.getString("version")));
+               // Log.d("TouchBase", "VErsion No" + Float.parseFloat(Constant.versionNo));
+               // Log.d("TouchBase", "InterNal Version No" + Float.parseFloat(ActivityResult.getString("version")));
                 if (Float.parseFloat(Constant.versionNo) < Float.parseFloat(ActivityResult.getString("version"))) {
                     // if(Float.parseFloat(Constant.versionNo) < Float.parseFloat("1.3")){
                     popup_of_update_app();
@@ -1240,19 +1240,19 @@ public class FragmentALL extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.e("DBError", "Handler is called");
-            boolean saved = groupModel.insert(masterUid, grplist);
-            if (!saved) {
-                Log.d("Touchbase---@@@@@@@@", "Failed to save offlline. Retrying in 2 seconds");
-                sendEmptyMessageDelayed(0, 2000);
-            } else {
-                savePreference(getActivity().getApplicationContext(), TBPrefixes.ENTITY_PREFIX + masterUid, updatedOn);
-                Log.d("Touchbase---@@@@@@@@", updatedOn + "groupHandler executed successfully");
-                getActivity().sendBroadcast(new Intent(Constant.GROUP_DATA_LOADED));
-                Log.d("Touchbase---@@@@@@@@", moduleDataHandler + "execution starts");
-                moduleDataHandler.sendEmptyMessageDelayed(0, 1000);
-                //syncModel.update(masterUid, Utils.)
-            }
+//            Log.e("DBError", "Handler is called");
+//            boolean saved = groupModel.insert(masterUid, grplist);
+//            if (!saved) {
+//                Log.d("Touchbase---@@@@@@@@", "Failed to save offlline. Retrying in 2 seconds");
+//                sendEmptyMessageDelayed(0, 2000);
+//            } else {
+//                savePreference(getActivity().getApplicationContext(), TBPrefixes.ENTITY_PREFIX + masterUid, updatedOn);
+//                Log.d("Touchbase---@@@@@@@@", updatedOn + "groupHandler executed successfully");
+//                getActivity().sendBroadcast(new Intent(Constant.GROUP_DATA_LOADED));
+//                Log.d("Touchbase---@@@@@@@@", moduleDataHandler + "execution starts");
+//                moduleDataHandler.sendEmptyMessageDelayed(0, 1000);
+//                //syncModel.update(masterUid, Utils.)
+//            }
         }
     };
 
@@ -1698,7 +1698,6 @@ public class FragmentALL extends Fragment {
 
     }
 
-
     public void saveRssFeeds(String s) {
         try {
             /*FileOutputStream fout = this.getContext().openFileOutput(RSS_FEEDS_FILE, MODE_PRIVATE);
@@ -1829,6 +1828,7 @@ public class FragmentALL extends Fragment {
                         blogList = new ArrayList<>();
                         blogList = blogsModel.getBlogsList();
                         grplist.add("Rotary Blogs");
+
                         grplist.addAll(blogList);
                         rv_adapter.notifyDataSetChanged();
                     }

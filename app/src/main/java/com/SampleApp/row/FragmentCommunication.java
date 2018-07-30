@@ -1,10 +1,8 @@
 package com.SampleApp.row;
 
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,13 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.SampleApp.row.Adapter.DTNewslettersAdapter;
-import com.SampleApp.row.Data.ClubInfoData;
 import com.SampleApp.row.Data.FindAClubResultData;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
@@ -31,12 +25,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 
 /**

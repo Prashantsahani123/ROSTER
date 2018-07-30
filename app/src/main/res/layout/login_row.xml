@@ -232,13 +232,14 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         >
-            <TextView
-                android:id="@+id/ib_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Continue"
-                android:padding="15dp"
-                android:textColor="@color/view_color_blue"
-                android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/ib_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Continue"
+            android:textColor="@color/view_color_blue"
+            android:textSize="22sp" />
     </RelativeLayout>
 </RelativeLayout>

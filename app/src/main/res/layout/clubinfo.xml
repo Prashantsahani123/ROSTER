@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingTop="10dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         style="@style/contentsStyle"
@@ -121,11 +121,13 @@
                         <TextView
                             android:id="@+id/tv_address"
                             style="@style/contentsStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/margin"
                             android:textColor="@color/black"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:layout_marginRight="30dp"
+                            />
 
                         <ImageView
                             android:id="@+id/iv_location"
@@ -135,7 +137,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/location_blue"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                     </RelativeLayout>
 

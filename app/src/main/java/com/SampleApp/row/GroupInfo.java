@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -23,10 +26,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 import static com.SampleApp.row.Utils.PreferenceManager.GROUP_NAME;
 import static com.SampleApp.row.Utils.PreferenceManager.savePreference;

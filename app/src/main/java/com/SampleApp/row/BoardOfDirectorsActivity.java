@@ -56,6 +56,7 @@ public class BoardOfDirectorsActivity extends Activity{
     private String BOARD_OF_DIRECTORS_FILE="bod.json";;
     private Context context;
     private String grpId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

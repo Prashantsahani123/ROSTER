@@ -12,11 +12,10 @@
         android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
             android:id="@+id/recyclerview"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
 
         <TextView
             android:id="@+id/tv_no_records_found"
@@ -32,15 +31,15 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:src="@drawable/add_plus"
-            android:layout_alignParentRight="true"
-            app:backgroundTint="#4cb050"
             android:layout_alignParentBottom="true"
-            app:elevation="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|end"
             android:layout_margin="20dp"
-            app:pressedTranslationZ="12dp"
-            android:visibility="gone"/>
+            android:src="@drawable/add_plus"
+            android:visibility="gone"
+            app:backgroundTint="#4cb050"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
     </RelativeLayout>
 
     <LinearLayout

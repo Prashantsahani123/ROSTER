@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Adapter.GroupsPageAdapter;
 import com.SampleApp.row.Data.GroupData;
+
+import java.util.ArrayList;
 
 
 
@@ -66,7 +66,7 @@ public class  GroupsListingDashboard extends AppCompatActivity {
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
         iv_actionbtn2 = (ImageView) findViewById(R.id.iv_actionbtn2);
         tv_title.setText("Roster On Wheels");
-        iv_actionbtn.setVisibility(View.VISIBLE);
+        iv_actionbtn.setVisibility(View.GONE);
         iv_actionbtn2.setVisibility(View.VISIBLE);
         iv_backbutton.setVisibility(View.GONE);
         iv_actionbtn.setImageResource(R.drawable.search_btn);

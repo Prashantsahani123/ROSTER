@@ -17,23 +17,11 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.Data.SubGoupData;
@@ -42,9 +30,22 @@ import com.SampleApp.row.Utils.DateHelper;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.MyTimePicker;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by USER on 04-01-2016.
@@ -54,10 +55,11 @@ public class Documents_upload extends Activity {
     ListView listview;
     ArrayAdapter<String> adapter;
     TextView tv_title, tv_getCount;
-    ImageView iv_backbutton, iv_edit, tv_upload_pdf;
+    ImageView iv_backbutton, iv_edit;
+    LinearLayout ll_delete;
     RadioButton d_radio1, d_radio2;
     RadioButton d_radio0,radioAccessDownload,radioAccessView;
-    TextView getCount, ib_upload, tv_file_name,smscount;
+    TextView getCount, ib_upload, tv_file_name,smscount,tv_upload_pdf;
     String documentType = "0";
     String inputids = "";
     EditText et_title;
@@ -65,11 +67,13 @@ public class Documents_upload extends Activity {
     String accessFlag="0";
     String moduleName = "";
     public static int count_write_documents = 0;
-
+    private static final DecimalFormat format = new DecimalFormat("#.##");
     ArrayList<DirectoryData> listaddmemberdata = new ArrayList<>();
     ArrayList<SubGoupData> listaddsubgrp = new ArrayList<>();
 
-
+    private SingleDateAndTimePickerDialog datetimePicker,datetimeForReminder;
+    SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private String publishDate="",expiryDate="";
 
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
     private String uploadedpdfid = "0";
@@ -96,7 +100,7 @@ public class Documents_upload extends Activity {
         // iv_backbutton.setVisibility(View.GONE);
         moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Document");
         tv_title.setText("Upload "+moduleName);
-
+        ll_delete=(LinearLayout)findViewById(R.id.ll_delete);
         d_radio0 = (RadioButton) findViewById(R.id.d_radio0);
         d_radio1 = (RadioButton) findViewById(R.id.d_radio1);
         d_radio2 = (RadioButton) findViewById(R.id.d_radio2);
@@ -112,7 +116,7 @@ public class Documents_upload extends Activity {
         tv_getCount = (TextView) findViewById(R.id.getCount);
         tv_file_name = (TextView) findViewById(R.id.tv_file_name);
         smscount = (TextView) findViewById(R.id.smscount);
-        tv_upload_pdf = (ImageView) findViewById(R.id.tv_upload_pdf);
+        tv_upload_pdf = (TextView) findViewById(R.id.tv_upload_pdf);
 
 
         ib_upload = (TextView) findViewById(R.id.ib_upload);
@@ -267,7 +271,7 @@ public class Documents_upload extends Activity {
         tv_publishTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_publishTime);
+                ShowTimePicker(tv_publishTime,2);
             }
         });
 
@@ -281,7 +285,16 @@ public class Documents_upload extends Activity {
         tv_expiryTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_expiryTime);
+                ShowTimePicker(tv_expiryTime,3);
+            }
+        });
+
+        ll_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadedpdfid = "0";
+                tv_file_name.setText("");
+                ll_delete.setVisibility(View.GONE);
             }
         });
     }
@@ -369,8 +382,8 @@ public class Documents_upload extends Activity {
         arrayList.add(new BasicNameValuePair("docID", "0"));
         arrayList.add(new BasicNameValuePair("docType", documentType));
         arrayList.add(new BasicNameValuePair("docAccessType", accessFlag));
-        arrayList.add(new BasicNameValuePair("publishDate",tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
-        arrayList.add(new BasicNameValuePair("expiryDate",tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("publishDate",publishDate));
+        arrayList.add(new BasicNameValuePair("expiryDate",expiryDate));
         arrayList.add(new BasicNameValuePair("docTitle", et_title.getText().toString()));
         arrayList.add(new BasicNameValuePair("memID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID)));
         arrayList.add(new BasicNameValuePair("grpID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
@@ -598,56 +611,69 @@ public class Documents_upload extends Activity {
             }
         } else if (requestCode == 10) {
             if (resultCode == RESULT_OK) {
-                Uri uri = data.getData();
-                String uriString = uri.toString();
+                new sendFile().execute(data);
+//                Uri uri = data.getData();
+//                String uriString = uri.toString();
+//
+//                //MEDIA GALLERY
+//                selectedImagePath = Utils.getPath(getApplicationContext(), uri);
+//                File myFile = new File(selectedImagePath);
+//
+//                final double length = myFile.length();
+//
+//                double size=Double.parseDouble(format.format(length / 1048576));
+//                Log.d("***********", "-----" + String.valueOf(size));
+//                if(size>10){
+//                    Utils.showToastWithTitleAndContext(Documents_upload.this,"File size must not be greater than 10 MB");
+//                }else {
+//                    if (uriString.startsWith("content://")) {
+//                        Cursor cursor = null;
+//                        try {
+//                            cursor = Documents_upload.this.getContentResolver().query(uri, null, null, null, null);
+//                            if (cursor != null && cursor.moveToFirst()) {
+//                                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//                                Log.d("-----", "-----" + displayName);
+//
+//                                //link.setText(wpath);
+//
+//                                //--------
+//                                // uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "documentsafe"); // Upload File to server
+//                            }
+//                        } finally {
+//                            cursor.close();
+//                        }
+//                    } else if (uriString.startsWith("file://")) {
+//                        displayName = myFile.getName();
+//                    }
+//                    if(displayName!=null && !displayName.isEmpty()){
+//                        tv_file_name.setText(displayName);
+//                        Log.d("TOUCHBASE", "Uploaded file name---" + displayName);
+//                        Log.d("TOUCHBASE", "PATH TO UPLOAD FILE---" + selectedImagePath);
+//                        pd = ProgressDialog.show(Documents_upload.this, "", "Loading...", false);
+//                        Thread thread = new Thread(new Runnable() {
+//                            public void run() {
+//                                uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "event"); // Upload File to server
+//                                runOnUiThread(new Runnable() {
+//                                    public void run() {
+//                                        if (pd.isShowing())
+//                                            pd.dismiss();
+//
+//                                        Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
+//                                        if (uploadedpdfid == "0") {
+//                                            Toast.makeText(Documents_upload.this, "File upload failed, Please Try Again!", Toast.LENGTH_LONG).show();
+//                                            tv_file_name.setText("");
+//                                        } else {
+//                                            Toast.makeText(Documents_upload.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
+//                                        }
+//                                        //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
+//                                    }
+//                                });
+//                            }
+//                        });
+//                        thread.start();
+//                    }
+//                }
 
-                //MEDIA GALLERY
-                selectedImagePath = Utils.getPath(getApplicationContext(), uri);
-                File myFile = new File(selectedImagePath);
-
-                if (uriString.startsWith("content://")) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = Documents_upload.this.getContentResolver().query(uri, null, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                            Log.d("-----", "-----" + displayName);
-
-                            //link.setText(wpath);
-                            tv_file_name.setText(displayName);
-                            Log.d("TOUCHBASE", "Uploaded file name---" + displayName);
-                            Log.d("TOUCHBASE", "PATH TO UPLOAD FILE---" + selectedImagePath);
-                            pd = ProgressDialog.show(Documents_upload.this, "", "Loading...", false);
-                            Thread thread = new Thread(new Runnable() {
-                                public void run() {
-                                    uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "event"); // Upload File to server
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            if (pd.isShowing())
-                                                pd.dismiss();
-
-                                            Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
-                                            if (uploadedpdfid == "0") {
-                                                Toast.makeText(Documents_upload.this, "File upload failed, Please Try Again!", Toast.LENGTH_LONG).show();
-                                                tv_file_name.setText("");
-                                            } else {
-                                                Toast.makeText(Documents_upload.this, "File upload successful!", Toast.LENGTH_LONG).show();
-                                            }
-                                            //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
-                            });
-                            thread.start();
-                            //--------
-                           // uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "documentsafe"); // Upload File to server
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                } else if (uriString.startsWith("file://")) {
-                    displayName = myFile.getName();
-                }
             }
 
         }
@@ -655,6 +681,103 @@ public class Documents_upload extends Activity {
 
     }
 
+    public class sendFile extends AsyncTask<Intent,Void,String>{
+
+        ProgressDialog progressDialog;
+        String displayName="";
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog= new ProgressDialog(Documents_upload.this, R.style.TBProgressBar);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Intent... param) {
+            Intent data=param[0];
+            double length = 0;
+
+            Uri uri = data.getData();
+            String uriString = uri.toString();
+
+            //MEDIA GALLERY
+            selectedImagePath = Utils.getPath(getApplicationContext(), uri);
+            File myFile = new File(selectedImagePath);
+            //  Log.d("***********", "-----" + myFile);
+//
+            if (uriString.startsWith("content://")) {
+                Cursor cursor = null;
+                try {
+                    cursor = Documents_upload.this.getContentResolver().query(uri, null, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        Log.d("-----", "-----" + displayName);
+
+                        length = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+
+                    }
+                } finally {
+                    cursor.close();
+                }
+            } else if (uriString.startsWith("file://")) {
+                displayName = myFile.getName();
+                length = myFile.length();
+            }
+
+            double size=Double.parseDouble(format.format(length / 1048576));
+            Log.d("***********", "-----" + String.valueOf(size));
+            if(size>10){
+                return "filesize";
+            }else {
+                String result="";
+                if(displayName!=null && !displayName.isEmpty()){
+                    //link.setText(wpath);
+//                    tv_name_pdf.setText(displayName);
+
+                        /*    Intent i = new Intent(getApplicationContext(), E_BulletineAdapter.class);
+                            i.putExtra("file name", displayName);
+                            startActivity(i);*/
+
+
+                    String filenameArray[] = displayName.split("\\.");
+                    String extension = filenameArray[filenameArray.length-1];
+                    Log.d("***********", "-----" + extension);
+
+                        uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "ebulletin"); // Upload File to server
+                        Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
+                        if (uploadedpdfid != "0") {
+                            result= uploadedpdfid;
+//                            Toast.makeText(AddE_bulletin.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
+
+                        }
+//                        Toast.makeText(AddE_bulletin.this, "Only “Pdf” files can be shared as an e-Bulletin.", Toast.LENGTH_LONG).show();
+                }
+                return result;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            progressDialog.dismiss();
+
+            if(s!=null && !s.isEmpty()){
+                if(s.equalsIgnoreCase("filesize")){
+                    Utils.showToastWithTitleAndContext(Documents_upload.this,"File size must not be greater than 10 MB");
+                }
+                else {
+                    ll_delete.setVisibility(View.VISIBLE);
+                    tv_file_name.setText(displayName);
+                    uploadedpdfid=s;
+                }
+            }else {
+                tv_file_name.setText("");
+                Utils.showToastWithTitleAndContext(Documents_upload.this,getString(R.string.msgRetry));
+            }
+        }
+    }
 
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -686,20 +809,23 @@ public class Documents_upload extends Activity {
             return false;
         }
 
-        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
-            Toast.makeText(Documents_upload.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(Documents_upload.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+
         if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
-            Toast.makeText(Documents_upload.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(Documents_upload.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
-            Toast.makeText(Documents_upload.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+
+//        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
+//            Toast.makeText(Documents_upload.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+
         if (tv_expiryTime.getText().toString().trim().matches("") || tv_expiryTime.getText().toString().trim() == null) {
-            Toast.makeText(Documents_upload.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(Documents_upload.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -710,9 +836,9 @@ public class Documents_upload extends Activity {
             return false;
         }*/
 
-        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
-
-        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+//        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
         try {
@@ -775,21 +901,69 @@ public class Documents_upload extends Activity {
         datePickerDialog.show();
     }
 
-    public void ShowTimePicker(final TextView time_text) {
-        final MyTimePicker myTimePicker = new MyTimePicker(this);
+    public void ShowTimePicker(final TextView time_text,final int module) {
+//        final MyTimePicker myTimePicker = new MyTimePicker(this);
+//
+//        myTimePicker.show();
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//              /*  Toast.makeText(AddEvent.this, "time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();*/
+//
+//
+//
+//                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//            }
+//        });
 
-        myTimePicker.show();
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
-
-            @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-              /*  Toast.makeText(AddEvent.this, "time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();*/
-
-
-
-                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+        String title="";
+        Date date=new Date();
+        try {
+            if(module==2){
+                title="Publish Date & Time";
+                date = sdf1.parse(publishDate);
+            }else if(module==3){
+                title="Expiry Date & Time";
+                date = sdf1.parse(expiryDate);
+            }else if(module==4){
+                title="Notification Date & Time";
             }
-        });
+        }
+        catch (ParseException e){
+            date=new Date();
+        }
+
+//
+
+        datetimePicker= new SingleDateAndTimePickerDialog.Builder(Documents_upload.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimePicker.setDefaultDate(date);
+
+        datetimePicker.setMinDateRange(new Date());
+        datetimePicker .setMinutesStep(1);
+        //.displayHours(false)
+        //.displayMinutes(false)
+
+        //.todayText("aujourd'hui")
+
+        datetimePicker.setTitle(title);
+        datetimePicker.setListener(new SingleDateAndTimePickerDialog.Listener() {
+            @Override
+            public void onDateSelected(Date date) {
+
+                time_text.setText(sdf1.format(date));
+                if(module==2){
+                    publishDate=sdf1.format(date);
+                }else if(module==3){
+                    expiryDate=sdf1.format(date);
+                }else if(module==4){
+//                            title="Notification Date & Time";
+                }
+            }
+        }).display();
+
     }
 
     private static String utilTime(int value) {
@@ -833,4 +1007,15 @@ public class Documents_upload extends Activity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if(datetimePicker!=null && datetimePicker.isDisplaying()){
+            datetimePicker.dismiss();
+        }else if(datetimeForReminder!=null && datetimeForReminder.isDisplaying()){
+            datetimeForReminder.dismiss();
+        }else {
+            Utils.popupback(Documents_upload.this);
+
+        }
+    }
 }

@@ -9,15 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.CalendarViewOption;
 import com.SampleApp.row.R;
 import com.SampleApp.row.calendar.DayActivity;
 import com.SampleApp.row.calendar.MonthActivity;
 import com.SampleApp.row.calendar.ScheduleView;
 import com.SampleApp.row.calendar.YearActivity;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 24-01-2017.

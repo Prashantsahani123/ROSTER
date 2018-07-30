@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -55,6 +54,7 @@ import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.TBPrefixes;
 import com.SampleApp.row.Utils.UnzipUtility;
 import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.services.DirectorySyncService;
 import com.SampleApp.row.services.DirectoryUpdateService;
 import com.SampleApp.row.sql.ProfileModel;
 import com.android.volley.DefaultRetryPolicy;
@@ -108,7 +108,7 @@ public class DirectoryActivity extends Activity {
     FloatingActionMenu materialDesignFAM;
     com.github.clans.fab.FloatingActionButton addManually, invite, addFromPhonebook;
     EditText et_serach_directory;
-    String updatedOn = "";
+    String updatedOn = "1970/01/01 00:00:00";
     TextView tv_title;
     ImageView iv_backbutton;
     private ImageView iv_actionbtn;
@@ -594,83 +594,149 @@ public class DirectoryActivity extends Activity {
     public void getProfileSyncInfo() {
         //final ProgressDialog pd = new ProgressDialog(context);
         //pd.setCancelable(false);
-        if (firstTime.equalsIgnoreCase("yes")) {
-            //pd.setMessage();
-            manageCenterMessage(
-                    View.VISIBLE,
-                    "Downloading Directory from cloud \n" +
-                            "please wait...",
-                    View.VISIBLE,
-                    "",
-                    View.GONE,
-                    null, ANIMATE);
-        } else {
-            //pd.setMessage("Loading please wait");
-            manageCenterMessage(
-                    View.GONE,
-                    "Checking for updates. Please wait",
-                    View.VISIBLE,
-                    "",
-                    View.GONE,
-                    null, ANIMATE);
+
+        String isRequested=PreferenceManager.getPreference(DirectoryActivity.this,PreferenceManager.REQUESTED+grpId,"N");
+        if(isRequested.equalsIgnoreCase("N")){
+            if (firstTime.equalsIgnoreCase("yes")) {
+                //pd.setMessage();
+                manageCenterMessage(
+                        View.VISIBLE,
+                        "Downloading Directory from cloud \n" +
+                                "Please wait it may take some time... ",
+                        View.VISIBLE,
+                        "",
+                        View.GONE,
+                        null, ANIMATE);
+
+                Intent service=new Intent(context, DirectorySyncService.class);
+                startService(service);
+            } else {
+                //pd.setMessage("Loading please wait");
+                manageCenterMessage(
+                        View.GONE,
+                        "Checking for updates. Please wait",
+                        View.VISIBLE,
+                        "",
+                        View.GONE,
+                        null, ANIMATE);
+
+
+                Utils.log("Started getProfileSyncInfo");
+                Hashtable<String, String> paramTable = new Hashtable<>();
+                updatedOn = PreferenceManager.getPreference(this, TBPrefixes.DIRECTORY_PREFIX + grpId, "1970/01/01 00:00:00");
+
+                paramTable.put("updatedOn", updatedOn);
+                paramTable.put("grpID", "" + grpId);
+
+                JSONObject jsonRequestData = null;
+                try {
+                    jsonRequestData = new JSONObject(new Gson().toJson(paramTable));
+                    Utils.log("Url : " + Constant.GetMemberListSync + " Data : " + jsonRequestData);
+                    PreferenceManager.savePreference(DirectoryActivity.this, PreferenceManager.REQUESTED + grpId, "Y");
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                            Constant.GetMemberListSync,
+                            jsonRequestData,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                                    Utils.log("Success : " + response);
+                                    handleSyncInfo(response);
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    if (list.size() == 0) {
+                                        manageCenterMessage(
+                                                View.VISIBLE,
+                                                "Something went wrong. Please try again after sometime.",
+                                                View.VISIBLE,
+                                                "Try Now",
+                                                View.VISIBLE,
+                                                new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        llCenterMessage.setVisibility(View.GONE);
+                                                        loadFromDB();
+                                                    }
+                                                }, NO_ANIMATE);
+                                    }
+                                    Utils.log("Error is : " + error);
+                                    error.printStackTrace();
+                                    PreferenceManager.savePreference(DirectoryActivity.this, PreferenceManager.REQUESTED + grpId, "N");
+                                }
+                            });
+                    request.setRetryPolicy(new DefaultRetryPolicy(
+                            Constant.VOLLEY_MAX_REQUEST_TIMEOUT,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                    ));
+
+                    AppController.getInstance().addToRequestQueue(context, request);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            if(firstTime.equalsIgnoreCase("yes")){
+                manageCenterMessage(
+                        View.VISIBLE,
+                        "Downloading Directory from cloud \n" +
+                                "Please wait it may take some time... ",
+                        View.VISIBLE,
+                        "",
+                        View.GONE,
+                        null, ANIMATE);
+                moduleDataHandler.sendEmptyMessageDelayed(0, 2000);
+
+            }
+
+
+
         }
 
-        Utils.log("Started getProfileSyncInfo");
-        Hashtable<String, String> paramTable = new Hashtable<>();
-        updatedOn = PreferenceManager.getPreference(this, TBPrefixes.DIRECTORY_PREFIX + grpId, "1970/01/01 00:00:00");
-
-        paramTable.put("updatedOn", updatedOn);
-        paramTable.put("grpID", "" + grpId);
-
-        JSONObject jsonRequestData = null;
-        try {
-            jsonRequestData = new JSONObject(new Gson().toJson(paramTable));
-            Utils.log("Url : " + Constant.GetMemberListSync + " Data : " + jsonRequestData);
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                    Constant.GetMemberListSync,
-                    jsonRequestData,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
-                            //Utils.log("Success : " + response);
-                            handleSyncInfo(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (list.size() == 0) {
-                                manageCenterMessage(
-                                        View.VISIBLE,
-                                        "Something went wrong. Please try again after sometime.",
-                                        View.VISIBLE,
-                                        "Try Now",
-                                        View.VISIBLE,
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                llCenterMessage.setVisibility(View.GONE);
-                                                loadFromDB();
-                                            }
-                                        }, NO_ANIMATE);
-                            }
-                            Utils.log("Error is : " + error);
-                            error.printStackTrace();
-                        }
-                    });
-            request.setRetryPolicy(new DefaultRetryPolicy(
-                    Constant.VOLLEY_MAX_REQUEST_TIMEOUT,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            ));
-
-            AppController.getInstance().addToRequestQueue(context, request);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
     }
+
+    Handler moduleDataHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            String isRequested=PreferenceManager.getPreference(DirectoryActivity.this,PreferenceManager.REQUESTED+grpId,"N");
+            if(isRequested.equalsIgnoreCase("N")){
+                boolean isDataAvailable = profileModel.isDataAvailable(grpId);
+                if (!isDataAvailable) {
+                    manageCenterMessage(
+                            View.VISIBLE,
+                            "Something went wrong. Please try again after sometime.",
+                            View.VISIBLE,
+                            "Try Now",
+                            View.VISIBLE,
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    llCenterMessage.setVisibility(View.GONE);
+                                    loadFromDB();
+                                }
+                            }, NO_ANIMATE);
+                    //Log.d("Touchbase---@@@@@@@@", "Failed to save offlline. Retrying in 2 seconds");
+
+                } else {
+//                String tempUpdate=PreferenceManager.getPreference(context,TBPrefixes.TEMP_UPDATED_ON + grpId,"");
+//                PreferenceManager.savePreference(DirectoryActivity.this,TBPrefixes.DIRECTORY_PREFIX + grpId,tempUpdate);
+                    //PreferenceManager.savePreference(DirectoryActivity.this,TBPrefixes.DIRECTORY_PREFIX + grpId,Utils.serUpdateOn);
+                    manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                    refreshData("");
+                }
+            }else {
+                sendEmptyMessageDelayed(0, 2000);
+            }
+
+
+        }
+    };
 
     public void handleSyncInfo(JSONObject response) {
         try {
@@ -684,16 +750,22 @@ public class DirectoryActivity extends Activity {
                 if (zipUrl.trim().equals("")) {
                     processDirectRecords(response);
                 } else { // means zip file is available for download
-                    if (permission.checkPermissionForExternalStorage()) {
-                        startDownload();
-                    } else {
-                        permission.requestPermissionForExternalStorage();
-                    }
+//                    if (permission.checkPermissionForExternalStorage()) {
+//                        startDownload();
+//                    } else {
+//                        permission.requestPermissionForExternalStorage();
+//                    }
+                    startDownload();
                 }
+            }else {
+                updatedOn = response.getString("curDate");
+                PreferenceManager.savePreference(context, TBPrefixes.DIRECTORY_PREFIX + grpId, updatedOn);
+                PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
             }
         } catch (JSONException je) {
             Utils.log("Error is : " + je);
             je.printStackTrace();
+            PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
             manageCenterMessage(
                     View.VISIBLE,
                     "Something went wrong. Please try again after sometime.",
@@ -726,7 +798,8 @@ public class DirectoryActivity extends Activity {
 
     public void startDownload() {
         Utils.log("Starting downloading file");
-        File sdCard = Environment.getExternalStorageDirectory();
+        // File sdCard = Environment.getExternalStorageDirectory();
+        File sdCard=getExternalFilesDir(null);
         downloadDir = new File(sdCard, "Touchbase/temp");
         if (!downloadDir.exists()) {
             downloadDir.mkdirs();
@@ -783,6 +856,7 @@ public class DirectoryActivity extends Activity {
                                 Utils.log("Error is : " + e);
                                 e.printStackTrace();
                                 showRetryDialog();
+                                PreferenceManager.savePreference(context,PreferenceManager.REQUESTED+grpId,"N");
                             }
                         } else {
                             Utils.log("Failed to download update file");
@@ -799,6 +873,7 @@ public class DirectoryActivity extends Activity {
                                             loadFromDB();
                                         }
                                     }, NO_ANIMATE);
+                            PreferenceManager.savePreference(context,PreferenceManager.REQUESTED+grpId,"N");
                         }
                     }
                 } catch (NullPointerException npe) {
@@ -817,6 +892,7 @@ public class DirectoryActivity extends Activity {
                                     loadFromDB();
                                 }
                             }, NO_ANIMATE);
+                    PreferenceManager.savePreference(context,PreferenceManager.REQUESTED+grpId,"N");
                 } catch (Exception e) {
                     Utils.log("Error is : " + e);
                     e.printStackTrace();
@@ -833,6 +909,7 @@ public class DirectoryActivity extends Activity {
                                     loadFromDB();
                                 }
                             }, NO_ANIMATE);
+                    PreferenceManager.savePreference(context,PreferenceManager.REQUESTED+grpId,"N");
                 }
             }
         }
@@ -912,6 +989,7 @@ public class DirectoryActivity extends Activity {
                 Utils.log("Value of message : " + message);
                 if (message.equals(DirectoryUpdateService.ACTION_DIRECTORY_SYNC_COMPLETED)) {
                     Utils.log("Processing is completed and fetching data from local data");
+                    Utils.log("first directory");
                     PreferenceManager.savePreference(context, TBPrefixes.DIRECTORY_PREFIX + grpId, updatedOn);
                     refreshData("");
                 }
@@ -920,6 +998,7 @@ public class DirectoryActivity extends Activity {
     }
 
     public void refreshData(String msg) {
+        PreferenceManager.savePreference(DirectoryActivity.this,PreferenceManager.REQUESTED+grpId,"N");
         list = profileModel.getMembers(grpId);
         if (list.size() > 0) {
             Utils.log("MyList Size : " + list.size());
@@ -973,7 +1052,9 @@ public class DirectoryActivity extends Activity {
                             Utils.log("Failed to insert new records in local db. Retrying in 2 seconds");
                             sendEmptyMessageDelayed(0, 2000);
                         } else {
+                            Utils.log("two directory");
                             PreferenceManager.savePreference(context, TBPrefixes.DIRECTORY_PREFIX + grpId, updatedOn);
+                            PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
                             //pd.hide();
                             manageCenterMessage(
                                     View.GONE,
@@ -1014,7 +1095,9 @@ public class DirectoryActivity extends Activity {
                             Utils.log("Failed to update updated records in local db. Retrying in 2 seconds");
                             sendEmptyMessageDelayed(0, 2000);
                         } else {
+                            Utils.log("three directory");
                             PreferenceManager.savePreference(context, TBPrefixes.DIRECTORY_PREFIX + grpId, updatedOn);
+                            PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
                             //if ( numberOfRecordsProcessed != 0 ) {
                             Toast.makeText(context, numberOfRecordsProcessed + " contacts processed", Toast.LENGTH_SHORT).show();
                             //}
@@ -1023,10 +1106,16 @@ public class DirectoryActivity extends Activity {
                     }
                 };
                 handler.sendEmptyMessage(0);
+
+                if(numberOfRecordsProcessed==0){
+                    PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
+
+                }
             }
 
 
         } catch (JSONException e) {
+            PreferenceManager.savePreference(context, PreferenceManager.REQUESTED + grpId, "N");
             e.printStackTrace();
         }
 
@@ -1319,4 +1408,10 @@ public class DirectoryActivity extends Activity {
 
     boolean isFieldPresent = false;
     private static final String DYNAMIC_FIELDS_FILE = "dynamicField.json";
+
+//    @Override
+//    public void onBackPressed() {
+//       // PreferenceManager.savePreference(context,PreferenceManager.REQUESTED+grpId,"N");
+//        super.onBackPressed();
+//    }
 }

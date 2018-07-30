@@ -14,6 +14,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.SubGroupDetailsAdapter;
+import com.SampleApp.row.Data.SubGroupDetailsData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -21,13 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.SubGroupDetailsAdapter;
-import com.SampleApp.row.Data.SubGroupDetailsData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 /**
  * Created by USER on 16-02-2016.
@@ -60,16 +60,31 @@ public class SubGroupDetails extends Activity implements AdapterView.OnItemClick
 
         Bundle intent = getIntent().getExtras();
         if (intent != null) {
+            if (intent.containsKey("subgroupid") && intent.containsKey("data")) {
 
+                Bundle args=getIntent().getBundleExtra("data");
+                if(args!=null){
+                    list_data = (ArrayList<SubGroupDetailsData>) args.getSerializable("list");
+                    subgroupid = intent.getString("subgroupid");
+                    subgroupname = intent.getString("subgroupname");
+                    tv_title.setText(subgroupname);
 
-            if (intent.containsKey("subgroupid")) {
+                    ListAdapter = new SubGroupDetailsAdapter(SubGroupDetails.this, list_data);
+                    listview.setAdapter(ListAdapter);
+                    listview.setOnItemClickListener(this);
+
+                }
+
+            }
+            else if(intent.containsKey("subgroupid")){
                 subgroupid = intent.getString("subgroupid");
                 subgroupname = intent.getString("subgroupname");
                 tv_title.setText(subgroupname);
+
+                webservices();
+
             }
         }
-        tv_title.setText(subgroupname);
-        webservices();
 
         init();
         checkadminrights();
@@ -92,6 +107,7 @@ public class SubGroupDetails extends Activity implements AdapterView.OnItemClick
             }
         });
     }
+
     private void webservices() {
         Log.e("webservice", "Starting of webservice");
         List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
@@ -109,12 +125,13 @@ public class SubGroupDetails extends Activity implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        SubGroupDetailsData item = list_data.get(position);
-        Intent intent = new Intent(context, NewProfileActivity.class);
-        intent.putExtra("memberProfileId", item.getProfileId());
-        intent.putExtra("groupId", PreferenceManager.getPreference(SubGroupDetails.this, PreferenceManager.GROUP_ID));
-        intent.putExtra("fromMainDirectory", "no");
-
+        if (InternetConnection.checkConnection(context)) {
+            SubGroupDetailsData item = list_data.get(position);
+            Intent intent = new Intent(context, NewProfileActivity.class);
+            intent.putExtra("memberProfileId", item.getProfileId());
+            intent.putExtra("groupId", PreferenceManager.getPreference(SubGroupDetails.this, PreferenceManager.GROUP_ID));
+            intent.putExtra("fromMainDirectory", "no");
+            intent.putExtra("fromSubGroup", "yes");
 
 
 
@@ -126,7 +143,10 @@ public class SubGroupDetails extends Activity implements AdapterView.OnItemClick
         i.putExtra("memberName",item.getMemname());
         i.putExtra("memberMobile",item.getMobile());*/
 
-        startActivity(intent);
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -214,8 +234,6 @@ public class SubGroupDetails extends Activity implements AdapterView.OnItemClick
                     data.setProfileId(objects.getString("profileId").toString());
                     data.setMemname(objects.getString("memname").toString());
                     data.setMobile(objects.getString("mobile").toString());
-                    
-
 
                     list_data.add(data);
 

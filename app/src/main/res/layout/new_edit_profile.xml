@@ -47,6 +47,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/view3"
@@ -57,6 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:orientation="vertical">
 
             <TextView
@@ -73,18 +75,19 @@
                 android:text="Name" />
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/etMemberName"
                 style="@style/TBEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
                 android:hint="Name"
-                android:inputType="textPersonName" />
+                android:inputType="textCapWords" />
 
             <View
                 style="@style/TBSeperator"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"> </View>
 
             <TextView
                 style="@style/TBSmallLebel"
@@ -122,7 +125,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/rightMargin"
-                    android:src="@drawable/delete" />
+                    android:src="@drawable/delete"
+
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,11 +140,11 @@
                     <EditText
                         android:id="@+id/etCountryCodeSecMob"
                         style="@style/TBEditText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:editable="false"
-                        android:hint="Country Code"
-                        android:minWidth="48dp" />
+                        android:hint="Code"
+                        android:textSize="18sp" />
 
                     <!--<Spinner
                         android:layout_weight="1"
@@ -234,7 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter business name"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:maxLines="1" />
 
             <View
@@ -275,7 +280,7 @@
                 android:layout_height="100dp"
                 android:gravity="top|left"
                 android:hint="Enter business address"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLines="3" />
 
             <LinearLayout
@@ -312,7 +317,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:hint="Enter city"
-                    android:inputType="text"
+                    android:inputType="text|textCapWords"
                     android:maxLines="1" />
 
                 <EditText
@@ -364,7 +369,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:hint="Enter state"
-                    android:inputType="text"
+                    android:inputType="text|textCapWords"
                     android:maxLines="1" />
 
                 <Spinner
@@ -373,6 +378,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="@dimen/rightMargin"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="0.5" />
 
             </LinearLayout>
@@ -398,10 +404,10 @@
                 <EditText
                     android:id="@+id/etBusinessPhoneCountryCode"
                     style="@style/TBEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:hint="Country Code"
+                    android:hint="Code"
                     android:minWidth="48dp" />
 
                 <EditText
@@ -450,7 +456,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Classification"
-                android:inputType="text"
+                android:inputType="text|textCapWords"
                 android:maxLines="1" />
 
             <View
@@ -510,7 +516,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Club Designation"
-                android:inputType="text"
+                android:inputType="text|textCapWords"
                 android:maxLines="1" />
 
             <View
@@ -529,8 +535,9 @@
                 style="@style/TBEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:hint="Enter District Designation"
-                android:inputType="text"
+                android:inputType="text|textCapWords"
                 android:maxLines="1" />
 
             <View
@@ -542,7 +549,7 @@
                 style="@style/TBSmallLebel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Donar Recognition" />
+                android:text="Donor Recognition" />
 
             <EditText
                 android:id="@+id/etDonarRecognition"
@@ -550,7 +557,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Donar Recognition"
-                android:inputType="text"
+                android:inputType="text|textCapWords"
                 android:maxLines="1" />
 
             <View
@@ -587,7 +594,8 @@
                         android:layout_marginLeft="@dimen/leftMargin"
                         android:layout_marginRight="@dimen/rightMargin"
                         android:layout_marginTop="@dimen/gap"
-                        android:src="@drawable/delete" />
+                        android:src="@drawable/delete"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -646,7 +654,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/leftMargin"
                         android:layout_marginRight="@dimen/rightMargin"
-                        android:src="@drawable/delete" />
+                        android:src="@drawable/delete"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -680,21 +689,24 @@
                 style="@style/TBSmallLebel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Blood Group" />
+                android:text="Blood Group"
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/spBloodGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap"
                 android:layout_marginLeft="@dimen/leftMargin"
                 android:layout_marginRight="@dimen/rightMargin"
-                android:entries="@array/bloodGroup" />
+                android:layout_marginTop="@dimen/gap"
+                android:entries="@array/bloodGroup"
+                android:visibility="gone" />
 
             <View
                 style="@style/TBSeperator"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:visibility="gone" />
 
             <TextView
                 style="@style/TBSmallLebel"
@@ -709,7 +721,7 @@
                 android:layout_height="100dp"
                 android:gravity="top|left"
                 android:hint="Enter address"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLines="3" />
 
             <LinearLayout
@@ -746,7 +758,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:hint="Enter city"
-                    android:inputType="text"
+                    android:inputType="text|textCapWords"
                     android:maxLines="1" />
 
                 <EditText
@@ -797,7 +809,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:hint="Enter state"
-                    android:inputType="text"
+                    android:inputType="text|textCapWords"
                     android:maxLines="1" />
 
                 <Spinner
@@ -832,10 +844,10 @@
                 <EditText
                     android:id="@+id/etResidentialCountryCode"
                     style="@style/TBEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:hint="Country Code"
+                    android:hint="Code"
                     android:minWidth="48dp" />
 
                 <EditText
@@ -991,6 +1003,13 @@
 
             </LinearLayout>
 
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="0dp" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -1013,6 +1032,7 @@
                     android:layout_toLeftOf="@+id/ivAddFamilyMember"
                     android:layout_toStartOf="@+id/ivAddFamilyMember"
                     android:text="Add Family Member" />
+
             </RelativeLayout>
 
             <View
@@ -1023,4 +1043,6 @@
         </LinearLayout>
 
     </ScrollView>
+
+
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.SampleApp.row.holders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.SampleApp.row.R;
@@ -17,10 +18,10 @@ public class GroupHolder extends RecyclerView.ViewHolder {
    public TextView tv_title;
     public TextView tv_description;
    public TextView tv_group_count;
-
+    public LinearLayout ll_holder;
     public GroupHolder(View v) {
         super(v);
-
+        ll_holder=(LinearLayout)v.findViewById(R.id.ll_holder);
         iv_img = (ImageView) v.findViewById(R.id.imageView);
         tv_title = (TextView)v.findViewById(R.id.title);
         tv_description = (TextView)v.findViewById(R.id.description);

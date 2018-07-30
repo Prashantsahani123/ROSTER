@@ -25,6 +25,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.GroupInfoAdapter;
+import com.SampleApp.row.Data.GroupInfoData;
+import com.SampleApp.row.Utils.CircleTransform;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -35,14 +42,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.GroupInfoAdapter;
-import com.SampleApp.row.Data.GroupInfoData;
-import com.SampleApp.row.Utils.CircleTransform;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 /**
  * Created by USER1 on 02-06-2016.
@@ -240,7 +239,6 @@ public class GroupInfo_New extends Activity {
                 return false;
             }
         });
-
 
     }
 

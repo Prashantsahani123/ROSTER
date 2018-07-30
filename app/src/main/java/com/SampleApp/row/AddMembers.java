@@ -17,14 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.MemberListAdapter;
 import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.Utils.Constant;
@@ -32,6 +24,14 @@ import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AddMembers extends Activity {
@@ -124,8 +124,9 @@ public class AddMembers extends Activity {
                 //Data_array= tempArrayList;
                 final MemberListAdapter adapter = new MemberListAdapter(AddMembers.this, tempArrayList);
                 lvMain.setAdapter(adapter);
-                if ( tempArrayList.size() == 0 ) {
+                if ( tempArrayList.size() <= 0 ) {
                     lvMain.setEmptyView(findViewById(R.id.tv_no_records_found));
+                    adapter.notifyDataSetChanged();
                 }
 
             }
@@ -154,23 +155,27 @@ public class AddMembers extends Activity {
                 int count = 0;
                 // Array[] arr = new Array[0];
 
-                for (DirectoryData p : boxAdapter.getBox()) {
-                    if (p.box) {
-                        result += "\n" + p.getMemberName();
-                        count = count + 1;
+                if(boxAdapter!=null){
+                    for (DirectoryData p : boxAdapter.getBox()) {
+                        if (p.box) {
+                            result += "\n" + p.getMemberName();
+                            count = count + 1;
+                        }
                     }
-                }
-                //Toast.makeText(this, result+"\n"+"Total Amount:="+totalAmount, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, result+"\n"+"Total Amount:="+totalAmount, Toast.LENGTH_LONG).show();
 
-                //   Toast.makeText(AddMembers.this, result + "\n" + "Count:=" + count, Toast.LENGTH_LONG).show();
-                Log.d("TOUCHBASE", "@@@@@@@@@--" + count);
-                if (count <= 0) {
-                    Toast.makeText(AddMembers.this, "Please Select atleast 1 Member ", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("result", directorylist);
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
+                    //   Toast.makeText(AddMembers.this, result + "\n" + "Count:=" + count, Toast.LENGTH_LONG).show();
+                    Log.d("TOUCHBASE", "@@@@@@@@@--" + count);
+                    if (count <= 0) {
+                        Toast.makeText(AddMembers.this, "Please Select at least 1 Member ", Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("result", directorylist);
+                        setResult(Activity.RESULT_OK, returnIntent);
+                        finish();
+                    }
+                }else {
+                    Utils.showToastWithTitleAndContext(AddMembers.this,getString(R.string.msg_no_records_found));
                 }
 
 

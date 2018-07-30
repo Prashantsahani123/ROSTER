@@ -6,13 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.GroupData;
 import com.SampleApp.row.Utils.DateHelper;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by USER on 01-07-2016.
@@ -45,14 +45,14 @@ public class GroupMasterModel {
         }
     }
 
-    public boolean insert(long masterUid, ArrayList<Object> list) {
+    public boolean insert(long masterUid, ArrayList<GroupData> list) {
         boolean saved = true;
         db.beginTransaction();
         try {
-            Iterator<Object> iterator = list.iterator();
+            Iterator<GroupData> iterator = list.iterator();
             while ( iterator.hasNext() ) {
                 Object obj = iterator.next();
-                if ( obj instanceof GroupData ){
+                if ( obj instanceof GroupData){
                     GroupData gd = (GroupData) obj;
                     long id = insert(masterUid, gd);
                     if ( id == -1 ) {
@@ -75,7 +75,7 @@ public class GroupMasterModel {
     public ArrayList<GroupData> getGroups(long masterUid) {
         try {
             ArrayList<GroupData> list = new ArrayList<GroupData>();
-            Cursor cursor = db.rawQuery("select * from group_master where masterUID="+masterUid+" order by "+Tables.GroupMaster.Columns.MY_CATEGORY, null);
+            Cursor cursor = db.rawQuery("select * from group_master where masterUID="+masterUid+" order by "+ Tables.GroupMaster.Columns.MY_CATEGORY, null);
 
             while ( cursor.moveToNext() ) {
                 String grpId = cursor.getString(cursor.getColumnIndex(Tables.GroupMaster.Columns.GROUP_ID));
@@ -85,7 +85,7 @@ public class GroupMasterModel {
                 String myCategory = cursor.getString(cursor.getColumnIndex(Tables.GroupMaster.Columns.MY_CATEGORY));
                 String isGrpAdmin= cursor.getString(cursor.getColumnIndex(Tables.GroupMaster.Columns.IS_GROUP_ADMIN));
                 boolean box = false;
-                String expiryDate = PreferenceManager.getPreference(context, PreferenceManager.GROUP_EXPIRY_DATE+grpId,DateHelper.getDateDDMMYYYY());
+                String expiryDate = PreferenceManager.getPreference(context, PreferenceManager.GROUP_EXPIRY_DATE+grpId, DateHelper.getDateDDMMYYYY());
                 if  (!expiryDate.equals("")) {
                     if (DateHelper.compareDate(DateHelper.getDateDDMMYYYY(), expiryDate, "dd/MM/yyyy") <= 0) {
                         GroupData gd = new GroupData(grpId, grpName, grpImg, grpProfileId, myCategory, isGrpAdmin, box);
@@ -106,7 +106,7 @@ public class GroupMasterModel {
         }
     }
 
-    public ArrayList<GroupData> getGroups(long masterUID,String cattegory) {
+    public ArrayList<GroupData> getGroups(long masterUID, String cattegory) {
         try {
             ArrayList<GroupData> list = new ArrayList<GroupData>();
             Cursor cursor = db.rawQuery("select * from group_master where masterUID="+ masterUID + " and myCategory='" + cattegory + "'",null);
@@ -118,12 +118,8 @@ public class GroupMasterModel {
                 String myCategory = cursor.getString(cursor.getColumnIndex(Tables.GroupMaster.Columns.MY_CATEGORY));
                 String isGrpAdmin= cursor.getString(cursor.getColumnIndex(Tables.GroupMaster.Columns.IS_GROUP_ADMIN));
                 boolean box = false;
-
-                String expiryDate = PreferenceManager.getPreference(context, PreferenceManager.GROUP_EXPIRY_DATE+grpId,DateHelper.getDateDDMMYYYY());
-                if ( DateHelper.compareDate(DateHelper.getDateDDMMYYYY(), expiryDate, "dd/MM/yyyy") <= 0) {
-                    GroupData gd = new GroupData(grpId, grpName, grpImg, grpProfileId, myCategory, isGrpAdmin, box);
-                    list.add(gd);
-                }
+                GroupData gd = new GroupData(grpId, grpName, grpImg, grpProfileId, myCategory, isGrpAdmin, box);
+                list.add(gd);
             }
             cursor.close();
             return list;
@@ -180,13 +176,13 @@ public class GroupMasterModel {
                 n = db.update(Tables.GroupMaster.TABLE_NAME, values, "masterUID=? and grpId=?", new String[]{"" + masterUid, "" + data.getGrpId()});
                 PreferenceManager.savePreference(context, PreferenceManager.GROUP_EXPIRY_DATE+data.getGrpId(), data.getExpiryDate());
 
-                return n == 1;
+                return n >0 ;
             }else{
                 long id =  insert(masterUid,data);
                 PreferenceManager.savePreference(context, PreferenceManager.GROUP_EXPIRY_DATE+data.getGrpId(), data.getExpiryDate());
 
                 if(id>0){
-                    return n == 1;
+                    return n >0;
                 };
             }
 

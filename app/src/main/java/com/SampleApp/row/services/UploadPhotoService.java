@@ -8,6 +8,11 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.SampleApp.row.Data.UploadPhotoData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.sql.UploadedPhotoModel;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,10 +26,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.UploadPhotoData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.sql.UploadedPhotoModel;
 
 /**
  * Created by user on 09-11-2016.
@@ -127,6 +128,7 @@ public class UploadPhotoService extends Service {
         @Override
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
+            Utils.log(result.toString());
             if(result.toString().equalsIgnoreCase("success")){
                 boolean updated=  model.UpdateTable(autoId);
 
@@ -142,7 +144,7 @@ public class UploadPhotoService extends Service {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Log.d("Uri", "Do file path" + file_path);
-
+        Utils.log(url);
         try {
 
             HttpClient client = new DefaultHttpClient();

@@ -20,15 +20,20 @@ import java.util.List;
  * Created by user on 08-12-2015.
  */
 public class HttpConnection {
+
     public static String flg ;
     public static String f;
     public static String  responseBody;
     public static String prev="";
+
     public static String postData(String url, List<NameValuePair> arrayList) {
         responseBody = null;
+
         try {
+
             HttpResponse response = null;
             HttpClient httpclient = new DefaultHttpClient();
+
             try
             {
 

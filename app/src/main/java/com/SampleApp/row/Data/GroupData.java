@@ -1,9 +1,11 @@
 package com.SampleApp.row.Data;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 19-01-2016.
  */
-public class GroupData {
+public class GroupData implements Serializable {
 
     String grpId, grpName, grpImg,grpProfileId,myCategory,isGrpAdmin, expiryDate = "";
     public boolean box;

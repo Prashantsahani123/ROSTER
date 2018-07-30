@@ -15,20 +15,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.SubGroupAdapter;
+import com.SampleApp.row.Data.SubGoupData;
+import com.SampleApp.row.Data.SubGroupDetailsData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.SubGroupAdapter;
-import com.SampleApp.row.Data.SubGoupData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 /**
  * Created by USER on 10-02-2016.
@@ -51,6 +54,7 @@ public class SubGroupList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subgroup_list);
         context  = this;
+
         listview = (ListView) findViewById(R.id.listView);
 
         tv_addbtn = (TextView) findViewById(R.id.tv_addbtn);
@@ -100,10 +104,12 @@ public class SubGroupList extends Activity {
                     } else {
                         edit_announcement_selectedids = intenti.getStringExtra("edit_announcement_selectedids");
                         flag_addsubgrp = "1";
+                        Utils.log("first");
                         webservices();
                     }
                 }
             } else {
+                Utils.log("two");
                 webservices();
             }
           /*  if(list_subGroup.isEmpty()){
@@ -114,6 +120,7 @@ public class SubGroupList extends Activity {
             }*/
         } else {
             //fillData();
+            Utils.log("three");
             webservices();
         }
 
@@ -251,15 +258,17 @@ public class SubGroupList extends Activity {
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
 
-            progressDialog.dismiss();
+
             //	Log.d("response","Do post"+ result.toString());
 
             if (result != "") {
                 Log.d("Response", "@@ " + result.toString());
                 list_subGroup.clear();
                 getSubGroup(result.toString());
+                progressDialog.dismiss();
 
             } else {
+                progressDialog.dismiss();
                 Log.d("Response", "Null Resposnse");
             }
 
@@ -278,64 +287,63 @@ public class SubGroupList extends Activity {
                 JSONArray SubGroupResult = SubGroupListResult.getJSONArray("subGrpList");
                 int n = SubGroupResult.length();
                 if ( n == 0 ) {
-                    Intent intent = new Intent(SubGroupList.this, SubGroupDetails.class);
-                    intent.putExtra("subgroupid", parentId);
-                    intent.putExtra("subgroupname", groupName);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
 
-                    finish();
+                    groupDetaisWebServices();
+
                 }
-                for (int i = 0; i < n; i++) {
-                    JSONObject objects = SubGroupResult.getJSONObject(i);
-                    //JSONObject objects = object.getJSONObject("Subgroup");
+                else {
+                    for (int i = 0; i < n; i++) {
+                        JSONObject objects = SubGroupResult.getJSONObject(i);
+                        //JSONObject objects = object.getJSONObject("Subgroup");
 
-                    SubGoupData data = new SubGoupData();
+                        SubGoupData data = new SubGoupData();
 
-                    data.setSubgroup_name(objects.getString("subgrpTitle").toString());
-                    data.setNo_of_members(objects.getString("noOfmem").toString());
-                    data.setSubgrpId(objects.getString("subgrpId").toString());
+                        data.setSubgroup_name(objects.getString("subgrpTitle").toString());
+                        data.setNo_of_members(objects.getString("noOfmem").toString());
+                        data.setSubgrpId(objects.getString("subgrpId").toString());
 
-                    if (edit_announcement_selectedids.equals("0")) {
-                        data.setBox(false);
-                    } else {
-                        //data.setBox(false);
-                        Log.d("TOUCHBASE", "ID ID ID :- " + edit_announcement_selectedids);
-                        String[] parts = edit_announcement_selectedids.split(",");
-                        for (String part : parts) {
-                            Log.d("TOUCHBASE", "##### :-" + part);
-                            if (objects.getString("subgrpId").toString().equals(part)) {
-                                Log.d("TOUCHBASE", "TRUE ");
-                                data.setBox(true);
-                                Log.d("TOUCHBASE", "TRUE1111 ");
-                            } else {
+                        if (edit_announcement_selectedids.equals("0")) {
+                            data.setBox(false);
+                        } else {
+                            //data.setBox(false);
+                            Log.d("TOUCHBASE", "ID ID ID :- " + edit_announcement_selectedids);
+                            String[] parts = edit_announcement_selectedids.split(",");
+                            for (String part : parts) {
+                                Log.d("TOUCHBASE", "##### :-" + part);
+                                if (objects.getString("subgrpId").toString().equals(part)) {
+                                    Log.d("TOUCHBASE", "TRUE ");
+                                    data.setBox(true);
+                                    Log.d("TOUCHBASE", "TRUE1111 ");
+                                } else {
 
-                                // data.setBox(false);
+                                    // data.setBox(false);
+                                }
                             }
                         }
+
+
+                        //Log.d("TOUCHBASE","*************** 1 ");
+                        list_subGroup.add(data);
+                        // Log.d("TOUCHBASE", "*************** 2 ");
                     }
+                    // Log.d("TOUCHBASE","*************** 3 ");
+                    if (list_subGroup.isEmpty()) {
+                        //  Log.d("TOUCHBASE","*************** 4 ");
+                        tv_no_records_found.setVisibility(View.VISIBLE);
+                        tv_addbtn.setVisibility(View.GONE);
 
-
-                    //Log.d("TOUCHBASE","*************** 1 ");
-                    list_subGroup.add(data);
-                    // Log.d("TOUCHBASE", "*************** 2 ");
+                    } else {
+                        //  Log.d("TOUCHBASE","*************** 5 ");
+                        tv_no_records_found.setVisibility(View.GONE);
+                        tv_addbtn.setVisibility(View.VISIBLE);
+                        if (flag_addsubgrp.equals("0"))
+                            adapter_subGroup = new SubGroupAdapter(SubGroupList.this, R.layout.subgroup_list_item, list_subGroup, "0");
+                        else
+                            adapter_subGroup = new SubGroupAdapter(SubGroupList.this, R.layout.subgroup_list_item, list_subGroup, "1");
+                        listview.setAdapter(adapter_subGroup);
+                    }
                 }
-                // Log.d("TOUCHBASE","*************** 3 ");
-                if (list_subGroup.isEmpty()) {
-                    //  Log.d("TOUCHBASE","*************** 4 ");
-                    tv_no_records_found.setVisibility(View.VISIBLE);
-                    tv_addbtn.setVisibility(View.GONE);
 
-                } else {
-                    //  Log.d("TOUCHBASE","*************** 5 ");
-                    tv_no_records_found.setVisibility(View.GONE);
-                    tv_addbtn.setVisibility(View.VISIBLE);
-                    if (flag_addsubgrp.equals("0"))
-                        adapter_subGroup = new SubGroupAdapter(SubGroupList.this, R.layout.subgroup_list_item, list_subGroup, "0");
-                    else
-                        adapter_subGroup = new SubGroupAdapter(SubGroupList.this, R.layout.subgroup_list_item, list_subGroup, "1");
-                    listview.setAdapter(adapter_subGroup);
-                }
             }
         } catch (Exception e) {
             Log.d("exec", "Exception :- " + e.toString());
@@ -369,11 +377,139 @@ public class SubGroupList extends Activity {
                 }
 
                 // end of code updation pp
+                Utils.log("four");
                 webservices();
                 //String message=data.getStringExtra("MESSAGE");
                 // textView1.setText(message);
             }
         }
     }
+
+    private void groupDetaisWebServices() {
+        Log.e("webservice", "Starting of webservice");
+        List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+        arrayList.add(new BasicNameValuePair("groupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
+        arrayList.add(new BasicNameValuePair("subgrpId", parentId));
+
+        Log.d("Response", "PARAMETERS " + Constant.GetSubGroupDetail + " :- " + arrayList.toString());
+        if (InternetConnection.checkConnection(context)) {
+            new WebConnectionAsyncGroup(Constant.GetSubGroupDetail, arrayList, SubGroupList.this).execute();
+        } else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+        }
+        Log.e("webservice", "end of web service");
+    }
+
+    public class WebConnectionAsyncGroup extends AsyncTask<String, Object, Object> {
+
+        String val = null;
+        final ProgressDialog progressDialog = new ProgressDialog(SubGroupList.this, R.style.TBProgressBar);
+        Context context = null;
+        String url = null;
+        List<NameValuePair> argList = null;
+
+
+        public WebConnectionAsyncGroup(String url, List<NameValuePair> argList, Context ctx) {
+            this.url = url;
+            this.argList = argList;
+            context = ctx;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            //	dialog.show();
+
+            progressDialog.setCancelable(false);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected Object doInBackground(String... params) {
+            try {
+
+                val = HttpConnection.postData(url, argList);
+                val = val.toString();
+
+                Log.d("Response", "we" + val);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+
+            }
+            return val;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //	Log.d("response","Do post"+ result.toString());
+
+            if (result != "") {
+                Log.d("Response", "calling getDirectorydetails");
+                //  list_announcmentdata.clear();
+                //  getAnnouncementItems(result.toString());
+                getsubgroupdetails(result.toString());
+
+
+            } else {
+                Log.d("Response", "Null Resposnse");
+            }
+
+        }
+    }
+
+    private void getsubgroupdetails(String result) {
+
+        try {
+            final ArrayList<SubGroupDetailsData> list_data = new ArrayList<>();
+            JSONObject jsonObj = new JSONObject(result);
+            JSONObject AnnouncementResult = jsonObj.getJSONObject("TBGetSubGroupDetailListResult");
+            final String status = AnnouncementResult.getString("status");
+            if (status.equals("0")) ;
+            {
+
+                final JSONArray AnnouncementListResdult = AnnouncementResult.getJSONArray("SubGroupResult");
+                for (int i = 0; i < AnnouncementListResdult.length(); i++) {
+                    JSONObject object = AnnouncementListResdult.getJSONObject(i);
+                    JSONObject objects = object.getJSONObject("SubgrpMemberDetail");
+
+                    SubGroupDetailsData data = new SubGroupDetailsData();
+
+                    data.setProfileId(objects.getString("profileId").toString());
+                    data.setMemname(objects.getString("memname").toString());
+                    data.setMobile(objects.getString("mobile").toString());
+
+                    list_data.add(data);
+
+                }
+
+                Intent intent = new Intent(SubGroupList.this, SubGroupDetails.class);
+                Bundle data=new Bundle();
+                data.putSerializable("list",(Serializable)list_data);
+                intent.putExtra("data",data);
+                intent.putExtra("subgroupid", parentId);
+                intent.putExtra("subgroupname", groupName);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+
+                finish();
+
+            }
+
+
+        } catch (Exception e) {
+            Log.d("exec", "Exception :- " + e.toString());
+        }
+    }
+
+
+
 
 }

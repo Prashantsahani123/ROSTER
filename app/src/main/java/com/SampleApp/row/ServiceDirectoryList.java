@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,14 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.ServiceDirectoryListAdapter;
 import com.SampleApp.row.Data.ServiceDirectoryListData;
 import com.SampleApp.row.Utils.Constant;
@@ -39,32 +32,41 @@ import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.ServiceDirectoryDataModel;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by USER1 on 19-07-2016.
  */
 public class ServiceDirectoryList extends Activity {
     String moduleName = "";
     private static final String TAG = "";
-    ListView listview;
+    ListView listview,memberListView;
+    RecyclerView recyclerView;
 
     ArrayAdapter<String> adapter;
     EditText et_serach_directory;
 
-    private ArrayList<ServiceDirectoryListData> serviceDirectoryListDatas = new ArrayList<ServiceDirectoryListData>();
+    private ArrayList<ServiceDirectoryListData> serviceDirectoryListDatas; //= new ArrayList<ServiceDirectoryListData>();
     private ServiceDirectoryListAdapter serviceDirectoryListAdapter;
 
     private ArrayList<ServiceDirectoryListData> newDirectoryData = new ArrayList<>();
-
 
     TextView tv_title;
     ImageView iv_backbutton;
     private ImageView iv_actionbtn;
     private long masterUid, grpId;
-    ServiceDirectoryDataModel serviceDirectoryDataModel;
+    ServiceDirectoryDataModel serviceDirectoryDataModel = new ServiceDirectoryDataModel(ServiceDirectoryList.this);
     String updatedOn = "";
     ImageView iv_cleartext;
     String moduleId = "15";
     String cattegory_id = "0";
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +75,14 @@ public class ServiceDirectoryList extends Activity {
         setContentView(R.layout.service_directory_list);
         Utils.log("Inside ServiceDirectoryList activity");
         listview = (ListView) findViewById(R.id.listView);
+
+
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
         iv_actionbtn.setVisibility(View.VISIBLE);
         // iv_backbutton.setVisibility(View.GONE);
-        String title = getIntent().getExtras().getString("moduleName");
+        title = getIntent().getExtras().getString("moduleName");
         if(getIntent().hasExtra("categoryId")) {
             cattegory_id = getIntent().getExtras().getString("categoryId");
         }
@@ -101,15 +105,18 @@ public class ServiceDirectoryList extends Activity {
                 }
         */
         listview.setTextFilterEnabled(true);
-        serviceDirectoryDataModel = new ServiceDirectoryDataModel(getApplicationContext());
-        serviceDirectoryDataModel.printTable();
+//        serviceDirectoryDataModel = new ServiceDirectoryDataModel(getApplicationContext());
+//        serviceDirectoryDataModel.printTable();
         Log.e("ModuleId" , "Module ID : "+moduleId);
         init();
 
 
         loadFromDB();
+        //loadFromServer();
         checkadminrights();
     }
+
+
 
     @Override
     protected void onResume() {
@@ -124,7 +131,6 @@ public class ServiceDirectoryList extends Activity {
     }
 
     public void init() {
-
 
         iv_actionbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +153,6 @@ public class ServiceDirectoryList extends Activity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
 
                     Intent i = new Intent(ServiceDirectoryList.this, ServiceDirectoryDetail.class);
                     i.putExtra("serviceDirId", serviceDirectoryListAdapter.getGridData().get(position).getServiceDirId());
@@ -420,13 +425,10 @@ public class ServiceDirectoryList extends Activity {
             } catch (Exception e) {
                 Log.d("exec", "Exception :- " + e.toString());
             }
-
         }
-
     }
 
     //-----------------------Offline Database ----------------------
-
     public void loadFromDB() {
 
         Log.d("Touchbase", "Trying to load from local db");
@@ -507,21 +509,27 @@ public class ServiceDirectoryList extends Activity {
             String url = Constant.GetServiceDirectoryListSync;
             ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
-            arrayList.add(new BasicNameValuePair("groupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
+            //arrayList.add(new BasicNameValuePair("groupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
+            arrayList.add(new BasicNameValuePair("groupId", String.valueOf(grpId)));
+
+
             //arrayList.add(new BasicNameValuePair("searchText", et_serach_directory.getText().toString()));
             //   arrayList.add(new BasicNameValuePair("page", ""));
             updatedOn = PreferenceManager.getPreference(this, "ServiceDirectoryUpdatedOn_"+moduleId+"_"+grpId,"1970/01/01 00:00:00");
+            //updatedOn="2017/03/14 15:34:27";
+
             Log.e("UpdatedOn", "Last updated date is : "+updatedOn);
             Log.e("MasterUID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MASTER_USER_ID));
 
             arrayList.add(new BasicNameValuePair("updatedOn", updatedOn));
+            //arrayList.add(new BasicNameValuePair("moduleId", moduleId));
             arrayList.add(new BasicNameValuePair("moduleId", moduleId));
             //arrayList.add(new BasicNameValuePair("updatedOn", "2016/1/18 17:8:34"));
 
             Log.e("request", arrayList.toString());
             UpdateServiceDirectoryAsyncTask task = new UpdateServiceDirectoryAsyncTask(url, arrayList, getApplicationContext());
             task.execute();
-            //Log.d("Response", "PARAMETERS " + Constant.GetDirectoryListSync + " :- " + arrayList.toString());
+            Log.d("Response", "PARAMETERS " + Constant.GetServiceDirectoryListSync + " :- " + arrayList.toString());
             //new WebConnectionAsyncDirectory(Constant.GetDirectoryListSync, arrayList, Directory.this).execute();
 
         } else {
@@ -805,7 +813,9 @@ public class ServiceDirectoryList extends Activity {
                             serviceDirectoryListDatas = serviceDirectoryDataModel.getServiceDirectoryData(masterUid, grpId, moduleId,cattegory_id);
                             serviceDirectoryListAdapter = new ServiceDirectoryListAdapter(ServiceDirectoryList.this, R.layout.service_directory_list_item1, serviceDirectoryListDatas, "0");
                             //directoryAdapter.notifyDataSetChanged();
+                            listview.setVisibility(View.VISIBLE);
                             listview.setAdapter(serviceDirectoryListAdapter);
+
                             Log.d("-----------","----Updated data------"+serviceDirectoryListAdapter);
                         }
                     }

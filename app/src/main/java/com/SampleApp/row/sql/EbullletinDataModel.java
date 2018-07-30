@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.SampleApp.row.Data.E_BulletineListData;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.SampleApp.row.Data.E_BulletineListData;
 
 /**
  * Created by USER1 on 08-07-2016.

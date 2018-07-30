@@ -15,13 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color"/>
+
     <WebView
-        android:layout_below="@+id/fragment"
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:layout_above="@+id/rl_close"></WebView>
+        android:layout_above="@+id/rl_close"
+        android:layout_below="@+id/fragment"></WebView>
 
 
     <RelativeLayout

@@ -17,23 +17,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.Data.SubGoupData;
@@ -42,9 +29,23 @@ import com.SampleApp.row.Utils.DateHelper;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.MyTimePicker;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
 
 
 /**
@@ -55,7 +56,7 @@ public class AddE_bulletin extends Activity {
     RadioButton d_radio1, d_radio2;
     RadioButton d_radio0;
     TextView tv_getCount, tv_add,tv_cancel;
-
+    LinearLayout ll_delete;
     ImageView iv_backbutton, iv_edit;
     ImageView iv_delete, iv_event_photo;
     ArrayList<DirectoryData> memberData;
@@ -71,7 +72,7 @@ public class AddE_bulletin extends Activity {
     String displayName = null;
     String selectedImagePath;
     String moduleName = "";
-
+    private static final DecimalFormat format = new DecimalFormat("#.##");
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
       CheckBox cb_noti_all, cb_noti_nonsmart;
       String sendSMSAll = "0"; // 0- Off 1- On
@@ -80,6 +81,9 @@ public class AddE_bulletin extends Activity {
 
     final Pattern EMAIL_PATTERN = Pattern.compile("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
 
+    private SingleDateAndTimePickerDialog datetimePicker,datetimeForReminder;
+    SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private String publishDate="",expiryDate="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,11 +112,9 @@ public class AddE_bulletin extends Activity {
 
         tv_upload_pdf = (TextView) findViewById(R.id.tv_upload_pdf);
 
-
+        ll_delete=(LinearLayout)findViewById(R.id.ll_delete);
         tv_name_pdf = (TextView) findViewById(R.id.tv_name_pdf);
         smscount = (TextView) findViewById(R.id.smscount);
-
-
         iv_edit = (ImageView) findViewById(R.id.iv_edit);
         iv_delete = (ImageView) findViewById(R.id.iv_delete);
         cb_noti_nonsmart = (CheckBox) findViewById(R.id.cb_noti_nonsmart);
@@ -174,11 +176,13 @@ public class AddE_bulletin extends Activity {
                 }
             }
         });
-        iv_delete.setOnClickListener(new View.OnClickListener() {
+
+        ll_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadedpdfid = "0";
                 tv_name_pdf.setText("");
+                ll_delete.setVisibility(View.GONE);
             }
         });
 
@@ -248,7 +252,7 @@ public class AddE_bulletin extends Activity {
         tv_publishTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_publishTime);
+                ShowTimePicker(tv_publishTime,2);
             }
         });
         tv_expiryhDate.setOnClickListener(new View.OnClickListener() {
@@ -260,7 +264,7 @@ public class AddE_bulletin extends Activity {
         tv_expiryTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_expiryTime);
+                ShowTimePicker(tv_expiryTime,3);
             }
         });
 
@@ -371,9 +375,9 @@ public class AddE_bulletin extends Activity {
         arrayList.add(new BasicNameValuePair("memID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID)));
         arrayList.add(new BasicNameValuePair("grpID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
         arrayList.add(new BasicNameValuePair("inputIDs", inputids));
-        arrayList.add(new BasicNameValuePair("publishDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
-
-        arrayList.add(new BasicNameValuePair("expiryDate", tv_expiryhDate.getText().toString() + " " + tv_expiryTime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("publishDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("publishDate", publishDate));
+        arrayList.add(new BasicNameValuePair("expiryDate", expiryDate));
 
         arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
         arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
@@ -583,59 +587,177 @@ public class AddE_bulletin extends Activity {
 
 
             if (resultCode == RESULT_OK) {
+//                double length = 0;
+//
+//                Uri uri = data.getData();
+//                String uriString = uri.toString();
+//
+//                //MEDIA GALLERY
+//                selectedImagePath = Utils.getPath(getApplicationContext(), uri);
+//                File myFile = new File(selectedImagePath);
+//              //  Log.d("***********", "-----" + myFile);
+////
+//                     if (uriString.startsWith("content://")) {
+//                         Cursor cursor = null;
+//                         try {
+//                             cursor = AddE_bulletin.this.getContentResolver().query(uri, null, null, null, null);
+//                             if (cursor != null && cursor.moveToFirst()) {
+//                                 displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//                                 Log.d("-----", "-----" + displayName);
+//
+//                                 length = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+//
+//                             }
+//                         } finally {
+//                             cursor.close();
+//                         }
+//                     } else if (uriString.startsWith("file://")) {
+//                         displayName = myFile.getName();
+//                         length = myFile.length();
+//                     }
+//
+//                 double size=Double.parseDouble(format.format(length / 1048576));
+//                Log.d("***********", "-----" + String.valueOf(size));
+//                if(size>10){
+//                    Utils.showToastWithTitleAndContext(AddE_bulletin.this,"File size must not be greater than 10 MB");
+//                }else {
+//                    if(displayName!=null && !displayName.isEmpty()){
+//                        //link.setText(wpath);
+//                        tv_name_pdf.setText(displayName);
+//
+//                        /*    Intent i = new Intent(getApplicationContext(), E_BulletineAdapter.class);
+//                            i.putExtra("file name", displayName);
+//                            startActivity(i);*/
+//
+//
+//                        String filenameArray[] = displayName.split("\\.");
+//                        String extension = filenameArray[filenameArray.length-1];
+//                        Log.d("***********", "-----" + extension);
+//                        String pdf = "pdf";
+//
+//                        if(extension.equals(pdf)) {
+//                            uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "ebulletin"); // Upload File to server
+//                            Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
+//                            if (uploadedpdfid != "0") {
+//                                Toast.makeText(AddE_bulletin.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }else
+//                            Toast.makeText(AddE_bulletin.this, "Only “Pdf” files can be shared as an e-Bulletin.", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+                new sendFile().execute(data);
+            }
 
-                Uri uri = data.getData();
-                String uriString = uri.toString();
-
-                //MEDIA GALLERY
-                selectedImagePath = Utils.getPath(getApplicationContext(), uri);
-                File myFile = new File(selectedImagePath);
-                Log.d("***********", "-----" + myFile);
+        }
 
 
-                if (uriString.startsWith("content://")) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = AddE_bulletin.this.getContentResolver().query(uri, null, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                            Log.d("-----", "-----" + displayName);
+    }
 
-                            //link.setText(wpath);
-                            tv_name_pdf.setText(displayName);
+    public class sendFile extends AsyncTask<Intent,Void,String>{
+
+        ProgressDialog progressDialog;
+        String displayName="";
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog= new ProgressDialog(AddE_bulletin.this, R.style.TBProgressBar);
+            progressDialog.setCancelable(false);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Intent... param) {
+            Intent data=param[0];
+            double length = 0;
+
+            Uri uri = data.getData();
+            String uriString = uri.toString();
+
+            //MEDIA GALLERY
+            selectedImagePath = Utils.getPath(getApplicationContext(), uri);
+            File myFile = new File(selectedImagePath);
+            //  Log.d("***********", "-----" + myFile);
+//
+            if (uriString.startsWith("content://")) {
+                Cursor cursor = null;
+                try {
+                    cursor = AddE_bulletin.this.getContentResolver().query(uri, null, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        Log.d("-----", "-----" + displayName);
+
+                        length = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+
+                    }
+                } finally {
+                    cursor.close();
+                }
+            } else if (uriString.startsWith("file://")) {
+                displayName = myFile.getName();
+                length = myFile.length();
+            }
+
+            double size=Double.parseDouble(format.format(length / 1048576));
+            Log.d("***********", "-----" + String.valueOf(size));
+            if(size>30){
+               return "filesize";
+            }else {
+                String result="";
+                if(displayName!=null && !displayName.isEmpty()){
+                    //link.setText(wpath);
+//                    tv_name_pdf.setText(displayName);
 
                         /*    Intent i = new Intent(getApplicationContext(), E_BulletineAdapter.class);
                             i.putExtra("file name", displayName);
                             startActivity(i);*/
 
 
-                            String filenameArray[] = displayName.split("\\.");
-                            String extension = filenameArray[filenameArray.length-1];
-                            Log.d("***********", "-----" + extension);
-                            String pdf = "pdf";
+                    String filenameArray[] = displayName.split("\\.");
+                    String extension = filenameArray[filenameArray.length-1];
+                    Log.d("***********", "-----" + extension);
+                    String pdf = "pdf";
 
-                            if(extension.equals(pdf)) {
-                                uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "ebulletin"); // Upload File to server
-                                Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
-                                if (uploadedpdfid != "0") {
-                                    Toast.makeText(AddE_bulletin.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
-
-                                }
-                            }else
-                                Toast.makeText(AddE_bulletin.this, "Only “Pdf” files can be shared as an e-Bulletin.", Toast.LENGTH_LONG).show();
+                    if(extension.equals(pdf)) {
+                        uploadedpdfid = Utils.doPdfFileUpload(new File(selectedImagePath), "ebulletin"); // Upload File to server
+                        Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedpdfid);
+                        if (uploadedpdfid != "0") {
+                            result= uploadedpdfid;
+//                            Toast.makeText(AddE_bulletin.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
 
                         }
-                    } finally {
-                        cursor.close();
+                    }else{
+                        result= "fileext";
                     }
-                } else if (uriString.startsWith("file://")) {
-                    displayName = myFile.getName();
+//                        Toast.makeText(AddE_bulletin.this, "Only “Pdf” files can be shared as an e-Bulletin.", Toast.LENGTH_LONG).show();
                 }
+                return result;
             }
-
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
 
+            progressDialog.dismiss();
+
+            if(s!=null && !s.isEmpty()){
+                if(s.equalsIgnoreCase("filesize")){
+                    Utils.showToastWithTitleAndContext(AddE_bulletin.this,"File size must not be greater than 30 MB");
+                }
+                else if(s.equalsIgnoreCase("fileext")){
+                    Toast.makeText(AddE_bulletin.this, "Only “Pdf” files can be shared as an e-Bulletin.", Toast.LENGTH_SHORT).show();
+                }else {
+                    ll_delete.setVisibility(View.VISIBLE);
+                    tv_name_pdf.setText(displayName);
+                    uploadedpdfid=s;
+                }
+            }else {
+                tv_name_pdf.setText("");
+                Utils.showToastWithTitleAndContext(AddE_bulletin.this,getString(R.string.msgRetry));
+            }
+        }
     }
 
 
@@ -680,18 +802,66 @@ public class AddE_bulletin extends Activity {
         datePickerDialog.show();
     }
 
-    public void ShowTimePicker(final TextView time_text) {
-        MyTimePicker myTimePicker = new MyTimePicker(this);
-        myTimePicker.show();
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+    public void ShowTimePicker(final TextView time_text,final int module) {
+//        MyTimePicker myTimePicker = new MyTimePicker(this);
+//        myTimePicker.show();
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//
+//
+//                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//            }
+//        });
 
-            @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-
-
-                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+        String title="";
+        Date date=new Date();
+        try {
+            if(module==2){
+                title="Publish Date & Time";
+                date = sdf1.parse(publishDate);
+            }else if(module==3){
+                title="Expiry Date & Time";
+                date = sdf1.parse(expiryDate);
+            }else if(module==4){
+                title="Notification Date & Time";
             }
-        });
+        }
+        catch (ParseException e){
+            date=new Date();
+        }
+
+//
+
+        datetimePicker= new SingleDateAndTimePickerDialog.Builder(AddE_bulletin.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimePicker.setDefaultDate(date);
+
+        datetimePicker.setMinDateRange(new Date());
+        datetimePicker .setMinutesStep(1);
+        //.displayHours(false)
+        //.displayMinutes(false)
+
+        //.todayText("aujourd'hui")
+
+        datetimePicker.setTitle(title);
+        datetimePicker.setListener(new SingleDateAndTimePickerDialog.Listener() {
+            @Override
+            public void onDateSelected(Date date) {
+
+                time_text.setText(sdf1.format(date));
+                if(module==2){
+                    publishDate=sdf1.format(date);
+                }else if(module==3){
+                    expiryDate=sdf1.format(date);
+                }else if(module==4){
+//                            title="Notification Date & Time";
+                }
+            }
+        }).display();
+
     }
 
     private static String utilTime(int value) {
@@ -737,23 +907,24 @@ public class AddE_bulletin extends Activity {
             Log.d("TOUCHBASE"," ELSE "+uploadedpdfid +" -- "+et_ebulletinLink.getText().toString());
         }
 
-        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
-            Toast.makeText(AddE_bulletin.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddE_bulletin.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+
+        if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
+            Toast.makeText(AddE_bulletin.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
-            Toast.makeText(AddE_bulletin.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (tv_expiryhDate.getText().toString().trim().matches("") || tv_expiryhDate.getText().toString().trim() == null) {
-            Toast.makeText(AddE_bulletin.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_expiryhDate.getText().toString().trim().matches("") || tv_expiryhDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddE_bulletin.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 
 
         if (tv_expiryTime.getText().toString().trim().matches("") || tv_expiryTime.getText().toString().trim() == null) {
-            Toast.makeText(AddE_bulletin.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddE_bulletin.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -764,9 +935,9 @@ public class AddE_bulletin extends Activity {
         }*/
 
 
-        String expiryDate = tv_expiryhDate.getText().toString() + " " + tv_expiryTime.getText().toString();
-
-        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+//        String expiryDate = tv_expiryhDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
         try {
@@ -789,16 +960,16 @@ public class AddE_bulletin extends Activity {
             Toast.makeText(AddE_bulletin.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
         }
 
-        try {
-            if (DateHelper.compareDate(publishDate, currentDate) <= 0 ) {
-                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
-                Toast.makeText(AddE_bulletin.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Toast.makeText(AddE_bulletin.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
-        }
+//        try {
+//            if (DateHelper.compareDate(publishDate, currentDate) <= 0 ) {
+//                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                Toast.makeText(AddE_bulletin.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Toast.makeText(AddE_bulletin.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//        }
 
         return true;
     }
@@ -835,7 +1006,14 @@ public class AddE_bulletin extends Activity {
     }
     @Override
     public void onBackPressed() {
-        Utils.popupback(AddE_bulletin.this);
+        if(datetimePicker!=null && datetimePicker.isDisplaying()){
+            datetimePicker.dismiss();
+        }else if(datetimeForReminder!=null && datetimeForReminder.isDisplaying()){
+            datetimeForReminder.dismiss();
+        }else {
+            Utils.popupback(AddE_bulletin.this);
+
+        }
         //
         // super.onBackPressed();
     }

@@ -4,6 +4,7 @@ package com.SampleApp.row.Data;
  * Created by user on 21-01-2016.
  */
 public class ModuleData {
+
     String groupModuleId,groupId,moduleId,moduleName,moduleStaticRef,image;
     int moduleOrderNo;
 

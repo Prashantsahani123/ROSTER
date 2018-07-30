@@ -26,7 +26,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.SampleApp.row.Data.ServiceDirectoryListData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.ImageCompression;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.croputility.Crop;
+import com.SampleApp.row.sql.ServiceDirectoryDataModel;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
@@ -51,17 +60,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.SampleApp.row.Data.ServiceDirectoryListData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.ImageCompression;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.croputility.Crop;
-import com.SampleApp.row.sql.ServiceDirectoryDataModel;
 
 /**
  * Created by USER on 22-07-2016.

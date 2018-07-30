@@ -3,8 +3,8 @@ package com.SampleApp.row.holders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
 
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Utils;
@@ -15,6 +15,7 @@ import com.SampleApp.row.Utils.Utils;
 public class ProfileMasterHolder extends RecyclerView.ViewHolder {
     ImageView ivProfilePic;
     TextView tvMemberName, tvMobileNo;
+    public ProgressBar progressBar;
 
     public ProfileMasterHolder(View itemView) {
         super(itemView);
@@ -22,6 +23,7 @@ public class ProfileMasterHolder extends RecyclerView.ViewHolder {
             ivProfilePic = (ImageView) itemView.findViewById(R.id.ivProfilePic);
             tvMemberName = (TextView) itemView.findViewById(R.id.tvMemberName);
             tvMobileNo = (TextView) itemView.findViewById(R.id.tvMobileNo);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
         } catch(Exception e){
             Utils.log("Error : "+e);
             e.printStackTrace();

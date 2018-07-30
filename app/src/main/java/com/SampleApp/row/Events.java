@@ -36,7 +36,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.SampleApp.row.Adapter.EventListAdapter.count_read_events;
@@ -47,7 +46,6 @@ import static com.SampleApp.row.Documents_upload.count_write_documents;
  * Created by USER on 17-12-2015.
  */
 public class Events extends Activity {
-    HashSet<String> admins = new HashSet<String>();
 
     ListView listview;
     ArrayAdapter<String> adapter;
@@ -55,30 +53,31 @@ public class Events extends Activity {
     ImageView iv_backbutton, iv_actionbtn;
     RelativeLayout relative_actionbar;
     EditText et_search;
-    String filtertype[] = {"All", "Published", "UnPublished", "Expired"};
-    String filtertype_notadmin[] = {"All", "Published", "Expired"};
+    String filtertype[] = {"Published","All",  "UnPublished", "Expired"};
+    String filtertype_notadmin[] = {"Published","All",  "Expired"};
     Spinner spinner_filter_type;
     String moduleName = "";
     private ArrayList<EventListData> eventListDatas = new ArrayList<EventListData>();
     private EventListAdapter eventListAdapter;
-    String type_filter_flag = "0";
+    String type_filter_flag = "1";
     private String grpID = "0";
-
     String moduleId = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.events);
 
         listview = (ListView) findViewById(R.id.listView);
-
         et_search = (EditText) findViewById(R.id.et_serach);
 
         actionbarfunction();
+
         //webservices();
         spinner_filter_type = (Spinner) findViewById(R.id.spinner_filter_type);
+
         if(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")){
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, filtertype_notadmin);
             spinner_filter_type.setAdapter(spinnerArrayAdapter);
@@ -97,27 +96,25 @@ public class Events extends Activity {
         Intent intenti = getIntent();
         grpID = intenti.getStringExtra("GroupID");
         moduleId = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MODULE_ID);
+
         init();
+
         checkadminrights();
 
         // condition is compared here because if user is not admin so spinner is not visible and websevie method is never called for him. So to call webservice.
         // below code is written.
-        if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")) {
-            if (InternetConnection.checkConnection(getApplicationContext())) {
-                // Avaliable
-                webservices();
-            } else {
-                Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
-                // Not Available...
-            }
-        }
+
     }
 
     @Override
     public void onBackPressed() {
+
         Log.e("Touchbase", "♦♦♦♦Inside OnBackPress");
+
         try {
+
             int tempCount = FragmentALL.notificationCountDatas.getModuleCount(grpID, moduleId);
+
             if (tempCount >= count_read_events) {
                 int unreadCount = tempCount - count_read_events;
 
@@ -170,6 +167,20 @@ public class Events extends Activity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")) {
+            if (InternetConnection.checkConnection(getApplicationContext())) {
+                // Avaliable
+                webservices();
+            } else {
+                Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
+                // Not Available...
+            }
+        }
+    }
+
     private void checkadminrights() {
         if( PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")){
             iv_actionbtn.setVisibility(View.GONE);
@@ -180,7 +191,9 @@ public class Events extends Activity {
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
+
         moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Events");
+
         tv_title.setText(moduleName);
         iv_actionbtn.setVisibility(View.VISIBLE);
 
@@ -196,6 +209,7 @@ public class Events extends Activity {
 
 
     public void init() {
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -279,8 +293,10 @@ public class Events extends Activity {
         });
 
         et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     webservices();
                     return true;
@@ -314,11 +330,13 @@ public class Events extends Activity {
         } else {
             arrayList.add(new BasicNameValuePair("Admin","1"));
         }
+
         arrayList.add(new BasicNameValuePair("searchText", et_search.getText().toString()));
 
-
         et_search.setText("");
+
         Log.d("Response", "PARAMETERS " + Constant.GetEventList + " :- " + arrayList.toString());
+
         if ( InternetConnection.checkConnection(getApplicationContext())) {
             new WebConnectionAsyncDirectory(Constant.GetEventList, arrayList, Events.this).execute();
         } else {
@@ -335,12 +353,10 @@ public class Events extends Activity {
         String url = null;
         List<NameValuePair> argList = null;
 
-
         public WebConnectionAsyncDirectory(String url, List<NameValuePair> argList, Context ctx) {
             this.url = url;
             this.argList = argList;
             context = ctx;
-
         }
 
         @Override
@@ -358,18 +374,18 @@ public class Events extends Activity {
         @Override
         protected Object doInBackground(String... params) {
 
-
             try {
 
                 val = HttpConnection.postData(url, argList);
+
                 val = val.toString();
 
                 Log.d("Response", "we" + val);
+
             } catch (Exception e) {
                 e.printStackTrace();
-
-
             }
+
             return val;
         }
 
@@ -379,12 +395,10 @@ public class Events extends Activity {
 
             progressDialog.dismiss();
             //	Log.d("response","Do post"+ result.toString());
-
             if (result != "") {
                 Log.d("Response", "calling getDirectorydetails");
                 eventListDatas.clear();
                 getEventItems(result.toString());
-
             } else {
                 Log.d("Response", "Null Resposnse");
             }
@@ -394,30 +408,37 @@ public class Events extends Activity {
     }
 
     private void getEventItems(String result) {
+
         try {
+
             JSONObject jsonObj = new JSONObject(result);
             JSONObject EventResult = jsonObj.getJSONObject("EventListDetailResult");
-            final String status = EventResult.getString("status");
 
+            final String status = EventResult.getString("status");
 
             if (EventResult.has("SMSCount")) {
                 Utils.smsCount = EventResult.getString("SMSCount");
             }
 
             if (status.equals("0")) {
+
                 JSONArray EventListResdult = EventResult.getJSONArray("EventsListResult");
+
                 for (int i = 0; i < EventListResdult.length(); i++) {
+
                     JSONObject object = EventListResdult.getJSONObject(i);
                     JSONObject objects = object.getJSONObject("EventList");
 
                     EventListData data = new EventListData();
 
                     data.setEventID(objects.getString("eventID").toString());
+
                     if (objects.has("eventImg")) {
                         data.setEventImg(objects.getString("eventImg").toString());
                     } else {
                         data.setEventImg("");
                     }
+
                     data.setEventTitle(objects.getString("eventTitle").toString());
                     data.setEventDateTime(objects.getString("eventDateTime").toString());
                     data.setGoingCount(objects.getString("goingCount").toString());
@@ -431,6 +452,7 @@ public class Events extends Activity {
                     data.setIsRead(objects.getString("isRead").toString());
                     data.setVenueLat(objects.getString("venueLat").toString());
                     data.setVenueLon(objects.getString("venueLon").toString());
+
                     eventListDatas.add(data);
                 }
 

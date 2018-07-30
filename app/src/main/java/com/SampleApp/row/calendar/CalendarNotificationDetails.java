@@ -9,17 +9,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import com.SampleApp.row.Adapter.CalendarNotificationAdapter;
 import com.SampleApp.row.Data.CalendarNotifiationData;
@@ -29,6 +21,13 @@ import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 17-02-2017.

@@ -63,22 +63,22 @@
                     android:layout_height="wrap_content">
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvGallery"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:orientation="horizontal"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:orientation="horizontal" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <Button
-                        android:id="@+id/btn_loadmore"
+                            android:id="@+id/btn_loadmore"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/load_more"
-                            android:layout_alignParentRight="true"/>
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/load_more" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -105,8 +105,8 @@
 
 
             <EditText
-                style="@style/TBEditText"
                 android:id="@+id/etImageDescription"
+                style="@style/TBEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"

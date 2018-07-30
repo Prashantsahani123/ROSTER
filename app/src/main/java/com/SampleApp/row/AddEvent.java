@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,17 +43,28 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.AddEventDateTimeListAdapter;
+import com.SampleApp.row.Data.AddEventDateTimeData;
+import com.SampleApp.row.Data.DirectoryData;
+import com.SampleApp.row.Data.SubGoupData;
 import com.SampleApp.row.Utils.AppController;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.DateHelper;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.ImageCompression;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.croputility.Crop;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.appindexing.Action;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
@@ -86,21 +98,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.SampleApp.row.Adapter.AddEventDateTimeListAdapter;
-import com.SampleApp.row.Data.AddEventDateTimeData;
-import com.SampleApp.row.Data.DirectoryData;
-import com.SampleApp.row.Data.SubGoupData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.DateHelper;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.ImageCompression;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.MyTimePicker;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-
-
 /**
  * Created by USER on 24-12-2015.
  */
@@ -116,14 +113,14 @@ public class AddEvent extends Activity {
     String finalImagePath;
     String moduleName = "";
     TextView tv_eventDate, tv_eventTime, tv_publishDate, tv_publishTime, tv_notificationDate, tv_NotificationTime, tv_expiryDate, tv_expiryTime;
-
+    CheckBox cb_display;
     TextView tv_title, date, tv_addquestion, tv_question;
     ImageView iv_backbutton, iv_edit, iv_add_que_toggle;
     ImageView call_button, iv_event_photo, iv_toggle, iv_enableRSVP;
 
     ListView listView;
     TextView tv_addSign, tv_no, smscount;
-    EditText et_evetTitle, et_eventDesc, et_eventVenue, et_question_single, et_question_open, et_option1, et_option2;
+    EditText et_evetTitle, et_eventDesc, et_eventVenue, et_question_single, et_question_open, et_option1, et_option2,et_link;
 
     ArrayList<DirectoryData> listaddmemberdata = new ArrayList<>();
     ArrayList<SubGoupData> listaddsubgrp = new ArrayList<>();
@@ -170,19 +167,24 @@ public class AddEvent extends Activity {
     String que, opt1, opt2;
     TextView tv_add, tv_answer1, tv_answer2;
     String mode = "";
-
+    int flag;
     boolean setPublishDateDisable = false;
     boolean setEventDateDisable = false;
-
-
+    private String publishDate="", eventDate="",expiryDate="";
+    private static Uri mCapturedImageURI;
+   // SimpleDateFormat sdf=new SimpleDateFormat("dd MMM yyyy | HH:mm");
+    SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    SingleDateAndTimePickerDialog datetimePicker,datetimeForReminder;
     // AddEventDateTimeData data;
-
+    Boolean isPublish=false;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_event);
-        Spinner sp;
+
+        context=this;
         try {
             mode = getIntent().getExtras().getString("edit");
         } catch(Exception e) {
@@ -192,13 +194,13 @@ public class AddEvent extends Activity {
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         // iv_backbutton.setVisibility(View.GONE);
-        moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Events");
-        tv_title.setText(moduleName);
+       // moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Events");
+        tv_title.setText("Events");
 
         d_radio0 = (RadioButton) findViewById(R.id.d_radio0);
         d_radio1 = (RadioButton) findViewById(R.id.d_radio1);
         d_radio2 = (RadioButton) findViewById(R.id.d_radio2);
-
+        cb_display=(CheckBox)findViewById(R.id.cb_display);
         iv_event_photo = (ImageView) findViewById(R.id.iv_event_photo);
         getCount = (TextView) findViewById(R.id.getCount);
         date = (TextView) findViewById(R.id.date);
@@ -228,6 +230,7 @@ public class AddEvent extends Activity {
         et_evetTitle = (EditText) findViewById(R.id.et_eventTitle);
         et_eventDesc = (EditText) findViewById(R.id.et_evetDesc);
         et_eventVenue = (EditText) findViewById(R.id.et_eventVenue);
+        et_link=(EditText)findViewById(R.id.et_eventLink);
         linear_repeatnotification = (LinearLayout) findViewById(R.id.linear_repeatnotification);
         scrollview = (ScrollView) findViewById(R.id.scrollview);
         cb_noti_nonsmart = (CheckBox) findViewById(R.id.cb_noti_nonsmart);
@@ -475,9 +478,14 @@ public class AddEvent extends Activity {
                     iv_enableRSVP.setImageResource(R.drawable.on_toggle_btn);
                     addQuestionWrapper.setVisibility(View.VISIBLE);
                 } else {   // disabled
-                    iv_enableRSVP.setTag("0");
-                    iv_enableRSVP.setImageResource(R.drawable.off_toggle_btn);
-                    addQuestionWrapper.setVisibility(View.GONE);
+                    if(isPublish){
+                        popup_warning();
+                    }else {
+                        iv_enableRSVP.setTag("0");
+                        iv_enableRSVP.setImageResource(R.drawable.off_toggle_btn);
+                        addQuestionWrapper.setVisibility(View.GONE);
+                    }
+
                 }
             }
         });
@@ -561,6 +569,7 @@ public class AddEvent extends Activity {
         tv_eventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.hideKeyBoard(AddEvent.this,tv_eventDate);
                 datepicker(tv_eventDate);
             }
         });
@@ -569,7 +578,34 @@ public class AddEvent extends Activity {
             @Override
             public void onClick(View v) {
                 //  if (valid(0))
-                ShowTimePicker(tv_eventTime);
+
+//                new SingleDateAndTimePickerDialog.Builder(AddEvent.this)
+//                        .bottomSheet()
+//                        .curved()
+//                        //.minutesStep(15)
+//
+//                        //.displayHours(false)
+//                        //.displayMinutes(false)
+//
+//                        //.todayText("aujourd'hui")
+//
+//                        .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
+//                            @Override
+//                            public void onDisplayed(SingleDateAndTimePicker picker) {
+//                                //retrieve the SingleDateAndTimePicker
+//                            }
+//                        })
+//
+//                        .title("Event Date Time")
+//                        .listener(new SingleDateAndTimePickerDialog.Listener() {
+//                            @Override
+//                            public void onDateSelected(Date date) {
+//
+//                            }
+//                        }).display();
+
+                Utils.hideKeyBoard(AddEvent.this,tv_eventTime);
+                ShowTimePicker(tv_eventTime,1);
 
             }
         });
@@ -578,6 +614,7 @@ public class AddEvent extends Activity {
             @Override
             public void onClick(View v) {
                 //  if (valid(1))
+                Utils.hideKeyBoard(AddEvent.this,tv_publishDate);
                 datepicker(tv_publishDate);
 
             }
@@ -586,13 +623,16 @@ public class AddEvent extends Activity {
         tv_publishTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_publishTime);
+                Utils.hideKeyBoard(AddEvent.this,tv_publishTime);
+                ShowTimePicker(tv_publishTime,2);
             }
         });
 
         tv_expiryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Utils.hideKeyBoard(AddEvent.this,tv_expiryDate);
                 datepicker(tv_expiryDate);
             }
         });
@@ -600,7 +640,8 @@ public class AddEvent extends Activity {
         tv_expiryTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_expiryTime);
+                Utils.hideKeyBoard(AddEvent.this,tv_expiryTime);
+                ShowTimePicker(tv_expiryTime,3);
             }
         });
 
@@ -614,7 +655,7 @@ public class AddEvent extends Activity {
         tv_NotificationTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_NotificationTime);
+                ShowTimePicker(tv_NotificationTime,4);
             }
         });
 
@@ -623,8 +664,12 @@ public class AddEvent extends Activity {
             public void onClick(View v) {
 
                // if (validation() == true)
-                    datepicker_repeate_notification();
-
+                   // datepicker_repeate_notification();
+//                if(validationForReminder()){
+//                    ShowTimePicker_repeate_notification();
+//
+//                }
+                ShowTimePicker_repeate_notification();
 
             }
         });
@@ -1185,13 +1230,32 @@ public class AddEvent extends Activity {
     private void selectImage() {
 
         final CharSequence[] options;
-        if (hasimageflag.equals("0")) {
+        Drawable.ConstantState constantState;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            constantState = context.getResources()
+                    .getDrawable(R.drawable.edit_image, context.getTheme())
+                    .getConstantState();
+        } else {
+            constantState = context.getResources().getDrawable(R.drawable.edit_image)
+                    .getConstantState();
+        }
+
+        if (iv_event_photo.getDrawable().getConstantState() == constantState) {
             options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
             hasimageflag = "1";
-        } else {
+        }else {
             options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Remove Photo", "Cancel"};
-
         }
+
+
+
+//        if (hasimageflag.equals("0")) {
+//            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
+//            hasimageflag = "1";
+//        } else {
+//            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Remove Photo", "Cancel"};
+//
+//        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
         builder.setTitle("Add Photo!");
@@ -1199,18 +1263,26 @@ public class AddEvent extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
+                    String fileName = "temp.jpg";
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, fileName);
+                    mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
 
                     startActivityForResult(intent, 4);
                 } else if (options[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
+//                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(intent, 2);
+                    Crop.pickImage(AddEvent.this);
                 } else if (options[item].equals("Cancel")) {
+
                     dialog.dismiss();
                 } else if (options[item].equals("Remove Photo")) {
                     if (eventID.equals("0")) {
+                        hasimageflag="0";
                         iv_event_photo.setImageResource(R.drawable.edit_image);
                     } else {
                         remove_photo_webservices();
@@ -1277,27 +1349,33 @@ public class AddEvent extends Activity {
         //arrayList.add(new BasicNameValuePair("eventVenue", et_eventVenue.getText().toString()));
         arrayList.add(new BasicNameValuePair("eventVenue", et_eventVenue.getText().toString().trim().replaceAll("(\\r|\\n)", "").replaceAll("[()]", "")));
         //LAT LONG
-        Log.d("TOUCH BASE", " @---------------- " + getLatLong(getLocationInfo(et_eventVenue.getText().toString())));
-        if (!getLatLong(getLocationInfo(et_eventVenue.getText().toString()))) {
-            latitude = 0.00;
-            longitute = 0.00;
-        }
+        //Log.d("TOUCH BASE", " @---------------- " + getLatLong(getLocationInfo(et_eventVenue.getText().toString())));
+
+//        if (!getLatLong(getLocationInfo(et_eventVenue.getText().toString()))) {
+//            latitude = 0.00;
+//            longitute = 0.00;
+//        }
         //LAT LONG
 
-        arrayList.add(new BasicNameValuePair("venueLat", String.valueOf(latitude)));
-        arrayList.add(new BasicNameValuePair("venueLong", String.valueOf(longitute)));
+        arrayList.add(new BasicNameValuePair("venueLat", String.valueOf(0.00)));
+        arrayList.add(new BasicNameValuePair("venueLong", String.valueOf(0.00)));
 
 
-        arrayList.add(new BasicNameValuePair("evntDate", tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("evntDate", tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("evntDate", eventDate));
         arrayList.add(new BasicNameValuePair("evntTime", ""));
-        arrayList.add(new BasicNameValuePair("publishDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
+
+//        arrayList.add(new BasicNameValuePair("publishDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("publishDate", publishDate));
 
 
         arrayList.add(new BasicNameValuePair("publishTime", ""));
-        arrayList.add(new BasicNameValuePair("expiryDate", tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("expiryDate", tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("expiryDate", expiryDate));
         arrayList.add(new BasicNameValuePair("expiryTime", ""));
 
-        arrayList.add(new BasicNameValuePair("notifyDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("notifyDate", tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("notifyDate", publishDate));
         arrayList.add(new BasicNameValuePair("notifyTime", ""));
         arrayList.add(new BasicNameValuePair("userID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID)));
 
@@ -1314,52 +1392,59 @@ public class AddEvent extends Activity {
 
         // iv_enableRSVP -> Tag -> contains 0 or 1. 0 Means RSVP
         arrayList.add(new BasicNameValuePair("rsvpEnable", iv_enableRSVP.getTag().toString()));
+        if(cb_display.isChecked()){
+            arrayList.add(new BasicNameValuePair("displayonbanner","1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("displayonbanner","0"));
 
+        }
+        //arrayList.add(new BasicNameValuePair("link",et_link.getText().toString()));
         //Log.d("@@@@@@@@@@@@@@@@@@@@@@@","################### :- "+list_datetime.toString().replace("[","").replace("]",""));
         flag_callwebsercie = "0";
         Log.d("Response", "PARAMETERS " + Constant.AddEvent + " :- " + arrayList.toString());
         new WebConnectionAsyncLogin(Constant.AddEvent, arrayList, AddEvent.this).execute();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client2.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "AddEvent Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.SampleApp.row/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client2, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "AddEvent Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.SampleApp.row/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client2, viewAction);
-        client2.disconnect();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client2.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AddEvent Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.kaizen.tmc/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client2, viewAction);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AddEvent Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.kaizen.tmc/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client2, viewAction);
+//        client2.disconnect();
+//    }
 
     public class WebConnectionAsyncLogin extends AsyncTask<String, Object, Object> {
         String val = null;
@@ -1445,14 +1530,15 @@ public class AddEvent extends Activity {
                 finish();//finishing activity
 
                 if(tv_yes.getText().equals("Update")) {
-                    Utils.showToastWithTitleAndContext(getApplicationContext(), "Updated Successfully");
+                    Utils.showToastWithTitleAndContext(getApplicationContext(), "Event Updated Successfully");
                 }else{
-                    Utils.showToastWithTitleAndContext(getApplicationContext(), "Added Successfully");
+                    Utils.showToastWithTitleAndContext(getApplicationContext(), "Event Added Successfully");
                 }
                 Log.d("Touchbase", "*************** " + status);
                 Log.d("Touchbase", "*************** " + msg);
 
             } else {
+               // showErrorDialog();
                 Toast.makeText(AddEvent.this, ". API Request Failed... ", Toast.LENGTH_LONG).show();
             }
 
@@ -1479,6 +1565,17 @@ public class AddEvent extends Activity {
                     et_eventDesc.setText(objects.getString("eventDesc").toString());
                     eventID = objects.getString("eventID").toString();
                     et_eventVenue.setText(objects.getString("venue").toString());
+
+//                    String link=objects.getString("link");
+//                    if(link!=null && !link.isEmpty()){
+//                        et_link.setText(link);
+//                    }
+
+                    if(objects.getString("displayonbanner").equals("1")){
+                        cb_display.setChecked(true);
+                    }else {
+                        cb_display.setChecked(false);
+                    }
 
 //----------------------------------toggle Question--------------------------
 
@@ -1539,9 +1636,10 @@ public class AddEvent extends Activity {
                     //---------------------- SMS FLAG
 
                     // -------------------- DATE TIME
-                    String[] separated_publish = objects.getString("pubDate").toString().split(" ");
-                    tv_publishDate.setText(separated_publish[0]);
-                    tv_publishTime.setText(separated_publish[1]);
+                  //  String[] separated_publish = objects.getString("pubDate").toString().split(" ");
+                  //  tv_publishDate.setText(separated_publish[0]);
+                    tv_publishTime.setText(objects.getString("pubDate").toString());
+                    publishDate=objects.getString("pubDate").toString();
                     String publishDateTime = objects.getString("pubDate").toString();
 
                     Date cd = new Date();
@@ -1550,31 +1648,35 @@ public class AddEvent extends Activity {
 
                     Log.e("TouchBase", "♦♦♦♦Current Date : " + currentDate);
                     if ( DateHelper.compareDate(publishDateTime, currentDate) <= 0 ) {
-                        rsvpPanel.setVisibility(View.GONE);
+                        isPublish=true;
+                        //rsvpPanel.setVisibility(View.GONE);
                     } else {
-                        rsvpPanel.setVisibility(View.VISIBLE);
+                        isPublish=false;
+                        //rsvpPanel.setVisibility(View.VISIBLE);
                     }
 
                     String[] separated_expiryDate = objects.getString("expiryDate").toString().split(" ");
-                    tv_expiryDate.setText(separated_expiryDate[0]);
-                    tv_expiryTime.setText(separated_expiryDate[1]);
+                  //  tv_expiryDate.setText(separated_expiryDate[0]);
+                    tv_expiryTime.setText(objects.getString("expiryDate").toString());
+                    expiryDate=objects.getString("expiryDate").toString();
 
-                    String[] separated_eventDate = objects.getString("eventDate").toString().split(" ");
-                    tv_eventDate.setText(separated_eventDate[0]);
-                    tv_eventTime.setText(separated_eventDate[1]);
+                   // String[] separated_eventDate = objects.getString("eventDate").toString().split(" ");
 
+//                    tv_eventDate.setText(separated_eventDate[0]);
+                    tv_eventTime.setText(objects.getString("eventDate").toString());
+                    eventDate=objects.getString("eventDate").toString();
                     String eventDateTime = objects.getString("eventDate").toString();
 
                     if(DateHelper.compareDate(eventDateTime,currentDate)<=0){
-                        tv_eventDate.setClickable(false);
-                        tv_eventTime.setClickable(false);
+                        tv_eventDate.setClickable(true);
+                        tv_eventTime.setClickable(true);
                         setEventDateDisable = true;
                     }
 
                     if(DateHelper.compareDate(publishDateTime,currentDate)<=0){
-                        tv_publishDate.setClickable(false);
-                        tv_publishTime.setClickable(false);
-                        setPublishDateDisable = true;
+//                        tv_publishDate.setClickable(false);
+//                        tv_publishTime.setClickable(false);
+//                        setPublishDateDisable = true;
                     }
 
 
@@ -1634,6 +1736,7 @@ public class AddEvent extends Activity {
                                 linear_repeatnotification.setVisibility(View.VISIBLE);
                                 setListViewHeightBasedOnChildren(listView);
                                 adapter_datetime = new AddEventDateTimeListAdapter(AddEvent.this, R.layout.add_event_datetime_list_item, list_datetime);
+
                                 listView.setAdapter(adapter_datetime);
 
                             }
@@ -1642,7 +1745,7 @@ public class AddEvent extends Activity {
                     //------------------ REPEATE DATE TIME
                     // -------------- RADIO BUTTONS
                     // RADIO BUTTONS FOR TYPE
-                    if (objects.getString("eventType").toString().equals("0")) {
+                        if (objects.getString("eventType").toString().equals("0")) {
                         eventType = "0";
                         d_radio0.setChecked(true);
                         clearselectedtext();
@@ -1707,8 +1810,8 @@ public class AddEvent extends Activity {
                             //progressbar.setVisibility(View.VISIBLE);
                             hasimageflag = "1";
                             Picasso.with(AddEvent.this).load(objects.getString("eventImg").toString())
-                                    .placeholder(R.drawable.imageplaceholder)
-                                    .resize(400,400)
+                                    .placeholder(R.drawable.edit_image)
+//                                    .resize(400,400)
                                     .into(iv_event_photo, new Callback() {
                                         @Override
                                         public void onSuccess() {
@@ -1850,109 +1953,205 @@ public class AddEvent extends Activity {
 
             if (resultCode == Activity.RESULT_OK) {
 
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
+                flag=0;
+                Uri correctedUri = null;
                 try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mCapturedImageURI);
+                    //imageBitmap = imageOrientationValidator(imageBitmap, getRealPathFromURI(mCapturedImageURI));
+                    correctedUri = Utils.getImageUri(imageBitmap, getApplicationContext());
+                    Log.d("==== Uri ===", "======" + correctedUri);
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-                    Bitmap bt = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
-
-                    //photo_image.setImageBitmap(bt)
-
-                    iv_event_photo.setImageBitmap(bt);
-
-                    String path = Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    // f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                    Log.d("TOUCHBASE", "FILE PATH " + f.toString());
-
-                    ///-------------------------------------------------------------------
-                    pd = ProgressDialog.show(AddEvent.this, "", "Loading...", false);
-                    final File finalF = f;
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            uploadedimgid = Utils.doFileUpload(new File(finalF.toString()), "event"); // Upload File to server
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    if (pd.isShowing())
-                                        pd.dismiss();
-                                    Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedimgid);
-                                    if (uploadedimgid.equals("0")) {
-                                        Toast.makeText(AddEvent.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
-                                        iv_event_photo.setImageResource(R.drawable.edit_image);
-                                    }
-                                    //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    });
-                    thread.start();
-                    ///-------------------------------------------------------------------
-                    // uploadedimgid = Utils.doFileUpload(new File(f.toString()), "event"); // Upload File to server
-
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                    }
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        } else if (requestCode == 2) {
+                beginCrop(correctedUri);
 
+                
+            }
+        } if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK)  {
+
+            
+            if (resultCode == Activity.RESULT_OK) {
+                
+                flag=1;
+                beginCrop(data.getData());
+
+            }
+        }else if(requestCode == Crop.REQUEST_CROP){
+            if(resultCode==RESULT_OK){
+                uploadPic(data);
+            }else {
+                Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == 5) {
+            if (data != null) {
+                String result = data.getStringExtra("address");
+                et_eventVenue.setText(result);
+            }
+        }
+    }
+
+    private void beginCrop(Uri source) {
+
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void cameraImage(){
+        File f = new File(Environment.getExternalStorageDirectory().toString());
+        for (File temp : f.listFiles()) {
+            if (temp.getName().equals("temp.jpg")) {
+                f = temp;
+                break;
+            }
+        }
+        try {
+            Bitmap bitmap;
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
+            bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                    bitmapOptions);
+            Bitmap bt = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
+
+            //photo_image.setImageBitmap(bt)
+
+            iv_event_photo.setImageBitmap(bt);
+
+            String path = Environment
+                    .getExternalStorageDirectory()
+                    + File.separator
+                    + "Phoenix" + File.separator + "default";
+            // f.delete();
+            OutputStream outFile = null;
+            File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+            Log.d("TOUCHBASE", "FILE PATH " + f.toString());
+
+            ///-------------------------------------------------------------------
+            pd = ProgressDialog.show(AddEvent.this, "", "Uploading...", false);
+            final File finalF = f;
+            Thread thread = new Thread(new Runnable() {
+                public void run() {
+                    uploadedimgid = Utils.doFileUpload(new File(finalF.toString()), "event"); // Upload File to server
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (pd.isShowing())
+                                pd.dismiss();
+                            Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedimgid);
+                            if (uploadedimgid.equals("0")) {
+                                Toast.makeText(AddEvent.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
+                                iv_event_photo.setImageResource(R.drawable.edit_image);
+                            }
+                            //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+            thread.start();
+            ///-------------------------------------------------------------------
+            // uploadedimgid = Utils.doFileUpload(new File(f.toString()), "event"); // Upload File to server
+
+            try {
+                outFile = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                outFile.flush();
+                outFile.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void pickerImage(Intent data){
+
+        ImageCompression imageCompression = new ImageCompression();
+        String path = "";
+        
+        Uri selectedImage = data.getData();
+        String[] filePath = {MediaStore.Images.Media.DATA};
+        Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+        c.moveToFirst();
+        int columnIndex = c.getColumnIndex(filePath[0]);
+        final String picturePath = c.getString(columnIndex);
+        c.close();
+        final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+        Log.d("TOUCHBASE", "BEFORE UPLOAD");
+
+        //-----------Image with reduced size -------------------------------------
+
+
+        path = Utils.getRealPathFromURI(selectedImage, getApplicationContext());
+        Log.d("==== Path ===", "======" + path);
+
+        imageCompression = new ImageCompression();
+        finalImagePath = imageCompression.compressImage(path, getApplicationContext());
+        Log.d("==picturePath====","0000...."+finalImagePath);
+
+
+        ///-------------------------------------------------------------------
+        pd = ProgressDialog.show(AddEvent.this, "", "Loading...", false);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+
+                uploadedimgid = Utils.doFileUpload(new File(finalImagePath), "event"); // Upload File to server
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (pd.isShowing())
+                            pd.dismiss();
+                        Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedimgid);
+                        if (uploadedimgid.equals("0")) {
+                            Toast.makeText(AddEvent.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
+                            iv_event_photo.setImageResource(R.drawable.edit_image);
+                        } else {
+                            //iv_event_photo.setImageBitmap(thumbnail);
+
+                            iv_event_photo.setImageDrawable(Drawable.createFromPath(finalImagePath));
+                        }
+                        //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+        thread.start();
+        ///-------------------------------------------------------------------
+
+
+        //uploadedimgid = Utils.doFileUpload(new File(picturePath),"event"); // Upload File to server
+
+
+        //iv_event_photo.setImageBitmap(thumbnail);
+    }
+    
+    private void uploadPic(Intent result){
+        Uri croppedUri = Crop.getOutput(result);
+
+        if (croppedUri != null) {
+
+            Bitmap csBitmap = null;
             ImageCompression imageCompression = new ImageCompression();
             String path = "";
-            if (resultCode == Activity.RESULT_OK) {
-
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                final String picturePath = c.getString(columnIndex);
-                c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "BEFORE UPLOAD");
-
-                //-----------Image with reduced size -------------------------------------
-
-
-                path = Utils.getRealPathFromURI(selectedImage, getApplicationContext());
+            try {
+                csBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), croppedUri);
+                path = Utils.getRealPathFromURI(croppedUri, getApplicationContext());
                 Log.d("==== Path ===", "======" + path);
 
                 imageCompression = new ImageCompression();
                 finalImagePath = imageCompression.compressImage(path, getApplicationContext());
-                Log.d("==picturePath====","0000...."+finalImagePath);
+//                    picturePath = imageCompression.getImage(path, getApplicationContext());
 
+                Log.d("==picturePath====", "0000...." + finalImagePath);
+                final ProgressDialog pd = ProgressDialog.show(AddEvent.this, "", "Uploading...", false);
 
-                ///-------------------------------------------------------------------
-                pd = ProgressDialog.show(AddEvent.this, "", "Loading...", false);
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-
-
 
                         uploadedimgid = Utils.doFileUpload(new File(finalImagePath), "event"); // Upload File to server
                         runOnUiThread(new Runnable() {
@@ -1974,24 +2173,26 @@ public class AddEvent extends Activity {
                     }
                 });
                 thread.start();
-                ///-------------------------------------------------------------------
 
 
-                //uploadedimgid = Utils.doFileUpload(new File(picturePath),"event"); // Upload File to server
-
-
-                //iv_event_photo.setImageBitmap(thumbnail);
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-        if (requestCode == 5) {
-            if (data != null) {
-                String result = data.getStringExtra("address");
-                et_eventVenue.setText(result);
-            }
+
+
+            //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            // csBitmap = Bitmap.createScaledBitmap(csBitmap, 500, 500, true);
+            //  csBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            //   iv_profileimage.setImageBitmap(csBitmap);
+
+            // picturePath = imageCompression.compressImage(path, getApplicationContext());
+            //ivNewProfileImage.setImageDrawable(Drawable.createFromPath(picturePath));
+            //Utils.log(picturePath);
+
+
+
         }
     }
-
     /********
      * Page Scrollable with listView
      **********/
@@ -2049,21 +2250,74 @@ public class AddEvent extends Activity {
     }
 
 
-    public void ShowTimePicker(final TextView time_text) {
-        final MyTimePicker myTimePicker = new MyTimePicker(this);
+    public void ShowTimePicker(final TextView tv_time, final int module) {
 
-        myTimePicker.show();
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
-
-            @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-              /*  Toast.makeText(AddEvent.this, "time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();*/
-
-
-
-                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+        // 1 for event, 2 for publish, 3 for expire, 4 for notification
+//        final MyTimePicker myTimePicker = new MyTimePicker(this);
+//
+//        myTimePicker.show();
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//              /*  Toast.makeText(AddEvent.this, "time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();*/
+//
+//
+//
+//                tv_time.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//            }
+//        });
+        String title="";
+        Date date=new Date();
+        try {
+            if(module==1){
+                title="Event Date & Time";
+               date = sdf1.parse(eventDate);
+            }else if(module==2){
+                title="Publish Date & Time";
+                date = sdf1.parse(publishDate);
+            }else if(module==3){
+                title="Expiry Date & Time";
+                date = sdf1.parse(expiryDate);
+            }else if(module==4){
+                title="Notification Date & Time";
             }
-        });
+        }
+        catch (ParseException e){
+            date=new Date();
+        }
+
+//
+
+       datetimePicker= new SingleDateAndTimePickerDialog.Builder(AddEvent.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimePicker.setDefaultDate(date);
+
+       // datetimePicker.setMinDateRange(new Date());
+        datetimePicker .setMinutesStep(1);
+                //.displayHours(false)
+                //.displayMinutes(false)
+
+                //.todayText("aujourd'hui")
+
+        datetimePicker.setTitle(title);
+        datetimePicker.setListener(new SingleDateAndTimePickerDialog.Listener() {
+                    @Override
+                    public void onDateSelected(Date date) {
+
+                        tv_time.setText(sdf1.format(date));
+                        if(module==1){
+                            eventDate=sdf1.format(date);
+                        }else if(module==2){
+                            publishDate=sdf1.format(date);
+                        }else if(module==3){
+                            expiryDate=sdf1.format(date);
+                        }else if(module==4){
+//                            title="Notification Date & Time";
+                        }
+                    }
+                }).display();
     }
 
     public void datepicker_repeate_notification() {
@@ -2090,19 +2344,45 @@ public class AddEvent extends Activity {
     }
 
     public void ShowTimePicker_repeate_notification() {
-        MyTimePicker myTimePicker = new MyTimePicker(this);
-        myTimePicker.show();
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//        MyTimePicker myTimePicker = new MyTimePicker(this);
+//        myTimePicker.show();
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//                //Toast.makeText(AddEvent.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+//
+//                // time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//                repeat_time = utilTime(hourOfDay) + ":" + utilTime(minute);
+//                repeate_notification_valueadd();
+//            }
+//        });
 
+
+        datetimeForReminder= new SingleDateAndTimePickerDialog.Builder(AddEvent.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimeForReminder.setDefaultDate(new Date());
+
+        datetimeForReminder.setMinDateRange(new Date());
+        datetimeForReminder .setMinutesStep(1);
+        //.displayHours(false)
+        //.displayMinutes(false)
+
+        //.todayText("aujourd'hui")
+
+        datetimeForReminder.setTitle("Reminder Date & Time");
+        datetimeForReminder.setListener(new SingleDateAndTimePickerDialog.Listener() {
             @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-                //Toast.makeText(AddEvent.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+            public void onDateSelected(Date date) {
 
-                // time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
-                repeat_time = utilTime(hourOfDay) + ":" + utilTime(minute);
+                String s=sdf1.format(date);
+                String dateArray[]=s.split(" ");
+                repeat_date=dateArray[0];
+                repeat_time=dateArray[1];
                 repeate_notification_valueadd();
             }
-        });
+        }).display();
     }
 
     private void repeate_notification_valueadd() {
@@ -2110,8 +2390,17 @@ public class AddEvent extends Activity {
         data.setDate(repeat_date);
         data.setTime(repeat_time);
 
+//        Toast.makeText(AddEvent.this, "Reminder added Successfully!", Toast.LENGTH_LONG).show();
+//        list_datetime.add(data);
+        scrollview.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
+
         if (repeatenotification_validation()) {
-            Toast.makeText(AddEvent.this, "Reminder added SUCCESSFULLY!", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Reminder added Successfully!", Toast.LENGTH_LONG).show();
             list_datetime.add(data);
             scrollview.post(new Runnable() {
                 @Override
@@ -2138,28 +2427,36 @@ public class AddEvent extends Activity {
 
     public boolean repeatenotification_validation() {
 
-        String publishDateTime = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+       // String publishDateTime = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
         try {
             // Checking if repeat date time is less than public date and time
-            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDateTime) <= 0) {
-                Toast.makeText(AddEvent.this, "Reminder Date & Time should be greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDate) == 0) {
+                Toast.makeText(AddEvent.this, "Repeat Notification Date & Time should not be same as Publish Date & Time", Toast.LENGTH_LONG).show();
                 return false;
             }
+
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDate) <= 0) {
+                Toast.makeText(AddEvent.this, "Please make the Repeat notification Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
+            return false;
         }
 
-        String expiryDateTime = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+      //  String expiryDateTime = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
         try {
             // Checking if repeat date time is greater than expiry date and time
-            if ( DateHelper.compareDate(repeat_date + " " + repeat_time , expiryDateTime) > 0 ) {
-                Toast.makeText(AddEvent.this, "Reminder Date & Time should be less than Expiry Date & Time", Toast.LENGTH_LONG).show();
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time , expiryDate) > 0 ) {
+                Toast.makeText(AddEvent.this, "Please make the Repeat notification Date & Time less than Expiry Date & Time", Toast.LENGTH_LONG).show();
                 return false;
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
+            return false;
         }
         return true;
     }
@@ -2177,35 +2474,35 @@ public class AddEvent extends Activity {
             Toast.makeText(AddEvent.this, "Please enter the event “Venue”", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_eventDate.getText().toString().trim().matches("") || tv_eventDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_eventDate.getText().toString().trim().matches("") || tv_eventDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_eventTime.getText().toString().trim().matches("") || tv_eventTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please Enter an Event Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please Enter an Event Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_expiryTime.getText().toString().trim().matches("") || tv_expiryTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
-        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
-
-        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+//        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
+//
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
 
         try {
             if ( DateHelper.compareDate(publishDate, eventDate) >= 0 ) {
@@ -2215,6 +2512,7 @@ public class AddEvent extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
             Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            return false;
         }
 
         try {
@@ -2226,6 +2524,91 @@ public class AddEvent extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
             Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+
+        try {
+            if (DateHelper.compareDate(eventDate, currentDate) <= 0 ) {
+                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddEvent.this, "Please make the event date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+        }
+
+//        try {
+//            if (DateHelper.compareDate(publishDate, currentDate) <= 0 ) {
+//                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                Toast.makeText(AddEvent.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//        }
+        //new SimpleDateFormat("")
+
+        return true;
+    }
+
+    public boolean validationForReminder() {
+
+//        if (tv_eventDate.getText().toString().trim().matches("") || tv_eventDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_eventTime.getText().toString().trim().matches("") || tv_eventTime.getText().toString().trim() == null) {
+            Toast.makeText(AddEvent.this, "Please Enter an Event Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
+            Toast.makeText(AddEvent.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+//        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_expiryTime.getText().toString().trim().matches("") || tv_expiryTime.getText().toString().trim() == null) {
+            Toast.makeText(AddEvent.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+//        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
+//
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+
+        try {
+            if ( DateHelper.compareDate(publishDate, eventDate) >= 0 ) {
+                Toast.makeText(AddEvent.this, "Publish Date & Time should be less than the Event Date & Time", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        try {
+            if (DateHelper.compareDate(expiryDate, eventDate) <= 0 ) {
+                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Event Date & Time", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            return false;
         }
 
 
@@ -2259,32 +2642,32 @@ public class AddEvent extends Activity {
 
 
 
-    public boolean valid(int i) {
-        switch (i) {
-            case 0:
-                if (tv_eventDate.getText().toString().isEmpty()) {
-                    Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
-                    return false;
-                } else {
-                    return true;
-                }
-
-            case 1:
-                if (tv_eventDate.getText().toString().isEmpty() || tv_eventTime.getText().toString().isEmpty()) {
-                    Toast.makeText(AddEvent.this, "Please Enter an Event Date & Time", Toast.LENGTH_LONG).show();
-                    //compare_date(tv_eventDate.getText().toString()+" "+tv_eventTime.getText().toString().isEmpty(), tv_publishDate.getText().toString()+" "+ tv_publishTime.getText().toString())
-                    return false;
-                } else {
-                    return true;
-                }
-
-            default:
-
-
-        }
-
-        return true;
-    }
+//    public boolean valid(int i) {
+//        switch (i) {
+//            case 0:
+//                if (tv_eventDate.getText().toString().isEmpty()) {
+//                    Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
+//                    return false;
+//                } else {
+//                    return true;
+//                }
+//
+//            case 1:
+//                if (tv_eventDate.getText().toString().isEmpty() || tv_eventTime.getText().toString().isEmpty()) {
+//                    Toast.makeText(AddEvent.this, "Please Enter an Event Date & Time", Toast.LENGTH_LONG).show();
+//                    //compare_date(tv_eventDate.getText().toString()+" "+tv_eventTime.getText().toString().isEmpty(), tv_publishDate.getText().toString()+" "+ tv_publishTime.getText().toString())
+//                    return false;
+//                } else {
+//                    return true;
+//                }
+//
+//            default:
+//
+//
+//        }
+//
+//        return true;
+//    }
 
 
     public String compare_date(String dateone, String datetwo) {
@@ -2380,7 +2763,17 @@ public class AddEvent extends Activity {
 
     @Override
     public void onBackPressed() {
-        Utils.popupback(AddEvent.this);
+
+        if(datetimePicker!=null && datetimePicker.isDisplaying()){
+            datetimePicker.dismiss();
+        }
+        else if(datetimeForReminder!=null && datetimeForReminder.isDisplaying()){
+            datetimeForReminder.dismiss();
+        }
+        else {
+            Utils.popupback(AddEvent.this);
+
+        }
         //
         // super.onBackPressed();
     }
@@ -2407,34 +2800,34 @@ public class AddEvent extends Activity {
             Toast.makeText(AddEvent.this, "Please enter the event “Venue”", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_eventDate.getText().toString().trim().matches("") || tv_eventDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_eventDate.getText().toString().trim().matches("") || tv_eventDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please Enter an Event Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_eventTime.getText().toString().trim().matches("") || tv_eventTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please Enter an Event Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please Enter an Event Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_publishTime.getText().toString().trim().matches("") || tv_publishTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddEvent.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_expiryTime.getText().toString().trim().matches("") || tv_expiryTime.getText().toString().trim() == null) {
-            Toast.makeText(AddEvent.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEvent.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
-        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
-        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+//        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
         if(!setEventDateDisable) {
@@ -2451,15 +2844,15 @@ public class AddEvent extends Activity {
             }
         }
 
-        try {
-            if ( DateHelper.compareDate(publishDate, eventDate) >= 0 ) {
-                Toast.makeText(AddEvent.this, "Publish Date & Time should be less than the Event Date & Time", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
-        }
+//        try {
+//            if ( DateHelper.compareDate(publishDate, eventDate) >= 0 ) {
+//                Toast.makeText(AddEvent.this, "Publish Date & Time should be less than the Event Date & Time", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//        }
 
         try {
             if (DateHelper.compareDate(eventDate, publishDate) <= 0 ) {
@@ -2471,18 +2864,18 @@ public class AddEvent extends Activity {
             Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
         }
 
-        if(!setPublishDateDisable) {
-            try {
-                if (DateHelper.compareDate(publishDate, currentDate) <= 0) {
-                    // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
-                    Toast.makeText(AddEvent.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-                Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
-            }
-        }
+//        if(!setPublishDateDisable) {
+//            try {
+//                if (DateHelper.compareDate(publishDate, currentDate) <= 0) {
+//                    // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEvent.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+//                    return false;
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                Toast.makeText(AddEvent.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//            }
+//        }
 
 
         try {
@@ -2498,6 +2891,49 @@ public class AddEvent extends Activity {
         return true;
     }
 
+    public void popup_warning() {
+        final Dialog dialog = new Dialog(AddEvent.this, android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.popup_confrm_delete);
+        TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+        TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+        TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
 
+        tv_yes.setText("OK");
+        tv_no.setText("CANCEL");
+        tv_line1.setText("RSVP result will be reset to 0");
+        tv_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_enableRSVP.setTag("0");
+                iv_enableRSVP.setImageResource(R.drawable.off_toggle_btn);
+                addQuestionWrapper.setVisibility(View.GONE);
+
+                //iv_toggle.setImageResource(getResources().getDrawable(R.drawable.off_toggle_btn));
+                iv_add_que_toggle.setImageResource(R.drawable.off_toggle_btn);
+                // linear_question.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+                linear_question.setVisibility(View.GONE);
+                toggle_que_flag = "0";
+                questionType = "0";
+                Log.d("---------", "-------" + questionType);
+
+
+                dialog.dismiss();
+                // TODO: 07-05-2018 add code of reset rsvp
+            }
+        });
+
+        tv_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setCancelable(false);
+        dialog.show();
+
+    }
 }
 

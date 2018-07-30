@@ -56,6 +56,8 @@ public class FragmentALLAdapter_new extends RecyclerView.Adapter<RecyclerView.Vi
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -133,7 +135,8 @@ public class FragmentALLAdapter_new extends RecyclerView.Adapter<RecyclerView.Vi
     public void bindLabelData(RecyclerView.ViewHolder holder, final int position) {
         String label = (String) listgrp.get(position);
         LabelHolder lHolder = (LabelHolder) holder;
-        lHolder.getTvLabel().setText(label);
+        //lHolder.getTvLabel().setText(label);
+        lHolder.getTvLabel().setVisibility(View.GONE);
     }
 
     public void bindGroupData(RecyclerView.ViewHolder holder, final int position) {

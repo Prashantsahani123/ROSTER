@@ -24,17 +24,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.EventsAdapter;
 import com.SampleApp.row.Adapter.MonthViewGridAdapter;
 import com.SampleApp.row.Adapter.OptionMenuItemsAdapter;
@@ -48,6 +37,16 @@ import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.TBPrefixes;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.CalendarMasterModel;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import static com.SampleApp.row.Utils.PreferenceManager.MY_CATEGORY;
 

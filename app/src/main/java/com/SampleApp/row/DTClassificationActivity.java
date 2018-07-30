@@ -2,6 +2,7 @@ package com.SampleApp.row;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -25,22 +26,38 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.ClassificationAdapter;
 import com.SampleApp.row.Adapter.ClassificationRVAdapter;
 import com.SampleApp.row.Data.profiledata.ClassificationData;
+import com.SampleApp.row.Inteface.OnLoadMoreListener;
+import com.SampleApp.row.Utils.AppController;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.EndlessOnScrollListener;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.ProfileModel;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 /**
  * Created by USER on 17-12-2015.
  */
-public class DTClassificationActivity extends Activity {
+public class DTClassificationActivity extends Activity implements OnLoadMoreListener {
     private static final int DELETE_PROFILE_REQUEST = 100;
     private static final boolean NO_ANIMATE = false, ANIMATE = true;
     private static final int ADD_MANUALY_REQUEST = 1;
@@ -68,17 +85,20 @@ public class DTClassificationActivity extends Activity {
     //ImageView ivSearch;
 
     ClassificationRVAdapter adapter;
-    ArrayList<ClassificationData> list;
+
+    ClassificationAdapter cAdapter;
+    ArrayList<ClassificationData> list =new ArrayList<>();
 
     private LinearLayout llCenterMessage;
     private TextView tvCenterButton;
     private TextView tvCenterMessage;
     private ProgressBar progressBar;
-
+    ProgressDialog dialog;
     String filter[] = {"Rotarian","Classification"};
     Spinner sp_filter;
 
-
+    private boolean isLoading;
+    int totalPages, currentPage=1;
 
 
     @Override
@@ -110,7 +130,19 @@ public class DTClassificationActivity extends Activity {
             }
         });
 
-        refreshData("");
+        if (InternetConnection.checkConnection(context)) {
+            if(dialog==null){
+                dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                dialog.setCancelable(false);
+                dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            }
+            dialog.show();
+            getClassification(currentPage);
+        } else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+        }
+
+//        refreshData("");
         // Code to set filter in Directory
         //setFilter();
 
@@ -167,11 +199,22 @@ public class DTClassificationActivity extends Activity {
 
         rvDirectory = (RecyclerView) findViewById(R.id.rvDirectory);
 
-        list = new ArrayList<>();
-        adapter = new ClassificationRVAdapter(context, list, "0");
-        rvDirectory.setLayoutManager(new LinearLayoutManager(context));
-        rvDirectory.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        rvDirectory.setLayoutManager(linearLayoutManager);
+
         rvDirectory.setVisibility(View.VISIBLE);
+
+        rvDirectory.addOnScrollListener(new EndlessOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onScrolledToEnd() {
+                if (!isLoading) {
+                    isLoading = true;
+                    onLoadMore();
+                    // add 10 by 10 to tempList then notify changing in data
+                }
+                isLoading = false;
+            }
+        });
 
     }
 
@@ -242,23 +285,41 @@ public class DTClassificationActivity extends Activity {
         et_serach_directory.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                String q = et_serach_directory.getText().toString();
-                if ( q.equals("")){
-                    refreshData("");
-                } else {
-                    list = profileModel.searchClassification(grpId, et_serach_directory.getText().toString());
-                    Utils.log("MyList Size : "+list.size());
-                    adapter = new ClassificationRVAdapter(context, list, "0");
-                    rvDirectory.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    adapter.setOnClassificationSelectedListener(classificationSeletedListener);
-                    rvDirectory.setVisibility(View.VISIBLE);
-                    if ( list.size() == 0 ) {
-                        manageCenterMessage(View.VISIBLE, "No results",  View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+//                String q = et_serach_directory.getText().toString();
+//                if ( q.equals("")){
+//                    refreshData("");
+//                } else {
+//                    list = profileModel.searchClassification(grpId, et_serach_directory.getText().toString());
+//                    Utils.log("MyList Size : "+list.size());
+//                    adapter = new ClassificationRVAdapter(context, list, "0");
+//                    rvDirectory.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+//                    adapter.setOnClassificationSelectedListener(classificationSeletedListener);
+//                    rvDirectory.setVisibility(View.VISIBLE);
+//                    if ( list.size() == 0 ) {
+//                        manageCenterMessage(View.VISIBLE, "No results",  View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+//                    } else {
+//                        manageCenterMessage(View.GONE, "",  View.GONE, "", View.GONE, null, NO_ANIMATE);
+//                    }
+//                }
+
+                if(et_serach_directory.getText().toString().isEmpty()){
+                    list.clear();
+
+                    if (InternetConnection.checkConnection(context)) {
+                        if(dialog==null){
+                            dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                            dialog.setCancelable(false);
+                            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                        }
+                        dialog.show();
+                        getClassification(1);
                     } else {
-                        manageCenterMessage(View.GONE, "",  View.GONE, "", View.GONE, null, NO_ANIMATE);
+                        Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
                     }
                 }
+                
+                
             }
 
             @Override
@@ -278,7 +339,19 @@ public class DTClassificationActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    list.clear();
 
+                    if (InternetConnection.checkConnection(context)) {
+                        if(dialog==null){
+                            dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                            dialog.setCancelable(false);
+                            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                        }
+                        dialog.show();
+                        getClassification(1);
+                    } else {
+                        Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+                    }
 
                     return true;
                 }
@@ -294,7 +367,7 @@ public class DTClassificationActivity extends Activity {
                 startActivity(intent);
             }
         });
-        adapter.setOnClassificationSelectedListener(classificationSeletedListener);
+//        adapter.setOnClassificationSelectedListener(classificationSeletedListener);
 
         // Code for filter selection
 
@@ -311,12 +384,13 @@ public class DTClassificationActivity extends Activity {
         });
     }
 
-    ClassificationRVAdapter.OnClassificationSelectedListener classificationSeletedListener = new ClassificationRVAdapter.OnClassificationSelectedListener() {
+    ClassificationAdapter.OnClassificationSelectedListener classificationSeletedListener = new ClassificationAdapter.OnClassificationSelectedListener() {
 
         @Override
         public void onClassificationSelected(ClassificationData data, int position) {
             try {
                 Intent intent = new Intent(context, ClassificationDirectoryActivity.class);
+                intent.putExtra("module","Directory");
                 intent.putExtra("classification", data.getClassificationName());
                 startActivity(intent);
             } catch(Exception e) {
@@ -328,11 +402,121 @@ public class DTClassificationActivity extends Activity {
 
     };
 
+    public void getClassification(int page){
+        Hashtable<String, String> paramTable = new Hashtable<>();
+
+        paramTable.put("grpID", "" + grpId);
+        paramTable.put("pageNo",String.valueOf(page));
+        paramTable.put("recordCount","");
+        paramTable.put("searchText",et_serach_directory.getText().toString());
+
+        JSONObject jsonRequestData = null;
+        try {
+            jsonRequestData = new JSONObject(new Gson().toJson(paramTable));
+            Utils.log("Url : " + Constant.GetClassificationList_new+ " Data : " + jsonRequestData);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    Constant.GetClassificationList_new,
+                    jsonRequestData,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+//                            Log.d("suhas","inside api");
+//                            manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                            Utils.log("Success : " + response);
+                            //handleSyncInfo(response);
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            parseJson(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+
+//                            if (list.size() == 0) {
+//                                manageCenterMessage(
+//                                        View.VISIBLE,
+//                                        "Something went wrong. Please try again after sometime.",
+//                                        View.VISIBLE,
+//                                        "Try Now",
+//                                        View.VISIBLE,
+//                                        new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//                                                llCenterMessage.setVisibility(View.GONE);
+//                                                loadFromDB();
+//                                            }
+//                                        }, NO_ANIMATE);
+//                            }
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            Utils.log("Error is : " + error);
+                            error.printStackTrace();
+                        }
+                    });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    1200000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+
+            AppController.getInstance().addToRequestQueue(context, request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void parseJson(JSONObject object){
+        try {
+            JSONObject response=object.getJSONObject("ClassificationListResult");
+            String status=response.getString("status");
+
+            if(status.equals("0")){
+//                list.remove(list.size()-1);
+//                adapter.notifyItemRemoved(list.size());
+
+                totalPages= Integer.parseInt(response.getString("TotalPages"));
+                JSONArray result=response.getJSONArray("Result");
+                for(int i=0;i<result.length();i++){
+                    JSONObject data=result.getJSONObject(i);
+                    ClassificationData classificationData=new ClassificationData();
+                    classificationData.setClassificationName(data.getString("classification"));
+                    list.add(classificationData);
+                }
+
+//                DistrictAdapter adapter= (DistrictAdapter)rvDirectory.getAdapter();
+                if(cAdapter!=null){
+
+//                    ArrayList<ProfileMasterData> arrayList=adapter.getArrayList();
+//                    arrayList.addAll(list);
+                    cAdapter.notifyDataSetChanged();
+                    isLoading=false;
+                }
+                else {
+                    cAdapter=new ClassificationAdapter(context,list);
+                    cAdapter.setonClassificationSelectedListener(classificationSeletedListener);
+                    rvDirectory.setAdapter(cAdapter);
+
+                }
+
+
+            }
+            else {
+//                list.remove(list.size()-1);
+//                adapter.notifyItemRemoved(list.size());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void finishActivity(View v) {
         finish();
     }
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -354,9 +538,6 @@ public class DTClassificationActivity extends Activity {
         }
     }
 
-
-
-
     private void copyTextToClipBoard(String chatMessage) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -369,23 +550,36 @@ public class DTClassificationActivity extends Activity {
         Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_LONG).show();
     }
 
-
     //-----------------------All new declarations -----------
     RecyclerView rvDirectory;
 
     public void refreshData(String msg) {
-        list = profileModel.getClassifications(grpId);
-        if ( list.size() > 0 ) {
-            Utils.log("MyList Size : " + list.size());
-            adapter = new ClassificationRVAdapter(context, list, "0");
-            rvDirectory.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            adapter.setOnClassificationSelectedListener(classificationSeletedListener);
-            rvDirectory.setVisibility(View.VISIBLE);
-            Utils.log("Loaded from local db");
-            manageCenterMessage(View.GONE, "", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
-        } else {
-            manageCenterMessage(View.VISIBLE, "No new updates", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+//        list = profileModel.getClassifications(grpId);
+//        if ( list.size() > 0 ) {
+//            Utils.log("MyList Size : " + list.size());
+//            adapter = new ClassificationRVAdapter(context, list, "0");
+//            rvDirectory.setAdapter(adapter);
+//            adapter.notifyDataSetChanged();
+//            adapter.setOnClassificationSelectedListener(classificationSeletedListener);
+//            rvDirectory.setVisibility(View.VISIBLE);
+//            Utils.log("Loaded from local db");
+//            manageCenterMessage(View.GONE, "", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+//        } else {
+//            manageCenterMessage(View.VISIBLE, "No new updates", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+//        }
+    }
+
+    @Override
+    public void onLoadMore() {
+        if(currentPage<totalPages){
+            currentPage=currentPage+1;
+
+            if (InternetConnection.checkConnection(context)) {
+                getClassification(currentPage);
+            } else {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 }

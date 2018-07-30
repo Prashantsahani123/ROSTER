@@ -20,6 +20,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Data.ServiceDirectoryListData;
+import com.SampleApp.row.Utils.CircleTransform;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.sql.ServiceDirectoryDataModel;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
@@ -40,15 +48,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Data.ServiceDirectoryListData;
-import com.SampleApp.row.Utils.CircleTransform;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.sql.ServiceDirectoryDataModel;
 
 /**
  * Created by USER on 21-07-2016.
@@ -439,7 +438,14 @@ public class ServiceDirectoryDetail extends Activity implements View.OnLongClick
         // directoryData = directoryDataModel.getGroups(masterUid);
 
 
-        ServiceDirectoryListData data = serviceDirectoryDataModel.serviceDirectoryDetail(Long.parseLong(serviceDirId));
+        ServiceDirectoryListData data;
+
+        data = (ServiceDirectoryListData) getIntent().getSerializableExtra("memberData");
+
+        if(data == null) {
+            data = serviceDirectoryDataModel.serviceDirectoryDetail(Long.parseLong(serviceDirId));
+        }
+
         if (data != null) {
             showServiceDirectoryData(data);
         } else {

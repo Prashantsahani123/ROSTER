@@ -10,14 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.DirectoryData;
+import com.SampleApp.row.ProfileActivityV4;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.DirectoryData;
-import com.SampleApp.row.ProfileActivityV4;
-import com.SampleApp.row.Utils.CircleTransform;
 
 /**
  * Created by USER on 01-02-2016.

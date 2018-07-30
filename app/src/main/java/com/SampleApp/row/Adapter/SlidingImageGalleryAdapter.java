@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.SampleApp.row.Data.AlbumPhotoData;
 import com.SampleApp.row.ImageZoom;
 import com.SampleApp.row.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.AlbumPhotoData;
 
 /**
  * Created by SONU on 29/08/15.

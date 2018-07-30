@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Adapter.SimpleImageGalleryAdapter;
 import com.SampleApp.row.Adapter.SimpleMediaAdapter;
 import com.SampleApp.row.Data.SimpleGalleryItemData;
@@ -28,6 +26,8 @@ import com.SampleApp.row.Data.UploadPhotoData;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.services.UploadPhotoService;
 import com.SampleApp.row.sql.UploadedPhotoModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 03-11-2016.
@@ -50,7 +50,7 @@ public class AddPhotoActivity extends Activity implements SimpleMediaAdapter.OnM
     String albumId = "";
     String groupId = "";
     String createdBy = "";
-
+    int count=0;
     ArrayList<SimplePhotoData> selectedPhotos;
     int selectedPosition = 0;
     TextView tv_title;
@@ -76,7 +76,7 @@ public class AddPhotoActivity extends Activity implements SimpleMediaAdapter.OnM
         tv_title.setText("Add Photo");
         Intent i = getIntent();
         albumId = i.getStringExtra("albumId");
-
+        count = i.getExtras().getInt("count");
 
         groupId= PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID);
         createdBy= PreferenceManager.getPreference(this, PreferenceManager.GRP_PROFILE_ID);
@@ -184,6 +184,11 @@ public class AddPhotoActivity extends Activity implements SimpleMediaAdapter.OnM
             @Override
             public void onClick(View v) {
                 hideKeyboard();
+
+                if((imageList.size()+count)>5){
+                    Toast.makeText(AddPhotoActivity.this,"Maximum 5 photos are allowed.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
              for(int i = 0;i< imageList.size();i++) {
                  data = new UploadPhotoData("0",selectedPhotos.get(i).getUrl(),selectedPhotos.get(i).getDescription(),albumId,groupId,createdBy,"0");

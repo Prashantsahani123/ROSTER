@@ -70,7 +70,7 @@ public class WelcomeScreen extends Activity {
 
                 if(InternetConnection.checkConnection(getApplicationContext())) {
 
-                    Intent i = new Intent(WelcomeScreen.this, GroupsListingDashboard.class);
+                    Intent i = new Intent(WelcomeScreen.this, DashboardActivity.class);
                     startActivity(i);
                     finish();
 //                    Intent i = new Intent(WelcomeScreen.this, InitialProfile.class);

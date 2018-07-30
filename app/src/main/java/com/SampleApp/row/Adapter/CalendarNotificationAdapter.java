@@ -2,15 +2,12 @@ package com.SampleApp.row.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
-import com.SampleApp.row.Data.CalendarNotifiationData;;
+import com.SampleApp.row.Data.CalendarNotifiationData;
 import com.SampleApp.row.Data.LabelData;
 import com.SampleApp.row.Data.profiledata.Separator;
 import com.SampleApp.row.NewProfileActivity;
@@ -21,6 +18,10 @@ import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.CalendarLabelHolder;
 import com.SampleApp.row.holders.CalendarNotificationHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
+
+import java.util.ArrayList;
+
+;
 
 
 /**

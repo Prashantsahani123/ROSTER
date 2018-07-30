@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        class="com.SampleApp.row.ActionbarFragment"/>
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_width="fill_parent"
@@ -18,19 +19,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/border_bg_white"
-            android:padding="5dp"
             android:hint="Search"
+            android:padding="5dp"
+            android:imeOptions="actionSearch"
             android:textSize="15sp"
+            android:singleLine="true"
+            android:maxLines="1"
             />
-
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:src="@drawable/search_blue"
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 
@@ -39,30 +50,44 @@
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color" />
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        >
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:id="@+id/recyclerview"
-            />
-
-        <TextView
-            android:id="@+id/tv_no_records_found"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:text="@string/msg_no_records_found"
-            android:visibility="gone"
-            />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/separator_height"
+                android:background="#b6b6b6" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/categoryRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:id="@+id/tv_no_records_found"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="@string/msg_no_records_found"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
 
 </LinearLayout>

@@ -15,37 +15,32 @@
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color"/>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/white"
-        >
-
-        <EditText
-            android:id="@+id/edt_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_bg_white"
-            android:padding="5dp"
-            android:hint="Search"
-            android:textSize="15sp"
-            />
-
-
-    </LinearLayout>
-    <View
+    <EditText
+        android:id="@+id/edt_search"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:hint="Search"/>
+
+    <View
+        android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
-        android:background="@color/view_color" />
+        android:background="@color/view_color"/>
+
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
         android:id="@+id/recyclerview"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
 
     <TextView
         android:id="@+id/tv_no_records_found"

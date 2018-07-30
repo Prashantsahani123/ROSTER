@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.ReplicaInfoData;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by USER on 01-07-2016.

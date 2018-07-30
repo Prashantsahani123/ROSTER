@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-
-
 import java.util.ArrayList;
 
 public class CropImageView extends ImageViewTouchBase {

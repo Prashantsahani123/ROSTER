@@ -42,17 +42,6 @@
 
 
                 <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Members Name"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/black"
-                    android:textSize="17dp" />
-
-
-                <TextView
                     android:id="@+id/tv_designation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,6 +51,15 @@
                     android:ellipsize="end"
                     android:textColor="@color/label_color_gray" />
 
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Members Name"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
             </LinearLayout>
         </LinearLayout>
 

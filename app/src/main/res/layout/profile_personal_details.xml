@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/ll_item"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/leftMargin"
     android:layout_marginRight="@dimen/rightMargin"
     android:layout_marginTop="@dimen/topMargin"
-    >
-
-
+    android:orientation="vertical"
+    android:visibility="visible">
 
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-            android:textColor="@color/smallLabelColor"
-            android:letterSpacing="0.03"
             android:id="@+id/tvDynamicFieldTitle"
+            android:layout_width="match_parent"
+
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:letterSpacing="0.03"
             android:text="Title"
-            android:layout_weight="1" />
+            android:textColor="@color/smallLabelColor" />
 
         <TextView
             android:id="@+id/tvDynamicFieldValue"
-            android:text="Some text goes here"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/gap"
+            android:layout_weight="1"
+            android:text="Some text goes here"
             android:textColor="@color/black"
-            android:textSize="@dimen/textSize"
-            android:layout_weight="1" />
+            android:textSize="@dimen/textSize" />
 
 </LinearLayout>

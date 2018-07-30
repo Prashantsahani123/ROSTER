@@ -49,15 +49,15 @@ import java.util.Hashtable;
 
 public class RotarianBusinessDetails_ProfileActivity extends Activity {
     private TextView tv_title, tv_name, tv_mobile, tv_email, tv_address,
-            tv_businessName, tv_designation, tv_bussiness_phoneNo, tv_faxNo, tv_clubname;
+            tv_businessName, tv_designation, tv_bussiness_phoneNo, tv_faxNo, tv_clubname,tv_classification;
     Context context;
     private ImageView ivCallButton, ivMessageButton;
     private ImageView iv_backbutton, iv_email, iv_profileimage;
     public String memberProfileId;
-    public String clubName;
+    public String clubName,picUrl="";
     // varible declared to see if email is present
     public String isEmailAvailable = "0";
-    private LinearLayout ll_mobile, ll_email, ll_address, ll_business_Name, ll_designation, ll_business_phoneNo, ll_faxNo;
+    private LinearLayout ll_mobile,ll_classification, ll_email, ll_address, ll_business_Name, ll_designation, ll_business_phoneNo, ll_faxNo;
 
     private ProgressBar progressbar;
     private ArrayList<PopupPhoneNumberData> myCallList = new ArrayList<>();
@@ -105,7 +105,9 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
         tv_designation = (TextView) findViewById(R.id.tv_designation);
         tv_bussiness_phoneNo = (TextView) findViewById(R.id.tv_bussiness_phoneNo);
         tv_faxNo = (TextView) findViewById(R.id.tv_faxNo);
+        tv_classification = (TextView) findViewById(R.id.tv_classification);
 
+        ll_classification = (LinearLayout) findViewById(R.id.ll_classification);
         ll_mobile = (LinearLayout) findViewById(R.id.ll_mobile);
         ll_email = (LinearLayout) findViewById(R.id.ll_email);
         ll_address = (LinearLayout) findViewById(R.id.ll_address);
@@ -119,6 +121,15 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
         iv_profileimage = (ImageView) findViewById(R.id.iv_profileimage);
         tv_clubname = (TextView) findViewById(R.id.tv_clubname);
+
+        iv_profileimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent zoomImage = new Intent(context, ImageZoom.class);
+                zoomImage.putExtra("imgageurl",picUrl);
+                startActivity(zoomImage);
+            }
+        });
 
         ivCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,8 +222,9 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
                 String faxNo = jsonResult.get("Fax").toString();
                 String city = jsonResult.get("city").toString();
                 String state = jsonResult.get("state").toString();
+                String pinCode = jsonResult.get("pincode").toString();
                 String country = jsonResult.get("country").toString();
-
+                String classification=jsonResult.getString("Classification");
                 if (jsonResult.has("pic")) {
                     if (jsonResult.getString("pic").toString().trim().equals("") || jsonResult.getString("pic").toString() == null || jsonResult.getString("pic").toString().trim().isEmpty()) {
                         progressbar.setVisibility(View.GONE);
@@ -220,8 +232,8 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
                         String picturePath = jsonResult.getString("pic").toString().trim().replaceAll(" ", "%20");
                         progressbar.setVisibility(View.VISIBLE);
                         Utils.log("Profile path is : "+picturePath);
-
-                        Picasso.with(RotarianBusinessDetails_ProfileActivity.this).load(picturePath).transform(new CircleTransform()).into(iv_profileimage);
+                        picUrl = jsonResult.getString("pic").toString().trim().replaceAll(" ", "%20");
+                       // Picasso.with(RotarianBusinessDetails_ProfileActivity.this).load(picturePath).transform(new CircleTransform()).into(iv_profileimage);
 
                         Picasso.with(RotarianBusinessDetails_ProfileActivity.this).load(picturePath).transform(new CircleTransform())
                                 .placeholder(R.drawable.b_profile_pic)
@@ -334,7 +346,7 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
                 if (country.trim().equalsIgnoreCase("") || country.trim().equalsIgnoreCase("null")) {
                     address = address;
                 } else {
-                    address = address + country;
+                    address = address + country+"  "+ pinCode;
                 }
 //                 address = address + city + state+country;
 
@@ -344,6 +356,14 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
 
                     tv_address.setText(address);
                 }
+
+                if (classification.trim().equalsIgnoreCase("") || classification.trim().equalsIgnoreCase("null")) {
+                    ll_classification.setVisibility(View.GONE);
+                } else {
+                    ll_classification.setVisibility(View.VISIBLE);
+                    tv_classification.setText(classification);
+                }
+
 
                 if (myCallList.size() > 0) {
                     ivCallButton.setImageDrawable(getResources().getDrawable(R.drawable.blue_call));
@@ -360,18 +380,25 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
 
     public void showMsgPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = getLayoutInflater().inflate(R.layout.popup_message, null);
+        View view = getLayoutInflater().inflate(R.layout.new_popup_msg, null);
         builder.setView(view);
 
         final AlertDialog msgDialog = builder.create();
         view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int n = myMsgList.size();
+                for (int i = 0; i < n; i++) {
+                    PopupPhoneNumberData pnd = myMsgList.get(i);
+
+                    pnd.setSelected(false);
+                }
+
                 msgDialog.hide();
             }
         });
 
-        view.findViewById(R.id.ivSend).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
@@ -394,7 +421,7 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
             }
         });
 
-        view.findViewById(R.id.ivSend).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int count = 0;
@@ -420,9 +447,9 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
         msgDialog.show();
     }
 
-    public void showEmailPopup() {
+    /*public void showEmailPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = getLayoutInflater().inflate(R.layout.popup_email, null);
+        View view = getLayoutInflater().inflate(R.layout.new_mail_popup, null);
         builder.setView(view);
 
         final AlertDialog mailDialog = builder.create();
@@ -450,8 +477,101 @@ public class RotarianBusinessDetails_ProfileActivity extends Activity {
         rvMail.setLayoutManager(new LinearLayoutManager(context));
         rvMail.setAdapter(popupMailRVAdapter);
         mailDialog.show();
-    }
+    }*/
+    public void showEmailPopup() {
 
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = getLayoutInflater().inflate(R.layout.new_mail_popup, null);
+        builder.setView(view);
+
+        final AlertDialog mailDialog = builder.create();
+
+        final RecyclerView rvMail = (RecyclerView) view.findViewById(R.id.rvMail);
+        rvMail.setLayoutManager(new LinearLayoutManager(context));
+
+
+        view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<PopupEmailData> myMsgList =((PopupEmailRVAdapter)rvMail.getAdapter()).getList();
+                int n = myMsgList.size();
+                ArrayList<String> selectedList = new ArrayList<>();
+
+                for (int i = 0; i < n; i++) {
+                    PopupEmailData pnd = myMsgList.get(i);
+                   pnd.setSelected(false);
+                }
+
+                mailDialog.hide();
+            }
+        });
+
+        PopupEmailRVAdapter popupMailRVAdapter = new PopupEmailRVAdapter(context, myMailList);
+        popupMailRVAdapter.setOnEmailIdClickedListener(new PopupEmailRVAdapter.OnEmailIdClickedListener() {
+            @Override
+            public void onEmailIdClickListener(PopupEmailData pnd, int position) {
+                final Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setType("plain/text");
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{pnd.getEmailId().toString()});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(emailIntent);
+            }
+        });
+
+
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = 0;
+                ArrayList<PopupEmailData> myMsgList =((PopupEmailRVAdapter)rvMail.getAdapter()).getList();
+                int n = myMsgList.size();
+                ArrayList<String> selectedList = new ArrayList<>();
+
+                for (int i = 0; i < n; i++) {
+                    PopupEmailData pnd = myMsgList.get(i);
+                    if (pnd.isSelected()) {
+                        selectedList.add(pnd.getEmailId());
+                        count++;
+                    }
+                }
+
+                if (count == 0) {
+                    Toast.makeText(context, "Please select at least one email id to send mail", Toast.LENGTH_LONG).show();
+                    return;
+                }else {
+                    String address = Utils.implode(", ", selectedList);
+
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                    emailIntent.setType("plain/text");
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+                    try {
+                        context.startActivity(emailIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Sorry. Something went wrong.", Toast.LENGTH_LONG).show();
+                    }
+
+                    int m = myMsgList.size();
+                    for (int i = 0; i < m; i++) {
+                        myMsgList.get(i).setSelected(false);
+                    }
+                }
+                mailDialog.hide();
+
+            }
+        });
+
+
+        rvMail.setAdapter(popupMailRVAdapter);
+        mailDialog.show();
+    }
     public void sendMessage() {
 
         ArrayList<String> selectedList = new ArrayList<>();

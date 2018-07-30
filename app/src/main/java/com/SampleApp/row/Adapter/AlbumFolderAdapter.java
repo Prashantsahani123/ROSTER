@@ -10,13 +10,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.AlbumFolder;
 import com.SampleApp.row.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.AlbumFolder;
 
 /**
  * Created by user on 14-09-2016.

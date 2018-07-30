@@ -2,6 +2,7 @@ package com.SampleApp.row.holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.SampleApp.row.R;
@@ -12,11 +13,22 @@ import com.SampleApp.row.R;
  */
 public class PopupEmailHolder extends RecyclerView.ViewHolder {
     TextView tvTitle, tvEmail, tvExtra;
+    CheckBox cbSelected;
     public PopupEmailHolder(View itemView) {
         super(itemView);
         tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
         tvExtra = (TextView) itemView.findViewById(R.id.tvExtraInfo);
         tvEmail = (TextView) itemView.findViewById(R.id.tvEmail);
+        cbSelected = (CheckBox) itemView.findViewById(R.id.cbSelected);
+
+    }
+
+    public CheckBox getCbSelected() {
+        return cbSelected;
+    }
+
+    public void setCbSelected(CheckBox cbSelected) {
+        this.cbSelected = cbSelected;
     }
 
     public TextView getTvTitle() {

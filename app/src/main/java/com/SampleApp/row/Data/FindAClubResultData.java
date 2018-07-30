@@ -1,7 +1,6 @@
 package com.SampleApp.row.Data;
 
 import java.io.Serializable;
-import java.util.Hashtable;
 
 /**
  * Created by admin on 30-05-2017.

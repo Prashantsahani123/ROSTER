@@ -20,7 +20,18 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Data.DocumentListData;
+import com.SampleApp.row.ImageZoom;
+import com.SampleApp.row.PDFViewActivity;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.AppController;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.holders.DocumentListItemHolder;
+import com.SampleApp.row.holders.EmptyViewHolder;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,19 +44,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
-
-import com.SampleApp.row.Data.DocumentListData;
-import com.SampleApp.row.ImageZoom;
-import com.SampleApp.row.PDFViewActivity;
-
-import com.SampleApp.row.Utils.AppController;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.holders.DocumentListItemHolder;
-import com.SampleApp.row.holders.EmptyViewHolder;
 
 /**
  * Created by USER1 on 16-03-2017.

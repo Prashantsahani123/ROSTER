@@ -28,9 +28,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-
-
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileDescriptor;

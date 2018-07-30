@@ -1,9 +1,11 @@
 package com.SampleApp.row.Data;
 
+import java.io.Serializable;
+
 /**
  * Created by USER on 16-02-2016.
  */
-public class SubGroupDetailsData {
+public class SubGroupDetailsData implements Serializable {
     String profileId,memname,mobile;
 
     public SubGroupDetailsData() {

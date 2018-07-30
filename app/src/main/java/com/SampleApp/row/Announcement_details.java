@@ -1,21 +1,25 @@
 package com.SampleApp.row;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -26,12 +30,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
 
 /**
  * Created by USER on 21-12-2015.
@@ -123,24 +121,19 @@ public class Announcement_details extends Activity {
         iv_actionbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(Announcement_details.this, android.R.style.Theme_Translucent);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.popup_confrm_delete);
-                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
-                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
-                tv_no.setOnClickListener(new View.OnClickListener() {
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(Announcement_details.this);
+                View view = getLayoutInflater().inflate(R.layout.popup_confrm_delete, null);
+                builder.setView(view);
+
+                TextView tvYes = (TextView) view.findViewById(R.id.tv_yes);
+                TextView tvNo = (TextView) view.findViewById(R.id.tv_no);
+
+                final AlertDialog dialog = builder.create();
+
+                tvYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
-
-                    }
-                });
-                tv_yes.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
                         if (InternetConnection.checkConnection(getApplicationContext())) {
                             //Utils.showToastWithTitleAndContext(getApplicationContext(), "Delete");
                             deletewebservices();
@@ -151,7 +144,44 @@ public class Announcement_details extends Activity {
                     }
                 });
 
+                tvNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
                 dialog.show();
+
+//                final Dialog dialog = new Dialog(Announcement_details.this, android.R.style.Theme_Translucent);
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                dialog.setContentView(R.layout.popup_confrm_delete);
+//                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+//                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+//                tv_no.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//
+//                    }
+//                });
+//                tv_yes.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        if (InternetConnection.checkConnection(getApplicationContext())) {
+//                            //Utils.showToastWithTitleAndContext(getApplicationContext(), "Delete");
+//                            deletewebservices();
+//                        } else {
+//                            Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
+//
+//                        }
+//                    }
+//                });
+//
+//                dialog.show();
             }
 
         });
@@ -286,6 +316,7 @@ public class Announcement_details extends Activity {
                         if (objects.getString("announImg").toString().equals("") || objects.getString("announImg").toString() == null) {
                             linear_image.setVisibility(View.GONE);
                         } else {
+                            linear_image.setVisibility(View.VISIBLE);
                             progressbar.setVisibility(View.VISIBLE);
                             Picasso.with(Announcement_details.this).load(objects.getString("announImg").toString())
                                     .placeholder(R.drawable.imageplaceholder)

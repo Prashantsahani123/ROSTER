@@ -1,17 +1,12 @@
 package com.SampleApp.row;
 
-import android.*;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Telephony;
-import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,7 +15,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
@@ -266,7 +260,7 @@ public class LoginPage_Row extends Activity {
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            //Log.d("response","Do post"+ result.toString());
+            Log.d("response","Do post"+ result.toString());
             if (result != "") {
                 getresult(result.toString());
             } else {

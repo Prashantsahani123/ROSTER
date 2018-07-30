@@ -1,6 +1,7 @@
 package com.SampleApp.row;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,13 +24,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SampleApp.row.Adapter.DirectoryRVAdapter;
+import com.SampleApp.row.Adapter.DistrictAdapter;
 import com.SampleApp.row.Data.profiledata.ProfileMasterData;
+import com.SampleApp.row.Utils.AppController;
+import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.ProfileModel;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 /**
@@ -55,16 +70,18 @@ public class ClassificationDirectoryActivity extends Activity {
     //ImageView ivSearch;
 
     DirectoryRVAdapter adapter;
+    DistrictAdapter districtAdapter;
     ArrayList<ProfileMasterData> list;
 
-    private LinearLayout llCenterMessage;
+    private LinearLayout llCenterMessage,ll_search;
     private TextView tvCenterButton;
     private TextView tvCenterMessage;
     private ProgressBar progressBar;
 
     String filter[] = {"Rotarian","Classification", "Family"};
 
-
+    String module="";
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -77,11 +94,29 @@ public class ClassificationDirectoryActivity extends Activity {
         masterUid = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MASTER_USER_ID)); // line added by lekha
         grpId = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
         classification = getIntent().getStringExtra("classification");
+        module = getIntent().getStringExtra("module");
         Utils.log("GroupId : "+grpId);
         initComponents();
         init();
         checkadminrights();
-        refreshData("");
+        if(module.equalsIgnoreCase("Club")){
+            ll_search.setVisibility(View.VISIBLE);
+            refreshData("");
+
+        }else if(module.equalsIgnoreCase("Directory")) {
+            ll_search.setVisibility(View.GONE);
+            if (InternetConnection.checkConnection(context)) {
+                if(dialog==null){
+                    dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                    dialog.setCancelable(false);
+                    dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                }
+                dialog.show();
+                getMember();
+            } else {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+            }
+        }
         // Code to set filter in Directory
         //setFilter();
 
@@ -96,7 +131,7 @@ public class ClassificationDirectoryActivity extends Activity {
     public void initComponents() {
         //ivSearch = (ImageView) findViewById(R.id.btnSearch);
 
-
+        ll_search= (LinearLayout) findViewById(R.id.ll_search);
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
@@ -150,6 +185,7 @@ public class ClassificationDirectoryActivity extends Activity {
             tvCenterButton.setOnClickListener(onClickListener);
         }
     }
+
     private void checkadminrights() {
         String isAdmin = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN);
         if ( isAdmin.equals("No")) {
@@ -269,11 +305,27 @@ public class ClassificationDirectoryActivity extends Activity {
         }
     };
 
+    DistrictAdapter.OnMemberSelectedListener clmemberSelectedListener = new DistrictAdapter.OnMemberSelectedListener() {
+        @Override
+        public void onMemberSelected(ProfileMasterData data, int position) {
+            try {
+                Intent intent = new Intent(context, NewProfileActivity.class);
+                intent.putExtra("memberProfileId", data.getProfileId());
+                intent.putExtra("groupId", data.getGrpId());
+                intent.putExtra("pic",data.getProfilePic());
+                intent.putExtra("fromMainDirectory", "no");
+                intent.putExtra("fromDTDirectory", "yes");
+                startActivityForResult(intent, DELETE_PROFILE_REQUEST);
+            } catch (Exception e) {
+                Utils.log("Error is : " + e);
+                e.printStackTrace();
+            }
+        }
+    };
+
     public void finishActivity(View v) {
         finish();
     }
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -332,4 +384,98 @@ public class ClassificationDirectoryActivity extends Activity {
 
     boolean isFieldPresent = false;
     private static final String DYNAMIC_FIELDS_FILE = "dynamicField.json";
+
+    private void getMember(){
+        Hashtable<String, String> paramTable = new Hashtable<>();
+        paramTable.put("grpID", "" + grpId);
+        paramTable.put("classification",classification);
+        JSONObject jsonRequestData = null;
+        try {
+            jsonRequestData = new JSONObject(new Gson().toJson(paramTable));
+            Utils.log("Url : " + Constant.GetMemberByClassification+ " Data : " + jsonRequestData);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    Constant.GetMemberByClassification,
+                    jsonRequestData,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+//                            Log.d("suhas","inside api");
+//                            manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                            Utils.log("Success : " + response);
+                            //handleSyncInfo(response);
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            parseJson(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+
+//                            if (list.size() == 0) {
+//                                manageCenterMessage(
+//                                        View.VISIBLE,
+//                                        "Something went wrong. Please try again after sometime.",
+//                                        View.VISIBLE,
+//                                        "Try Now",
+//                                        View.VISIBLE,
+//                                        new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//                                                llCenterMessage.setVisibility(View.GONE);
+//                                                loadFromDB();
+//                                            }
+//                                        }, NO_ANIMATE);
+//                            }
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            Utils.log("Error is : " + error);
+                            error.printStackTrace();
+                        }
+                    });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    1200000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+
+            AppController.getInstance().addToRequestQueue(context, request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseJson(JSONObject response){
+        ArrayList<ProfileMasterData> arrayList=new ArrayList<>();
+        try {
+            JSONObject memberListResult = response.getJSONObject("MemberListResult");
+            String status=memberListResult.getString("status");
+            if(status.equals("0")){
+                JSONArray result=memberListResult.getJSONArray("Result");
+                for(int i=0;i<result.length();i++){
+                    ProfileMasterData data=new ProfileMasterData();
+                    JSONObject object=result.getJSONObject(i);
+                    data.setMasterId(object.getString("masterUID"));
+                    data.setGrpId(object.getString("grpID"));
+                    data.setProfileId(object.getString("profileID"));
+                    data.setMemberName(object.getString("memberName"));
+                    data.setProfilePic(object.getString("pic"));
+                    data.setMemberMobile(object.getString("membermobile"));
+
+                    arrayList.add(data);
+                }
+
+                districtAdapter=new DistrictAdapter(context,arrayList);
+                districtAdapter.setOnMemberSelectedListener(clmemberSelectedListener);
+                rvDirectory.setAdapter(districtAdapter);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

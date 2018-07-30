@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.SampleApp.row.Utils.Constant;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -22,8 +24,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.SampleApp.row.Utils.Constant;
 
 public class MainActivity extends AppCompatActivity {
 

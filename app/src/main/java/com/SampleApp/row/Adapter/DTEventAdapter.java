@@ -9,18 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.SampleApp.row.Data.DTEventsData;
-import com.SampleApp.row.EventDetails;
 import com.SampleApp.row.NewProfileActivity;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.DTEventHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
-import com.SampleApp.row.sql.DirectoryDataModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by user on 13-02-2017.

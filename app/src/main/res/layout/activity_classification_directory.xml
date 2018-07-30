@@ -26,34 +26,42 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/leftMargin"
-            android:layout_marginRight="@dimen/rightMargin"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/et_serach_directory"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/border_bg_white"
-                android:hint="Search Rotarian"
-                android:paddingBottom="5dp"
-                android:paddingLeft="@dimen/padding"
-                android:paddingTop="5dp"
-                android:singleLine="true" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/leftMargin"
+                android:layout_marginRight="@dimen/rightMargin"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
+
+                <EditText
+                    android:id="@+id/et_serach_directory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Search Rotarian"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="@dimen/padding"
+                    android:paddingTop="5dp"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/separator_height"
+                android:background="@color/view_color" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/separator_height"
-            android:background="@color/view_color" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

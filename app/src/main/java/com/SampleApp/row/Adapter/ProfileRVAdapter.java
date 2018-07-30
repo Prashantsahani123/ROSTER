@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.SampleApp.row.Data.profiledata.AddressData;
 import com.SampleApp.row.Data.profiledata.BusinessMemberDetails;
@@ -19,7 +18,6 @@ import com.SampleApp.row.Data.profiledata.PersonalMemberDetails;
 import com.SampleApp.row.Data.profiledata.PhotoData;
 import com.SampleApp.row.Data.profiledata.Separator;
 import com.SampleApp.row.R;
-import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.AddressHolder;
 import com.SampleApp.row.holders.BusinessDetailHolder;
@@ -27,6 +25,7 @@ import com.SampleApp.row.holders.FamilyMemberDetailHolder;
 import com.SampleApp.row.holders.PersonalDetailHolder;
 import com.SampleApp.row.holders.PhotoHolder;
 import com.SampleApp.row.holders.SeparatorHolder;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -160,16 +159,23 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             PersonalMemberDetails data = (PersonalMemberDetails) list.get(position);
             bHolder.getTvDynamicFieldTitle().setText(data.getKey());
 
-            if (data.getColType().equalsIgnoreCase(COLUMN_TYPE_DATE)) {
-                // DD/MM/YYYY
-                String[] dateFields = data.getValue().split("/");
-                int month = Integer.parseInt(dateFields[1]);  // dateFileds[1] is month value
-                String monthName = MONTHS[month];
-                bHolder.getTvDynamicFieldValue().setText(dateFields[0] + " " + monthName);
-            } else {
-                bHolder.getTvDynamicFieldValue().setText(data.getValue());
+            if(data.getKey()!=null && !data.getKey().trim().isEmpty()){
+                bHolder.ll_item.setVisibility(View.VISIBLE);
+                if (data.getColType().equalsIgnoreCase(COLUMN_TYPE_DATE)) {
+                    // DD/MM/YYYY
+                    String[] dateFields = data.getValue().split("/");
+                    int month = Integer.parseInt(dateFields[1]);  // dateFileds[1] is month value
+                    String monthName = MONTHS[month];
+                    bHolder.getTvDynamicFieldValue().setText(dateFields[0] + " " + monthName);
+                } else {
+                    bHolder.getTvDynamicFieldValue().setText(data.getValue());
+                }
+                bindDynamicFieldAction(bHolder.getTvDynamicFieldValue(), data);
+            }else {
+                bHolder.ll_item.setVisibility(View.GONE);
             }
-            bindDynamicFieldAction(bHolder.getTvDynamicFieldValue(), data);
+
+
         } catch (ClassCastException ce) {
             Utils.log("Error is : " + ce);
             ce.printStackTrace();
@@ -181,11 +187,16 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void bindBusinessData(RecyclerView.ViewHolder holder, int position) {
         try {
+
             BusinessDetailHolder bHolder = (BusinessDetailHolder) holder;
             BusinessMemberDetails data = (BusinessMemberDetails) list.get(position);
-            bHolder.getTvDynamicFieldTitle().setText(data.getKey());
-            bHolder.getTvDynamicFieldValue().setText(data.getValue());
-            bindDynamicFieldAction(bHolder.getTvDynamicFieldValue(), data);
+            if(data.getKey()!=null && !data.getKey().trim().isEmpty() && data.getValue()!=null && !data.getValue().trim().isEmpty()){
+                bHolder.getTvDynamicFieldTitle().setText(data.getKey());
+                bHolder.getTvDynamicFieldValue().setText(data.getValue());
+                bindDynamicFieldAction(bHolder.getTvDynamicFieldValue(), data);
+            }
+
+
         } catch (ClassCastException ce) {
             Utils.log("Error is : " + ce);
             ce.printStackTrace();
@@ -387,12 +398,14 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void bindPhoto(RecyclerView.ViewHolder holder, final int position) {
         try {
             //Toast.makeText(context, "We are here", Toast.LENGTH_SHORT).show();
-            PhotoHolder photoholder = (PhotoHolder) holder;
+            final PhotoHolder photoholder = (PhotoHolder) holder;
             PhotoData data = (PhotoData) list.get(position);
             String familyPic = data.getFamilyPic();
             Utils.log("Family pic path : " + familyPic);
             if (familyPic.trim().length() == 0 || familyPic.equalsIgnoreCase("null") || familyPic.isEmpty()) {
-                photoholder.getImage().setVisibility(View.GONE);
+               // photoholder.getImage().setVisibility(View.GONE);
+                photoholder.getImage().setImageDrawable(context.getResources().getDrawable(R.drawable.profile_pic));
+                photoholder.img_prg.setVisibility(View.GONE);
                 if ( editable ) {
                     photoholder.getIvIcon().setImageDrawable(context.getResources().getDrawable(R.drawable.add_blue));
                 } else {
@@ -401,7 +414,17 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 try {
                     Picasso.with(context).load(data.getFamilyPic())
-                           .into(photoholder.getImage());
+                           .into(photoholder.getImage(), new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            photoholder.img_prg.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            photoholder.img_prg.setVisibility(View.GONE);
+                        }
+                    });
                     if ( editable) {
                         photoholder.getImage().setVisibility(View.VISIBLE);
                         photoholder.getIvIcon().setImageDrawable(context.getResources().getDrawable(R.drawable.edit));
@@ -415,12 +438,24 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
 
+            photoholder.getImage().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        onFamilyPicSelectedListener.onFamilyPicSelected(position);
+                    } catch (NullPointerException npe) {
+                        npe.printStackTrace();
+                    }
+                }
+            });
+
             if ( editable ) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                photoholder.getIvIcon().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            onFamilyPicSelectedListener.onFamilyPicSelected(position);
+                            onFamilyPicEditedListener.onFamilyPicEdited(position);
                         } catch (NullPointerException npe) {
                             npe.printStackTrace();
                         }
@@ -449,5 +484,15 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface OnFamilyPicSelectedListener {
         void onFamilyPicSelected(int position);
+    }
+
+    public void setOnFamilyPicEditedListener(OnFamilyPicEditedListener onFamilyPicEditedListener) {
+        this.onFamilyPicEditedListener = onFamilyPicEditedListener;
+    }
+
+    private OnFamilyPicEditedListener onFamilyPicEditedListener;
+
+    public interface OnFamilyPicEditedListener {
+        void onFamilyPicEdited(int position);
     }
 }

@@ -12,11 +12,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 import com.SampleApp.row.Data.SubGroupMemberData;
 import com.SampleApp.row.Profile;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
 
 
 /**

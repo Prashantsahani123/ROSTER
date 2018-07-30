@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
 
@@ -11,10 +12,12 @@
         class="com.SampleApp.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/seperator_color" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -29,20 +32,20 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
                         android:text="Recipient Type"
-
                         android:textSize="16sp" />
 
                     <TextView
@@ -50,7 +53,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:text=""
-
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -71,10 +73,10 @@
                                 android:id="@+id/d_radio0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/dark_gray"
-                                android:text="All"
-                                android:checked="false"
-                                android:onClick="onRadioButtonClicked"/>
+                                android:buttonTint="@color/colorPrimary"
+                                android:checked="true"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="All" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -89,9 +91,9 @@
                                 android:id="@+id/d_radio1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/dark_gray"
-                                android:text="Sub Groups"
-                                android:onClick="onRadioButtonClicked"/>
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="Sub Groups" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -106,15 +108,17 @@
                                 android:id="@+id/d_radio2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/dark_gray"
-                                android:text="Members"
-                                android:onClick="onRadioButtonClicked"/>
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="Members" />
+
                         </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
                         android:orientation="horizontal">
 
                         <TextView
@@ -139,7 +143,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
-                    android:background="@color/seperator_color" />
+                    android:background="@color/seperator_color"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/llShareWrapper"
@@ -156,6 +161,7 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
                             android:text="Share"
                             android:textSize="16sp" />
 
@@ -169,20 +175,20 @@
                             android:orientation="horizontal">
 
                             <RadioButton
-                                android:checked="true"
                                 android:id="@+id/rbInClub"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/dark_gray"
-                                android:text="Within the Club" />
+                                android:buttonTint="@color/colorPrimary"
+                                android:checked="true"
+                                android:text="Club service" />
 
                             <RadioButton
                                 android:id="@+id/rbPublic"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="16dp"
-                                android:buttonTint="@color/dark_gray"
-                                android:text="Public" />
+                                android:buttonTint="@color/colorPrimary"
+                                android:text="Rotary Service" />
 
                         </RadioGroup>
 
@@ -194,6 +200,77 @@
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
 
+                <TextView
+                    android:id="@+id/tv_clubServiceInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="In Club Service, post your Club's internal events. In Rotary Service post all Rotary Service projects. The content posted in Rotary Service will be displayed to all ROW users globally."
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/ll_category"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Category"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_categoryName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the category name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -205,18 +282,259 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Date"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/et_DOP"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Select Date"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_rotaryServicecontent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Cost(Local Currency)"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:background="@drawable/border_bg_white_dropdown"
+                                android:visibility="gone">
+
+                                <Spinner
+                                    android:id="@+id/et_currency"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="38dp"
+                                    android:inputType="textCapSentences"
+                                    android:singleLine="true" />
+                            </LinearLayout>
+
+
+                            <EditText
+                                android:id="@+id/et_COP"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_weight="3"
+                                android:inputType="number"
+                                android:padding="6dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+
+                        <!--<EditText-->
+                        <!--android:id="@+id/et_COP"-->
+                        <!--style="@style/TBEditText"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:inputType="textCapSentences"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:singleLine="true" />-->
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Beneficiaries"
+                            android:textSize="16sp" />
+
+
+                        <EditText
+                            android:id="@+id/et_Beneficiary"
+                            style="@style/TBEditText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:digits="0123456789"
+                            android:hint="Enter Beneficiary"
+                            android:inputType="number"
+                            android:padding="5dp"
+                            android:singleLine="true" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Man hours"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:layout_marginTop="5dp"
+                            android:text="(No. of Rotarians x No. of hours)"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/et_manPower"
+                                style="@style/TBEditText"
+                                android:layout_width="fill_parent"
+                                android:layout_height="38dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="3"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true" />
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="7"
+                                android:background="@drawable/border_bg_white_dropdown"
+                                android:visibility="gone">
+
+                                <Spinner
+                                    android:id="@+id/sp_timeType"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="38dp"
+                                    android:inputType="textCapSentences"
+                                    android:singleLine="true" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Rotarians"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_noOfRotarians"
+                            style="@style/TBEditText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:inputType="number"
+                            android:padding="5dp"
+                            android:singleLine="true" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
                         android:text="Title"
                         android:textSize="16sp" />
 
 
                     <EditText
                         android:id="@+id/et_galleryTitle"
+                        style="@style/TBEditText"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/border_bg_white"
+                        android:hint="Enter title here"
                         android:inputType="textCapSentences"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:singleLine="true" />
 
                 </LinearLayout>
@@ -240,7 +558,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:layout_marginLeft="@dimen/leftMargin"
                             android:text="Description"
                             android:textSize="16sp" />
 
@@ -253,24 +571,27 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:text="250"
-                                android:visibility="gone"
                                 android:textColor="@color/bluecolor"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:visibility="gone" />
                         </RelativeLayout>
                     </LinearLayout>
 
                     <EditText
                         android:id="@+id/et_evetDesc"
+                        style="@style/TBEditText"
                         android:layout_width="fill_parent"
-                        android:layout_height="130dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/border_bg_white"
                         android:gravity="top|left"
-                        android:inputType="textCapSentences|textMultiLine"
-                        android:maxLines="4"
-                        android:padding="10dp" />
+                        android:inputType="textMultiLine"
+                        android:maxLines="6"
+                        android:minLines="3"
+                        android:padding="5dp"
+                        android:scrollHorizontally="false" />
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
@@ -289,8 +610,8 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="Photo"
-
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Photo(Maximum 5 photos)"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -298,17 +619,239 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center">
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/iv_event_photo"
-                            android:layout_width="150dp"
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+
+                            <ImageView
+                                android:id="@+id/iv_event_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/asset" />
+
+
+                            <ImageView
+                                android:id="@+id/close1"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/close"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/et_coverPhoto"
+                            style="@style/TBEditText"
+                            android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:src="@drawable/edit_image"
-
-
-                            />
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="start"
+                            android:hint="Enter image description here (Optional)" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_photos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/iv_album_photo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:background="@drawable/asset" />
+
+                                <ImageView
+                                    android:id="@+id/close2"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/close"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+                            <EditText
+                                android:id="@+id/et_album_photo1"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
+                                android:hint="Enter image description here (Optional)" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/seperator_color" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/iv_album_photo2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:background="@drawable/asset" />
+
+                                <ImageView
+                                    android:id="@+id/close3"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/close"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+                            <EditText
+                                android:id="@+id/et_album_photo2"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
+                                android:hint="Enter image description here (Optional)" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/seperator_color" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/iv_album_photo3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:background="@drawable/asset"
+                                    />
+
+                                <ImageView
+                                    android:id="@+id/close4"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/close"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+                            <EditText
+                                android:id="@+id/et_album_photo3"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
+                                android:hint="Enter image description here (Optional)" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/seperator_color" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/iv_album_photo4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:background="@drawable/asset" />
+
+                                <ImageView
+                                    android:id="@+id/close5"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/close"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+                            <EditText
+                                android:id="@+id/et_album_photo4"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_margin="10dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
+                                android:hint="Enter image description here (Optional)" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <View
@@ -341,7 +884,7 @@
                 android:background="@color/bottom_button"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="Done"
+                android:text="Update"
                 android:textColor="@color/view_color_blue"
                 android:textSize="19sp" />
         </LinearLayout>

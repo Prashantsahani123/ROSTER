@@ -10,10 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.AttendanceData;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
 
 
 /**

@@ -16,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.SampleApp.row.Adapter.BODListAdapter;
 import com.SampleApp.row.Adapter.PastPresidentAdapter;
-import com.SampleApp.row.Data.BoardOfDirectorsData;
 import com.SampleApp.row.Data.PastPresidentData;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
@@ -38,7 +36,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 
 /**

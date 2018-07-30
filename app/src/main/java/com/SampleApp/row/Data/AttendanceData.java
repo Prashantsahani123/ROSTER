@@ -12,6 +12,8 @@ public class AttendanceData {
     String memberId;
     String month;
     String year;
+    String date;
+    String time;
 
     public AttendanceData() {
     }
@@ -24,6 +26,22 @@ public class AttendanceData {
         this.memberId = memberId;
         this.month = month;
         this.year = year;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getMonth() {

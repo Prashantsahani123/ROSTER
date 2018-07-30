@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,9 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.SampleApp.row.Data.FindAClubResultData;
-import com.SampleApp.row.Data.GroupData;
-
-import java.util.ArrayList;
 
 
 /**
@@ -59,7 +55,7 @@ public class NewClubInfo extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(" Info "));
         tabLayout.addTab(tabLayout.newTab().setText(" Members "));
         tabLayout.addTab(tabLayout.newTab().setText(" Communication "));
-        tabLayout.addTab(tabLayout.newTab().setText(" Gallery "));
+        tabLayout.addTab(tabLayout.newTab().setText(" Showcase "));
         //tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         //tabLayout.setTabMode(TabLayout.MODE_FIXED);
         viewPager = (ViewPager) findViewById(R.id.pager);

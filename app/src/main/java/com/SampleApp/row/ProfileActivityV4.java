@@ -30,21 +30,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.FamilyDetailsAdapter_new;
 import com.SampleApp.row.Adapter.ProfileActivityV4Adapter;
 import com.SampleApp.row.Adapter.SpinnerAdapter_country;
@@ -64,6 +49,20 @@ import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.croputility.Crop;
+import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by USER on 18-12-2015.
@@ -1489,7 +1488,7 @@ public class ProfileActivityV4 extends Activity {
                     picturePath = imageCompression.compressImage(path, getApplicationContext());
                     Log.d("==picturePath====","0000...."+picturePath);
 
-                    responsefromimageupload = Utils.doFileUploadForProfilePic(new File(picturePath.toString()), memberprofileid, groupId,"profile"); // Upload File to server
+                    responsefromimageupload = Utils.doFileUploadForProfilePic(ProfileActivityV4.this,new File(picturePath.toString()), memberprofileid, groupId,"profile"); // Upload File to server
                     Log.d("TOUCHBASE", "RESPONSE FILE UPLOAD " + responsefromimageupload);
 
                 } catch (IOException e) {

@@ -2,6 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
     android:background="#ffffff">
     <!-- android:background="@drawable/custom_shadow_all"-->
 
@@ -15,10 +17,10 @@
             android:id="@+id/picture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dashboardIconPadding"
-            android:layout_marginTop="@dimen/dashboardIconPadding"
-            android:layout_marginRight="@dimen/dashboardIconPadding"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="@dimen/dashboardIconPadding"
+            android:layout_marginRight="@dimen/dashboardIconPadding"
+            android:layout_marginTop="@dimen/dashboardIconPadding"
             android:scaleType="fitXY" />
 
         <RelativeLayout

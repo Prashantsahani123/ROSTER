@@ -9,16 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-
-import java.util.ArrayList;
-
 
 import com.SampleApp.row.Data.SubGoupData;
 import com.SampleApp.row.R;
 import com.SampleApp.row.SubGroupDetails;
+
+import java.util.ArrayList;
 
 /**
  * Created by USER on 10-02-2016.

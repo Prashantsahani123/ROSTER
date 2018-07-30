@@ -105,5 +105,6 @@ public class DirectoryRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.onMemberSelectedListener = onMemberSelectedListener;
     }
 
+
     OnMemberSelectedListener onMemberSelectedListener;
 }

@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.SampleApp.row.Data.ServiceDirectoryListData;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.SampleApp.row.Data.ServiceDirectoryListData;
 
 /**
  * Created by USER on 25-07-2016.

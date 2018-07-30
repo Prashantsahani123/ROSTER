@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.AlbumData;
 import com.SampleApp.row.Data.AlbumPhotoData;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -20,14 +20,18 @@ public class GalleryMasterModel {
 
     Context context;
     SQLiteDatabase db;
+
     public GalleryMasterModel(Context context) {
         this.context = context;
         db = DBConnection.getInstance(context);
     }
 
        public ArrayList<AlbumData> getAlbums(String grpId,String moduleId) {
+
         try {
+
             ArrayList<AlbumData> list = new ArrayList<AlbumData>();
+
             Cursor cursor = db.rawQuery("select * from gallery_master where groupId=" + grpId + " and moduleId=" + moduleId, null);
 
             while (cursor.moveToNext()) {
@@ -53,6 +57,7 @@ public class GalleryMasterModel {
     }
 
     public boolean isDataAvailable(long groupId,String moduleId) {
+
         Cursor cursor = db.rawQuery("select * from gallery_master where groupId="+ groupId + " " + "and moduleId=" + "'" + moduleId + "'" , null);
 
         if (cursor.getCount() > 0 ) {
@@ -65,7 +70,9 @@ public class GalleryMasterModel {
 
     public long insert( AlbumData ad) {
         long id = - 1;
+
         try {
+
             ContentValues values = new ContentValues();
             values.put(Tables.AlbumMaster.Columns.ALBUM_ID, Integer.parseInt(ad.getAlbumId()));
             values.put(Tables.AlbumMaster.Columns.TITLE, ad.getTitle());
@@ -76,6 +83,7 @@ public class GalleryMasterModel {
             values.put(Tables.AlbumMaster.Columns.MODULE_ID, ad.getModuleId());
 
             return db.insert(Tables.AlbumMaster.TABLE_NAME, null, values);
+
         } catch(Exception e) {
             e.printStackTrace();
             return id;

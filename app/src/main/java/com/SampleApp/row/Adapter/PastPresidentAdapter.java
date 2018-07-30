@@ -6,14 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.SampleApp.row.Data.BoardOfDirectorsData;
 import com.SampleApp.row.Data.PastPresidentData;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.CircleTransform;
 import com.SampleApp.row.holders.EmptyViewHolder;
 import com.SampleApp.row.holders.PastPresidentListHolder;
 import com.squareup.picasso.Picasso;
-
 
 import java.util.ArrayList;
 

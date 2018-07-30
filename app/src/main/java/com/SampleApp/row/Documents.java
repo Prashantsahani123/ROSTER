@@ -23,15 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.DocumentAdapter;
 import com.SampleApp.row.Adapter.DocumentRVAdapter;
 import com.SampleApp.row.Data.DocumentListData;
@@ -40,6 +31,15 @@ import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.SampleApp.row.Adapter.DocumentRVAdapter.count_read_documents;
 
@@ -68,9 +68,9 @@ public class Documents extends Activity {
     private String moduleId;
 
     Spinner spinner_filter_type;
-    String type_filter_flag = "0";
-    String filtertype[] = {"All", "Published", "UnPublished", "Expired"};
-    String filtertype_notadmin[] = {"All", "Published", "Expired"};
+    String type_filter_flag = "1";
+    String filtertype[] = {"Published","All",  "UnPublished", "Expired"};
+    String filtertype_notadmin[] = {"Published","All",  "Expired"};
 
 
     @Override
@@ -118,10 +118,11 @@ public class Documents extends Activity {
             grpID = intenti.getStringExtra("grpID");
             isAdmin = intenti.getStringExtra("isAdmin");
         }
+
         //Log.d("Touchbase", "ID ID ID AFTER :- " + grpID + " - " + memberProfileID);
         //-------------------------------
         if (InternetConnection.checkConnection(getApplicationContext())) {
-            webservices();
+            //webservices();
             init();
             checkadminrights();
         } else {
@@ -145,7 +146,19 @@ public class Documents extends Activity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        webservices();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (InternetConnection.checkConnection(Documents.this)) {
+            // Avaliable
+            webservices();
+        } else {
+            Utils.showToastWithTitleAndContext(Documents.this, "No Internet Connection!");
+            // Not Available...
+        }
     }
 
     @Override

@@ -20,6 +20,10 @@ public class ProfileMasterData {
     String isResidanceAddrVisible;
     String isBusinessAddrVisible;
 
+    public ProfileMasterData(){
+
+    }
+
     public ProfileMasterData(String masterId, String grpId, String profileId, String isAdmin, String memberName, String memberEmail, String memberMobile, String memberCountry, String profilePic,String familyPic, String isPersonalDetVisible, String isBussinessDetVisible, String isFamilyDetVisible, String isResidanceAddrVisible, String isBusinessAddrVisible) {
         this.masterId = masterId;
         this.grpId = grpId;

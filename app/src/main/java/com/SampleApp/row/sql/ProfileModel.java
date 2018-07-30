@@ -128,6 +128,16 @@ public class ProfileModel {
         return list;
     }
 
+    public void updateProfilePic(String profileID,String url, String type,String grpID){
+        ContentValues contentValues = new ContentValues();
+        if(type.equalsIgnoreCase("profile")) {
+            contentValues.put(Tables.ProfileMaster.Columns.PROFILE_PIC, url);
+        }else{
+            contentValues.put(Tables.ProfileMaster.Columns.FAMILY_PIC, url);
+        }
+        db.update(Tables.ProfileMaster.TABLE_NAME,contentValues,Tables.ProfileMaster.Columns.PROFILE_ID+"="+profileID+" and "+Tables.ProfileMaster.Columns.GROUP_ID+"="+grpID,null);
+    }
+
     public ArrayList<ProfileMasterData> getMembers(long groupId, String classification) {
         ArrayList<ProfileMasterData> list = new ArrayList<>();
         try {
@@ -420,8 +430,12 @@ public class ProfileModel {
 
             for(int i=0;i<addrList.size();i++) {
                 if ( addrList.get(i).getAddressType().equals("Business")) {
-                    list.add(addrList.get(i));
-                    list.add(new Separator());
+                    AddressData addressData=addrList.get(i);
+                    if(!addressData.getAddress().trim().isEmpty() || !addressData.getCity().trim().isEmpty() || !addressData.getState().trim().isEmpty() || !addressData.getCountry().trim().isEmpty() || !addressData.getPincode().trim().isEmpty() || !addressData.getFax().trim().isEmpty()){
+                        list.add(addrList.get(i));
+                        list.add(new Separator());
+                    }
+
                     if ( addrList.get(i).getPhoneNo().trim().equals("")) {
 
                     } else {
@@ -450,8 +464,12 @@ public class ProfileModel {
 
             for(int i=0;i<addrList.size();i++) {
                 if ( addrList.get(i).getAddressType().equals("Residence")) {
-                    list.add(addrList.get(i));
-                    list.add(new Separator());
+                    AddressData addressData=addrList.get(i);
+                    if(!addressData.getAddress().trim().isEmpty() || !addressData.getCity().trim().isEmpty() || !addressData.getState().trim().isEmpty() || !addressData.getCountry().trim().isEmpty() || !addressData.getPincode().trim().isEmpty() || !addressData.getFax().trim().isEmpty()){
+                        list.add(addrList.get(i));
+                        list.add(new Separator());
+                    }
+
                     if ( addrList.get(i).getPhoneNo().trim().equals("")) {
 
                     } else {
@@ -884,6 +902,26 @@ public class ProfileModel {
             db.execSQL("delete from "+Tables.BusinessMemberDetails.TABLE_NAME+" where "+Tables.BusinessMemberDetails.Columns.PROFILE_ID+" in "+profileIds);
             db.execSQL("delete from "+Tables.FamilyMemberDetail.TABLE_NAME+" where "+Tables.FamilyMemberDetail.Columns.PROFILE_ID+" in "+profileIds);
             db.execSQL("delete from "+Tables.AddressDetails.TABLE_NAME+" where "+Tables.AddressDetails.Columns.PROFILE_ID+" in "+profileIds);
+            return true;
+        } catch(Exception e){
+            Utils.log("Error is : " + e);
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteAddress(String profileIds,String addressType) {
+        if ( profileIds.trim().equals("") ) return true;
+        try {
+            profileIds = "("+profileIds+")";
+//            db.execSQL("delete from "+Tables.ProfileMaster.TABLE_NAME+" where "+Tables.ProfileMaster.Columns.PROFILE_ID+" in "+profileIds);
+//            db.execSQL("delete from "+Tables.PersonalMemberDetails.TABLE_NAME+" where "+Tables.PersonalMemberDetails.Columns.PROFILE_ID+" in "+profileIds);
+//            db.execSQL("delete from "+Tables.BusinessMemberDetails.TABLE_NAME+" where "+Tables.BusinessMemberDetails.Columns.PROFILE_ID+" in "+profileIds);
+//            db.execSQL("delete from "+Tables.FamilyMemberDetail.TABLE_NAME+" where "+Tables.FamilyMemberDetail.Columns.PROFILE_ID+" in "+profileIds);
+            Utils.log("delete from "+Tables.AddressDetails.TABLE_NAME+" where "+Tables.AddressDetails.Columns.PROFILE_ID+" in "+profileIds+" and "+Tables.AddressDetails.Columns.ADDRESS_TYPE+" = '"+addressType+"'");
+            db.execSQL("delete from "+Tables.AddressDetails.TABLE_NAME+" where "+Tables.AddressDetails.Columns.PROFILE_ID+" in "+profileIds+" and "+Tables.AddressDetails.Columns.ADDRESS_TYPE+" = '"+addressType+"'");
+           // db.delete(Tables.AddressDetails.TABLE_NAME,Tables.AddressDetails.Columns.PROFILE_ID+" in ? and "+Tables.AddressDetails.Columns.ADDRESS_TYPE+" = ?",new String[]{profileIds,addressType});
             return true;
         } catch(Exception e){
             Utils.log("Error is : " + e);

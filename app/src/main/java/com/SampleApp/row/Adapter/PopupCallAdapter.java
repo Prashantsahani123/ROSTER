@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.ContactCallInfo;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by USER on 26-09-2016.

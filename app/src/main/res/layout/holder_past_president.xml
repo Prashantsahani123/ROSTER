@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:id="@+id/linear"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:id="@+id/linear">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
                 android:layout_centerInParent="true"
                 android:src="@drawable/profile_pic" />
         </LinearLayout>
@@ -47,9 +47,7 @@
                     android:layout_height="wrap_content"
                     android:text="Members Name"
                     android:textColor="@color/black"
-                    android:textSize="17dp"
-                    />
-
+                    android:textSize="17dp" />
 
 
                 <LinearLayout
@@ -81,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/right_arrow_blue"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 

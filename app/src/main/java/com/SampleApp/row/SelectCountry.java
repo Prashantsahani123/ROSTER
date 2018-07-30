@@ -18,17 +18,17 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.SampleApp.row.Adapter.SelectCountryAdapter;
+import com.SampleApp.row.Data.CountryData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.SelectCountryAdapter;
-import com.SampleApp.row.Data.CountryData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
 
 /**
  * Created by USER on 16-12-2015.

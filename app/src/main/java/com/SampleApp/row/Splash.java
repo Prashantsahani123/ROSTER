@@ -9,12 +9,11 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.services.ReplicaInfoSyncerService;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.services.ReplicaInfoSyncerService;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;

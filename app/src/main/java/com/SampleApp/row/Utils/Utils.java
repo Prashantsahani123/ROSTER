@@ -1,9 +1,11 @@
 package com.SampleApp.row.Utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -15,11 +17,25 @@ import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.SampleApp.row.Adapter.CallAdapter;
+import com.SampleApp.row.Adapter.MailAdapter;
+import com.SampleApp.row.Data.CalendarData;
+import com.SampleApp.row.Data.CountryData;
+import com.SampleApp.row.Data.ProfileData;
+import com.SampleApp.row.Data.profiledata.PopupPhoneNumberData;
+import com.SampleApp.row.R;
+import com.SampleApp.row.holders.MsgAdapter;
+import com.SampleApp.row.sql.ProfileModel;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,17 +52,16 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.SampleApp.row.Data.CountryData;
-import com.SampleApp.row.Data.ProfileData;
-import com.SampleApp.row.R;
 
 
 /**
@@ -61,7 +76,8 @@ public class Utils {
     public static String flag_dashboardWebCall = "0";
     public static String smsCount = "0";
 
-
+    public static String serUpdateOn="";
+    public final static Uri notiUri = Uri.parse("android.resource://com.SampleApp.row/raw/notification");
 
     //---------------- Variable
     public static String doFileUpload(File file_path, String type) {
@@ -117,7 +133,7 @@ public class Utils {
     }
 
     //http://192.168.2.224:8065/api/Member/UploadProfilePhoto?ProfileID=36&GrpID=1
-    public static String doFileUploadForProfilePic(File file_path, String ProfileID, String GrpID,String type) {
+    public static String doFileUploadForProfilePic(Context context, File file_path, String ProfileID, String GrpID, String type) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Log.d("Uri", "Do file path" + file_path);
@@ -153,6 +169,8 @@ public class Utils {
                 final String status = ActivityResult.getString("status");
                 if (status.equals("0")) {
                     id = "0"; // Sucess
+
+                    new ProfileModel(context).updateProfilePic(ProfileID, ActivityResult.getString("Imagepath"), type,GrpID);
 
                 } else {
                     id = "1"; // Fail
@@ -294,7 +312,8 @@ public class Utils {
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
 
-            return getDataColumn(context, uri, null, null);
+//            return getDataColumn(context, uri, null, null);
+            return getGDriveDataColumn(context, uri, null, null);
         }
         // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
@@ -302,6 +321,47 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static String getGDriveDataColumn(Context context, Uri uri, String selection,
+                                             String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_display_name";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                String file = context.getExternalFilesDir(null) + cursor.getString(column_index);
+                Utils.log(file);
+                OutputStream os = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                //read from is to buffer
+                InputStream is = context.getContentResolver().openInputStream(uri);
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                is.close();
+                //flush OutputStream to write any buffered data to file
+                os.flush();
+                os.close();
+                return file;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return null;
+
     }
 
     /**
@@ -408,7 +468,6 @@ public class Utils {
     }
 
 
-
     public static Dialog loadingDialog(final Context ctx) {
         final Dialog dialog = new Dialog(ctx, android.R.style.Theme_Translucent);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -508,7 +567,7 @@ public class Utils {
     }
 
     public static String getMonth(String month) {
-        Hashtable<String,  String> months = new Hashtable<String, String>();
+        Hashtable<String, String> months = new Hashtable<String, String>();
 
         months.put("01", "Jan");
         months.put("02", "Feb");
@@ -526,15 +585,14 @@ public class Utils {
     }
 
     public static void log(String message) {
-        Log.e("Touchbase", "♦♦♦♦"+message);
+        Log.e("Touchbase", "♦♦♦♦" + message);
     }
 
-    final public static String implode(String glue, List<String> array)
-    {
+    final public static String implode(String glue, List<String> array) {
         boolean first = true;
         StringBuilder str = new StringBuilder();
         for (String s : array) {
-            if (! s.trim().equals("")) {
+            if (!s.trim().equals("")) {
                 if (!first) str.append(glue);
                 str.append(s);
                 first = false;
@@ -550,7 +608,7 @@ public class Utils {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuffer buffer = new StringBuffer();
             String line = new String("");
-            while( (line = br.readLine()) != null ) {
+            while ((line = br.readLine()) != null) {
                 buffer.append(line);
             }
             br.close();
@@ -579,11 +637,11 @@ public class Utils {
                     //listview.setAdapter(adapter_countryData);
                 }
             } catch (Exception e) {
-                Utils.log("Error is : "+e);
+                Utils.log("Error is : " + e);
                 e.printStackTrace();
             }
-        } catch(Exception e) {
-            Utils.log("Error is : "+e);
+        } catch (Exception e) {
+            Utils.log("Error is : " + e);
             e.printStackTrace();
         }
 
@@ -593,15 +651,15 @@ public class Utils {
     public static String getCountryCode(Context context, String countryID) {
         ArrayList<CountryData> list = getCountryList(context);
         String countryCode = "";
-        for (CountryData cd:list) {
-            if ( cd.getCountryId().equals(countryID)) {
+        for (CountryData cd : list) {
+            if (cd.getCountryId().equals(countryID)) {
                 return cd.getCountryCode();
             }
         }
         return countryCode;
     }
 
-    final static Pattern EMAIL_PATTERN = Pattern.compile( "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+    final static Pattern EMAIL_PATTERN = Pattern.compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
             "\\@" +
             "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
             "(" +
@@ -613,5 +671,234 @@ public class Utils {
     public static boolean isValidEmailId(String emailId) {
         return EMAIL_PATTERN.matcher(emailId).matches();
     }
+
+    public static void showCallPopup(final Context context, final ArrayList<CalendarData> myCallList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = ((Activity) context).getLayoutInflater().inflate(R.layout.popup_call, null);
+        builder.setView(view);
+
+        final AlertDialog callDialog = builder.create();
+        view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDialog.hide();
+            }
+        });
+        Utils.log("Phone numbers are : " + myCallList);
+        CallAdapter popupCallRVAdapter = new CallAdapter(context, myCallList);
+        popupCallRVAdapter.setOnPhoneNumberClickedListener(new CallAdapter.OnPhoneNumberClickedListener() {
+            @Override
+            public void phoneNumberClicked(PopupPhoneNumberData pnd, int position) {
+                callDialog.hide();
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: " + myCallList.get(position).getMemberNumber()));
+                context.startActivity(callIntent);
+            }
+        });
+        RecyclerView rvPhoneNumbers = (RecyclerView) view.findViewById(R.id.rvCallList);
+        rvPhoneNumbers.setLayoutManager(new LinearLayoutManager(context));
+        rvPhoneNumbers.setAdapter(popupCallRVAdapter);
+        callDialog.show();
+    }
+
+    public static void showMsgPopup(final Context context, final ArrayList<CalendarData> myCallList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = ((Activity) context).getLayoutInflater().inflate(R.layout.new_popup_msg, null);
+        builder.setView(view);
+
+        final RecyclerView rvPhoneNumbers = (RecyclerView) view.findViewById(R.id.rvCallList);
+        rvPhoneNumbers.setLayoutManager(new LinearLayoutManager(context));
+
+        final AlertDialog msgDialog = builder.create();
+        view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<CalendarData> myMsgList = ((MsgAdapter) rvPhoneNumbers.getAdapter()).getList();
+                int n = myMsgList.size();
+                ArrayList<String> selectedList = new ArrayList<>();
+                Intent msgIntent = new Intent(Intent.ACTION_VIEW);
+                for (int i = 0; i < n; i++) {
+                    CalendarData pnd = myMsgList.get(i);
+
+                    pnd.setSelected(false);
+                }
+                msgDialog.hide();
+            }
+        });
+
+
+        Utils.log("Phone numbers are : " + myCallList);
+        MsgAdapter popupMsgRVAdapter = new MsgAdapter(context, myCallList);
+
+        popupMsgRVAdapter.setOnPhoneNumberClickedListener(new MsgAdapter.OnPhoneNumberClickedListener() {
+            @Override
+            public void phoneNumberClicked(CalendarData pnd, int position) {
+                Intent msgIntent = new Intent(Intent.ACTION_VIEW);
+                //msgIntent.setType("vnd.android-dir/mms-sms");
+                //msgIntent.putExtra("address", pnd.getNumber());
+                msgIntent.setData(Uri.parse("smsto: " + Uri.encode(pnd.getMemberNumber())));
+                context.startActivity(msgIntent);
+                msgDialog.hide();
+            }
+        });
+
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = 0;
+                ArrayList<CalendarData> myMsgList = ((MsgAdapter) rvPhoneNumbers.getAdapter()).getList();
+                int n = myMsgList.size();
+                ArrayList<String> selectedList = new ArrayList<>();
+                Intent msgIntent = new Intent(Intent.ACTION_VIEW);
+                for (int i = 0; i < n; i++) {
+                    CalendarData pnd = myMsgList.get(i);
+
+                    if (pnd.isSelected()) {
+                        selectedList.add(pnd.getMemberNumber());
+                        count++;
+                    }
+                }
+
+                if (count == 0) {
+                    Toast.makeText(context, "Please select at least one mobile number to send message", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    String address = Utils.implode(", ", selectedList);
+                    //msgIntent.putExtra("address", address);
+                    msgIntent.setData(Uri.parse("smsto: " + Uri.encode(address)));
+                    try {
+                        context.startActivity(msgIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Sorry. Something went wrong.", Toast.LENGTH_LONG).show();
+                    }
+
+                    int m = myMsgList.size();
+                    for (int i = 0; i < m; i++) {
+                        myMsgList.get(i).setSelected(false);
+                    }
+                }
+                msgDialog.hide();
+
+            }
+        });
+
+        rvPhoneNumbers.setAdapter(popupMsgRVAdapter);
+        msgDialog.show();
+    }
+
+    public static void showEmailPopup(final Context context, final ArrayList<CalendarData> myCallList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = ((Activity) context).getLayoutInflater().inflate(R.layout.new_mail_popup, null);
+        builder.setView(view);
+
+        final ArrayList<String> selectedList = new ArrayList<>();
+        final RecyclerView rvMail = (RecyclerView) view.findViewById(R.id.rvMail);
+        rvMail.setLayoutManager(new LinearLayoutManager(context));
+
+        final MailAdapter popupMsgRVAdapter = new MailAdapter(context, myCallList);
+
+        final AlertDialog msgDialog = builder.create();
+        view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<CalendarData> myMsgList = ((MailAdapter) rvMail.getAdapter()).getList();
+                int n = myMsgList.size();
+
+
+                for (int i = 0; i < n; i++) {
+                    CalendarData pnd = myMsgList.get(i);
+                    pnd.setSelected(false);
+                }
+
+                msgDialog.hide();
+            }
+        });
+
+        Utils.log("Phone numbers are : " + myCallList);
+
+
+        popupMsgRVAdapter.setOnEmailIdClickedListener(new MailAdapter.OnEmailIdClickedListener() {
+
+            @Override
+            public void onEmailIdClickListener(CalendarData pnd, int position) {
+                final Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setType("plain/text");
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{pnd.getMemberEmail()});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                context.startActivity(emailIntent);
+                msgDialog.hide();
+            }
+        });
+
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = 0;
+                ArrayList<CalendarData> myMsgList = ((MailAdapter) rvMail.getAdapter()).getList();
+                int n = myMsgList.size();
+
+
+                for (int i = 0; i < n; i++) {
+                    CalendarData pnd = myMsgList.get(i);
+
+                    if (pnd.isSelected()) {
+                        selectedList.add(pnd.getMemberEmail());
+                        count++;
+                    }
+                }
+
+                if (count == 0) {
+                    Toast.makeText(context, "Please select at least one email id to send mail", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+
+                    String address = Utils.implode(", ", selectedList);
+
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                    emailIntent.setType("plain/text");
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+                    try {
+                        context.startActivity(emailIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Sorry. Something went wrong.", Toast.LENGTH_LONG).show();
+                    }
+
+                    int m = myMsgList.size();
+                    for (int i = 0; i < m; i++) {
+                        myMsgList.get(i).setSelected(false);
+                    }
+                }
+                msgDialog.hide();
+            }
+        });
+
+        rvMail.setAdapter(popupMsgRVAdapter);
+        msgDialog.show();
+    }
+
+    public static void hideKeyBoard(Activity activity, View v) {
+        View view = activity.getCurrentFocus();
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+    }
+
+    public static boolean isServiceRunning(Class<?> serviceClass,Context context) {
+        ActivityManager manager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }

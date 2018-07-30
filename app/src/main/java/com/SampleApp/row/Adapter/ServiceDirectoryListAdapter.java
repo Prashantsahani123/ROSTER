@@ -8,13 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.ServiceDirectoryListData;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.ServiceDirectoryListData;
-import com.SampleApp.row.Utils.CircleTransform;
 
 /**
  * Created by USER1 on 19-07-2016.

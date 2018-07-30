@@ -12,13 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.Data.EventListData;
 import com.SampleApp.row.Data.NotificationCountData;
 import com.SampleApp.row.EventDetails;
@@ -26,6 +19,12 @@ import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by USER on 02-02-2016.
@@ -48,10 +47,10 @@ public class EventListAdapter extends ArrayAdapter<EventListData> {
         this.eventListDatas = eventListDatas;
     }
 
-    public void setGridData(ArrayList<DirectoryData> directoryDatas) {
-        this.eventListDatas = eventListDatas;
-        notifyDataSetChanged();
-    }
+//    public void setGridData(ArrayList<DirectoryData> directoryDatas) {
+//        this.eventListDatas = eventListDatas;
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -64,6 +63,8 @@ public class EventListAdapter extends ArrayAdapter<EventListData> {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
 
+
+
             // holder.imageView = (ImageView) row.findViewById(R.id.imageView1);
             holder.iv_cornerimg = (ImageView) row.findViewById(R.id.iv_cornerimg);
             holder.eventTitle = (TextView) row.findViewById(R.id.tv_event_title);
@@ -75,8 +76,10 @@ public class EventListAdapter extends ArrayAdapter<EventListData> {
             holder.tv_time = (TextView) row.findViewById(R.id.tv_time);
             holder.iv_reminder = (ImageView) row.findViewById(R.id.iv_reminder);
             holder.iv_location = (ImageView) row.findViewById(R.id.iv_location);
-                holder.iv_reminder.setTag(position);
+            holder.iv_reminder.setTag(position);
             row.setTag(holder);
+
+
         } else {
             holder = (ViewHolder) row.getTag();
         }

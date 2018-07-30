@@ -1,5 +1,6 @@
 package com.SampleApp.row.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Announcement;
 import com.SampleApp.row.Announcement_details;
 import com.SampleApp.row.Data.AnnouncementListData;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Constant;
+
+import java.util.ArrayList;
 
 /**
  * Created by USER on 02-02-2016.
@@ -40,6 +41,7 @@ public class AnnouncementListAdapter extends ArrayAdapter<AnnouncementListData> 
         notifyDataSetChanged();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -76,11 +78,11 @@ public class AnnouncementListAdapter extends ArrayAdapter<AnnouncementListData> 
         holder.date.setText(item.getPublishDateTime());
         if (item.getFilterType().equals("1")) //1-publish , 2-unpublish, 3-expired
         {
-            holder.time.setText("PUBLISHED");
+            holder.time.setText(R.string.published);
         } else if (item.getFilterType().equals("2")) {
-            holder.time.setText("UN-PUBLISHED");
+            holder.time.setText(R.string.unPublished);
         } else if (item.getFilterType().equals("3")) {
-            holder.time.setText("EXPIRED");
+            holder.time.setText(R.string.expired);
         }
 
         if (item.getIsRead().equalsIgnoreCase("no") && item.getFilterType().equals(Constant.FILTER_TYPE_PUBLISHED)) {

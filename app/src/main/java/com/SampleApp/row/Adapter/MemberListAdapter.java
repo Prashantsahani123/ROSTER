@@ -12,15 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.DirectoryData;
-
-
-import com.SampleApp.row.Utils.CircleTransform;
 
 public class MemberListAdapter extends BaseAdapter {
 	Context ctx;
@@ -60,7 +57,15 @@ public class MemberListAdapter extends BaseAdapter {
 
 
 		((TextView) view.findViewById(R.id.tvDescr)).setText(p.getMemberName());
-		((TextView) view.findViewById(R.id.tv_mobile)).setText(p.getMembermobile());
+
+		if(p.getType()!=null && p.getType().equalsIgnoreCase("Attendance")){
+			((TextView) view.findViewById(R.id.tv_mobile)).setVisibility(View.GONE);
+
+		}else {
+			((TextView) view.findViewById(R.id.tv_mobile)).setVisibility(View.VISIBLE);
+			((TextView) view.findViewById(R.id.tv_mobile)).setText(p.getMembermobile());
+
+		}
 
 
 		if (p.getPic().equals("") || p.getPic() == null || p.getPic().isEmpty()) {
@@ -80,23 +85,33 @@ public class MemberListAdapter extends BaseAdapter {
 
 
 		LinearLayout name = (LinearLayout)view.findViewById(R.id.linear_name);
+		name.setTag(position);
 
-		name.setOnClickListener(new View.OnClickListener() {
-			@Override
+//		name.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//
+//
+//			public void onClick(View v) {
+//
+//				int pos= (int) v.getTag();
+//
+//				DirectoryData directoryData=objects.get(pos);
+//				directoryData.setEdited(true);
+//
+//
+//				if(cbBuy.isChecked()==true)
+//				{
+//					cbBuy.setChecked(false);
+//				}
+//				else
+//					cbBuy.setChecked(true);
+//
+//			}
+//
+//		});
 
+		cbBuy.setOnClickListener(onClickListener);
 
-			public void onClick(View v) {
-
-				if(cbBuy.isChecked()==true)
-				{
-					cbBuy.setChecked(false);
-				}
-				else
-					cbBuy.setChecked(true);
-
-			}
-
-		});
 
 		return view;
 	}
@@ -123,4 +138,20 @@ public class MemberListAdapter extends BaseAdapter {
 		}
 	};
 
+	View.OnClickListener onClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int pos= (int) v.getTag();
+
+            DirectoryData directoryData=objects.get(pos);
+            directoryData.setEdited(true);
+           // directoryData.setIsDeleted(((CheckBox)v).isChecked());
+        }
+    };
+
+
+
+	public ArrayList<DirectoryData> getObjects() {
+		return objects;
+	}
 }

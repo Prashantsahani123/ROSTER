@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.CalendarData;
+import com.SampleApp.row.R;
+import com.SampleApp.row.sql.CalendarMasterModel;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import com.SampleApp.row.Data.CalendarData;
-import com.SampleApp.row.R;
-import com.SampleApp.row.sql.CalendarMasterModel;
 
 /**
  * Created by user on 03-02-2017.

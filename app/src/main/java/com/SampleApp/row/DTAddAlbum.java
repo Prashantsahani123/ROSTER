@@ -1,6 +1,8 @@
 package com.SampleApp.row;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,25 +18,44 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.SpinnerAdapter;
+import com.SampleApp.row.Data.AlbumData;
 import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.Data.SubGoupData;
+import com.SampleApp.row.Data.UploadPhotoData;
+import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.services.UploadPhotoService;
+import com.SampleApp.row.sql.UploadedPhotoModel;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,7 +63,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.SampleApp.row.Utils.PreferenceManager.MY_CATEGORY;
@@ -52,29 +76,49 @@ import static com.SampleApp.row.Utils.PreferenceManager.MY_CATEGORY;
  */
 public class DTAddAlbum extends Activity {
     ArrayList<String> selectedsubgrp;
-    TextView tv_title, tv_cancel;
-    ImageView iv_backbutton, iv_edit, iv_event_photo;
+    TextView tv_title, tv_cancel, tv_clubServiceInfo;
+    ImageView iv_backbutton, iv_edit, iv_event_photo, iv_album_photo, iv_album_photo2, iv_album_photo3, iv_album_photo4;
+    EditText et_coverPhoto, et_album_photo3, et_album_photo2, et_album_photo1, et_album_photo4;
     RadioButton d_radio0, d_radio1, d_radio2;
-    TextView tv_getCount, tv_add;
+    TextView tv_getCount, tv_add, et_DOP;
     String galleryType = "0";
     ArrayList<DirectoryData> listaddmemberdata = new ArrayList<>();
     ArrayList<SubGoupData> listaddsubgrp = new ArrayList<>();
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
-
+    SpinnerAdapter adapter;
     private String groupType = "1";
     private RadioGroup rgShare;
-    //private RadioButton rbInClub, rbPublic;
+    private RadioButton rbInClub, rbPublic;
 
     private String hasimageflag = "0";
-    private String galleryId = "0";
+    private String galleryId = "0", albumId = "";
+    ;
     private String edit_gallery_selectedids = "0";
     ProgressDialog pd;
     private String uploadedimgid = "0";
-    EditText et_gallery_title, et_description;
+    EditText et_gallery_title, et_description, et_categoryName, et_noOfRotarians, et_COP, et_Beneficiary, et_manPower;
     String inputids = "";
     private String flag_callwebsercie = "0";
     private String moduleName = "";
     private Context context;
+    Spinner sp_category, et_currency, sp_timeType;
+    ArrayList<AlbumData> categoryList = new ArrayList<>();
+    String categoryID, projectDate;
+    ArrayList<String> currencyList = new ArrayList<>();
+    ArrayList<String> timeType = new ArrayList<>();
+    ProgressDialog progressDialog;
+    TextView tv_TimeCountType;
+    LinearLayout ll_rotaryServicecontent,ll_category,ll_photos;
+    int imgFlag = 0;
+    int flag = 1, deletePhotoflag = 0;
+    ArrayList<String> imageList = new ArrayList<>();
+    ArrayList<String> descList = new ArrayList<>();
+    UploadPhotoData data;
+    UploadedPhotoModel addPhotoModel;
+    String groupId = "";
+    String createdBy = "";
+    ImageView close1, close2, close3, close4, close5;
+    String isdelete = "false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +128,12 @@ public class DTAddAlbum extends Activity {
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
 
+        addPhotoModel = new UploadedPhotoModel(this);
+        groupId = PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID);
+        createdBy = PreferenceManager.getPreference(this, PreferenceManager.GRP_PROFILE_ID);
+
         moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Album");
-        tv_title.setText("New " + moduleName);
+        tv_title.setText("New Gallery");
 
         d_radio0 = (RadioButton) findViewById(R.id.d_radio0);
         d_radio1 = (RadioButton) findViewById(R.id.d_radio1);
@@ -96,17 +144,119 @@ public class DTAddAlbum extends Activity {
         iv_edit = (ImageView) findViewById(R.id.iv_edit);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         iv_event_photo = (ImageView) findViewById(R.id.iv_event_photo);
+        iv_album_photo = (ImageView) findViewById(R.id.iv_album_photo);
+        iv_album_photo2 = (ImageView) findViewById(R.id.iv_album_photo2);
+        iv_album_photo3 = (ImageView) findViewById(R.id.iv_album_photo3);
+        iv_album_photo4 = (ImageView) findViewById(R.id.iv_album_photo4);
+
+        et_coverPhoto = (EditText) findViewById(R.id.et_coverPhoto);
+        et_album_photo1 = (EditText) findViewById(R.id.et_album_photo1);
+        et_album_photo2 = (EditText) findViewById(R.id.et_album_photo2);
+        et_album_photo3 = (EditText) findViewById(R.id.et_album_photo3);
+        et_album_photo4 = (EditText) findViewById(R.id.et_album_photo4);
+
+
         tv_add = (TextView) findViewById(R.id.tv_done);
 
         et_gallery_title = (EditText) findViewById(R.id.et_galleryTitle);
         et_description = (EditText) findViewById(R.id.et_evetDesc);
 
+        close1 = (ImageView) findViewById(R.id.close1);
+        close2 = (ImageView) findViewById(R.id.close2);
+        close3 = (ImageView) findViewById(R.id.close3);
+        close4 = (ImageView) findViewById(R.id.close4);
+        close5 = (ImageView) findViewById(R.id.close5);
+
+
+        et_categoryName = (EditText) findViewById(R.id.et_categoryName);
+        et_DOP = (TextView) findViewById(R.id.et_DOP);
+        et_DOP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datepicker(et_DOP);
+            }
+        });
+        et_COP = (EditText) findViewById(R.id.et_COP);
+        et_Beneficiary = (EditText) findViewById(R.id.et_Beneficiary);
+        et_manPower = (EditText) findViewById(R.id.et_manPower);
+        et_noOfRotarians = (EditText) findViewById(R.id.et_noOfRotarians);
+
+        tv_clubServiceInfo = (TextView) findViewById(R.id.tv_clubServiceInfo);
+        ll_rotaryServicecontent = (LinearLayout) findViewById(R.id.ll_rotaryServicecontent);
+        ll_category = (LinearLayout) findViewById(R.id.ll_category);
+        ll_photos = (LinearLayout)findViewById(R.id.ll_photos);
+
+        sp_category = (Spinner) findViewById(R.id.sp_category);
+
+        sp_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                AlbumData data = categoryList.get(position);
+                categoryID = data.getDistrict_id();
+                if (categoryList.get(position).getDistrict_Name().equalsIgnoreCase("others")) {
+                    et_categoryName.setVisibility(View.VISIBLE);
+                } else {
+                    et_categoryName.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        et_currency = (Spinner) findViewById(R.id.et_currency);
+        currencyList.add("\u20B9");
+        currencyList.add("$");
+        ArrayAdapter adapter = new ArrayAdapter(DTAddAlbum.this, android.R.layout.simple_spinner_dropdown_item, currencyList);
+        et_currency.setAdapter(adapter);
+
+        sp_timeType = (Spinner) findViewById(R.id.sp_timeType);
+        timeType.add("Hours");
+        timeType.add("Days");
+        timeType.add("Months");
+        timeType.add("Years");
+        ArrayAdapter adapter1 = new ArrayAdapter(DTAddAlbum.this, android.R.layout.simple_spinner_dropdown_item, timeType);
+        sp_timeType.setAdapter(adapter1);
+
         rgShare = (RadioGroup) findViewById(R.id.rgShare);
+        rbInClub = (RadioButton) findViewById(R.id.rbInClub);
+        if (rbInClub.isChecked()) {
+            ll_rotaryServicecontent.setVisibility(View.GONE);
+            ll_category.setVisibility(View.GONE);
+            tv_clubServiceInfo.setVisibility(View.VISIBLE);
+        }
+
+        rbInClub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ll_rotaryServicecontent.setVisibility(View.VISIBLE);
+                ll_category.setVisibility(View.VISIBLE);
+                tv_clubServiceInfo.setVisibility(View.GONE);
+            }
+        });
+
+        rbPublic = (RadioButton) findViewById(R.id.rbPublic);
+        rbPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ll_rotaryServicecontent.setVisibility(View.GONE);
+                ll_category.setVisibility(View.GONE);
+                tv_clubServiceInfo.setVisibility(View.VISIBLE);
+            }
+        });
+
+        for (int i = 0; i < 5; i++) {
+            imageList.add("");
+            descList.add("");
+        }
 
         groupType = PreferenceManager.getPreference(context, MY_CATEGORY, "" + Constant.GROUP_CATEGORY_CLUB);
         Utils.log("Group type is : " + groupType);
         clearselectedtext();
         init();
+        getCategoryList();
     }
 
     private void clearselectedtext() {
@@ -175,6 +325,74 @@ public class DTAddAlbum extends Activity {
 
         });
 
+
+        iv_album_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!marshMallowPermission.checkPermissionForCamera()) {
+                    marshMallowPermission.requestPermissionForCamera();
+                } else {
+                    if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    } else {
+                        flag = 2;
+                        selectAlbumImages();
+                    }
+                }
+
+            }
+        });
+        iv_album_photo2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!marshMallowPermission.checkPermissionForCamera()) {
+                    marshMallowPermission.requestPermissionForCamera();
+                } else {
+                    if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    } else {
+                        flag = 3;
+                        selectAlbumImages();
+                    }
+                }
+
+            }
+        });
+        iv_album_photo3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!marshMallowPermission.checkPermissionForCamera()) {
+                    marshMallowPermission.requestPermissionForCamera();
+                } else {
+                    if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    } else {
+                        flag = 4;
+                        selectAlbumImages();
+                    }
+                }
+
+            }
+        });
+
+        iv_album_photo4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!marshMallowPermission.checkPermissionForCamera()) {
+                    marshMallowPermission.requestPermissionForCamera();
+                } else {
+                    if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    } else {
+                        flag = 5;
+                        selectAlbumImages();
+                    }
+                }
+
+            }
+        });
+
+
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,6 +409,215 @@ public class DTAddAlbum extends Activity {
             }
         });
 
+        close1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(DTAddAlbum.this, android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.popup_confrm_delete);
+                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+                TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+                tv_line1.setText("Are you sure you want to delete this Photo");
+                tv_no.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "false";
+
+                    }
+                });
+                tv_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "true";
+
+
+                        deletePhotoflag = 1;
+                        if (!imageList.get(0).isEmpty()) {
+                            imageList.remove(0);
+                            imageList.add(0, "");
+                            iv_event_photo.setBackground(getResources().getDrawable(R.drawable.asset));
+                            iv_event_photo.setImageResource(0);
+                            close1.setVisibility(View.GONE);
+                        }
+
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        close2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(DTAddAlbum.this, android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.popup_confrm_delete);
+                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+                TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+                tv_line1.setText("Are you sure you want to delete this Photo");
+                tv_no.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "false";
+
+                    }
+                });
+                tv_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "true";
+                        deletePhotoflag = 1;
+                        if (!imageList.get(1).isEmpty()) {
+                            imageList.remove(1);
+                            imageList.add(1, "");
+                            iv_album_photo.setBackground(getResources().getDrawable(R.drawable.asset));
+                            iv_album_photo.setImageResource(0);
+                            close2.setVisibility(View.GONE);
+                        }
+
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        close3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(DTAddAlbum.this, android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.popup_confrm_delete);
+                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+                TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+                tv_line1.setText("Are you sure you want to delete this Photo");
+                tv_no.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "false";
+
+                    }
+                });
+                tv_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "true";
+
+                        deletePhotoflag = 1;
+                        if (!imageList.get(2).isEmpty()) {
+                            imageList.remove(2);
+                            imageList.add(2, "");
+                            iv_album_photo2.setBackground(getResources().getDrawable(R.drawable.asset));
+                            iv_album_photo2.setImageResource(0);
+                            close3.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        close4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(DTAddAlbum.this, android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.popup_confrm_delete);
+                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+                TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+                tv_line1.setText("Are you sure you want to delete this Photo");
+                tv_no.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "false";
+
+                    }
+                });
+                tv_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "true";
+
+                        deletePhotoflag = 1;
+                        if (!imageList.get(3).isEmpty()) {
+                            imageList.remove(3);
+                            imageList.add(3, "");
+                            iv_album_photo3.setBackground(getResources().getDrawable(R.drawable.asset));
+                            iv_album_photo3.setImageResource(0);
+                            close4.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        close5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(DTAddAlbum.this, android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.popup_confrm_delete);
+                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+                TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
+                tv_line1.setText("Are you sure you want to delete this Photo");
+                tv_no.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "false";
+
+                    }
+                });
+                tv_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isdelete = "true";
+
+                        deletePhotoflag = 1;
+                        if (!imageList.get(4).isEmpty()) {
+                            imageList.remove(4);
+                            imageList.add(4, "");
+                            iv_album_photo4.setBackground(getResources().getDrawable(R.drawable.asset));
+                            iv_album_photo4.setImageResource(0);
+                            close5.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+
+
     }
 
     public void onRadioButtonClicked(View view) {
@@ -206,7 +633,6 @@ public class DTAddAlbum extends Activity {
                 d_radio1.setChecked(false);
                 d_radio2.setChecked(false);
                 d_radio2.setEnabled(true);
-
                 d_radio1.setEnabled(true);
 
                 clearselectedtext();
@@ -244,6 +670,38 @@ public class DTAddAlbum extends Activity {
 
     }
 
+    public void datepicker(final TextView setdatetext) {
+        // Get Current Date
+        int mYear, mMonth, mDay, mHour, mMinute;
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        try {
+                            SimpleDateFormat format = new SimpleDateFormat("dd MM yyyy");
+                            Date newDate = format.parse(dayOfMonth + " " + (monthOfYear + 1) + " " + year);
+
+                            format = new SimpleDateFormat("dd MMM yyyy");
+                            String date = format.format(newDate);
+                            projectDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                            setdatetext.setText(date);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+        // datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
     private void webservices() {
         List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
@@ -262,15 +720,41 @@ public class DTAddAlbum extends Activity {
         arrayList.add(new BasicNameValuePair("albumDescription", et_description.getText().toString()));
         arrayList.add(new BasicNameValuePair("albumImage", uploadedimgid));
         arrayList.add(new BasicNameValuePair("createdBy", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID)));
-        String shareType = "0";  // 0 means within the district only always
+        String shareType = "";
+        arrayList.add(new BasicNameValuePair("dateofproject", projectDate));
+        if (rbInClub.isChecked()) {
+            shareType = "0";
+            arrayList.add(new BasicNameValuePair("shareType", shareType));
+            arrayList.add(new BasicNameValuePair("costofproject", ""));
+            arrayList.add(new BasicNameValuePair("beneficiary", ""));
+            arrayList.add(new BasicNameValuePair("manhourspent", ""));
+            arrayList.add(new BasicNameValuePair("categoryId", ""));
+            arrayList.add(new BasicNameValuePair("manhourspenttype", ""));
+            arrayList.add(new BasicNameValuePair("NumberofRotarian", ""));
+            arrayList.add(new BasicNameValuePair("OtherCategorytext", ""));
+            arrayList.add(new BasicNameValuePair("costofprojecttype", ""));
 
-        arrayList.add(new BasicNameValuePair("shareType", shareType));
+        } else if (rbPublic.isChecked()) {
+            shareType = "1";
+            arrayList.add(new BasicNameValuePair("shareType", shareType));
+            arrayList.add(new BasicNameValuePair("costofproject", et_COP.getText().toString()));
+            arrayList.add(new BasicNameValuePair("beneficiary", et_Beneficiary.getText().toString()));
+            arrayList.add(new BasicNameValuePair("manhourspent", et_manPower.getText().toString()));
+            arrayList.add(new BasicNameValuePair("categoryId", categoryID));
+            arrayList.add(new BasicNameValuePair("manhourspenttype", "Hours"));
+            arrayList.add(new BasicNameValuePair("NumberofRotarian", et_noOfRotarians.getText().toString()));
+            arrayList.add(new BasicNameValuePair("OtherCategorytext", et_categoryName.getText().toString()));
+            arrayList.add(new BasicNameValuePair("costofprojecttype", (et_currency.getSelectedItemPosition() + 1) + ""));
+        }
 
 
         flag_callwebsercie = "0";
 
-        Log.d("Response", "PARAMETERS " + Constant.AddAlbum + " :- " + arrayList.toString());
-        new WebConnectionAsyncLogin(Constant.AddAlbum, arrayList, DTAddAlbum.this).execute();
+        Log.d("Response", "PARAMETERS " + Constant.AddUpdateAlbum_New + " :- " + arrayList.toString());
+        new WebConnectionAsyncLogin(Constant.AddUpdateAlbum_New, arrayList, DTAddAlbum.this).execute();
+
+//        Log.d("Response", "PARAMETERS " + Constant.AddAlbum + " :- " + arrayList.toString());
+//        new WebConnectionAsyncLogin(Constant.AddAlbum, arrayList, DTAddAlbum.this).execute();
     }
 
 
@@ -342,10 +826,38 @@ public class DTAddAlbum extends Activity {
                 Intent intent = new Intent();
                 setResult(1, intent);
 
-                if (tv_add.getText().equals("Done"))
-                    Toast.makeText(DTAddAlbum.this, "Album Added successfully.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(DTAddAlbum.this, "Album updated successfully.", Toast.LENGTH_SHORT).show();
+
+                albumId = ActivityResult.getString("galleryid");
+
+                if (iv_event_photo.getDrawable() != null) {
+                    descList.remove(0);
+                    descList.add(0,et_coverPhoto.getText().toString());
+                }
+
+                if (iv_album_photo.getDrawable() != null) {
+                    descList.remove(1);
+                    descList.add(1,et_album_photo1.getText().toString());
+                }
+
+                if (iv_album_photo2.getDrawable() != null) {
+                    descList.remove(2);
+                    descList.add(2,et_album_photo2.getText().toString());
+                }
+
+                if (iv_album_photo3.getDrawable() != null) {
+                    descList.remove(3);
+                    descList.add(3,et_album_photo3.getText().toString());
+                }
+
+                if (iv_album_photo4.getDrawable() != null) {
+                    descList.remove(4);
+                    descList.add(4,et_album_photo4.getText().toString());
+                }
+
+                getAlbumImagesData();
+
+
+                //Toast.makeText(DTAddAlbum.this, "Album Added successfully.", Toast.LENGTH_SHORT).show();
 
                 Log.d("Touchbase", "*************** " + status);
                 Log.d("Touchbase", "*************** " + msg);
@@ -356,7 +868,6 @@ public class DTAddAlbum extends Activity {
                     Toast.makeText(DTAddAlbum.this, "Failed to add album.", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(DTAddAlbum.this, "Failed to update album.", Toast.LENGTH_SHORT).show();
-
             }
 
         } catch (Exception e) {
@@ -365,26 +876,113 @@ public class DTAddAlbum extends Activity {
 
     }
 
+    private void getAlbumImagesData() {
+        for (int i = 0; i < imageList.size(); i++) {
+            if (!imageList.get(i).equals("")) {
+                data = new UploadPhotoData("0", imageList.get(i).toString(), descList.get(i).toString(), albumId, groupId, createdBy, "0");
+                long id = addPhotoModel.insert(data);
+
+//            if(id>0 && imageList.size()-1 == i){
+//
+//                //   Toast.makeText(AddPhotoActivity.this,"Data saved Successfully",Toast.LENGTH_SHORT).show();
+//            }
+            }
+        }
+
+
+            Toast.makeText(DTAddAlbum.this, "Album Added successfully.", Toast.LENGTH_SHORT).show();
+
+
+        finish();
+        Log.d("UploadPhotoService", "UploadPhotoService is Called");
+        Intent intent = new Intent(DTAddAlbum.this, UploadPhotoService.class);
+        startService(intent);
+    }
+
 
     public boolean validation() {
-        if (et_gallery_title.getText().toString().trim().matches("") || et_gallery_title.getText().toString().trim() == null) {
-            Toast.makeText(DTAddAlbum.this, "Please enter the Album “Title”", Toast.LENGTH_LONG).show();
+        if (rbInClub.isChecked()) {
+            if (et_gallery_title.getText().toString().trim().matches("") || et_gallery_title.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Title", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if (et_description.getText().toString().trim().matches("") || et_description.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Description.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (imgFlag == 0) {
+                Toast.makeText(DTAddAlbum.this, "Please select atleast one photo.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (et_DOP.getText().toString().trim().matches("") || et_DOP.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please select date.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            return true;
+        } else if (rbPublic.isChecked()) {
+
+            if (et_DOP.getText().toString().trim().matches("") || et_DOP.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please select date.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (et_COP.getText().toString().trim().matches("") || et_COP.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter cost.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (et_Beneficiary.getText().toString().trim().matches("") || et_Beneficiary.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Beneficiaries.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if (et_manPower.getText().toString().trim().matches("") || et_manPower.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Man hours.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (et_noOfRotarians.getText().toString().trim().matches("") || et_noOfRotarians.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Rotarians.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if (et_gallery_title.getText().toString().trim().matches("") || et_gallery_title.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Title", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (et_description.getText().toString().trim().matches("") || et_description.getText().toString().trim() == null) {
+                Toast.makeText(DTAddAlbum.this, "Please enter Description.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (imgFlag == 0) {
+                Toast.makeText(DTAddAlbum.this, "Please select atleast one photo.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
     private void selectImage() {
 
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 2);
+
         final CharSequence[] options;
+        options = new CharSequence[]{"Choose from Gallery"};
 
-        if (hasimageflag.equals("0")) {
-            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
-            hasimageflag = "1";
-        } else {
-            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Remove Photo", "Cancel"};
-
-        }
+//        if (hasimageflag.equals("0")) {
+//            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
+//            hasimageflag = "1";
+//        } else {
+//            options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Remove Photo", "Cancel"};
+//
+//        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DTAddAlbum.this);
         builder.setTitle("Add Photo!");
@@ -399,24 +997,26 @@ public class DTAddAlbum extends Activity {
                     startActivityForResult(intent, 4);
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-
                     startActivityForResult(intent, 2);
-
                 } else if (options[item].equals("Cancel")) {
+                    imgFlag = 0;
                     dialog.dismiss();
                 } else if (options[item].equals("Remove Photo")) {
                     if (galleryId.equals("0")) {
                         iv_event_photo.setImageResource(R.drawable.edit_image);
-
+                        imgFlag = 0;
                     } else {
                         //remove_photo_webservices();
                     }
-
                 }
             }
         });
-        builder.show();
+        // builder.show();
+    }
+
+    private void selectAlbumImages() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 6);
     }
 
     @Override
@@ -562,7 +1162,7 @@ public class DTAddAlbum extends Activity {
                             bitmapOptions);
                     Bitmap bt = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
                     iv_event_photo.setImageBitmap(bt);
-
+                    iv_event_photo.setBackground(null);
                     String path = Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -578,6 +1178,10 @@ public class DTAddAlbum extends Activity {
                     Thread thread = new Thread(new Runnable() {
                         public void run() {
                             uploadedimgid = Utils.doFileUpload(new File(finalF.toString()), "gallery"); // Upload File to server
+                            imageList.remove(0);
+                            imageList.add(0, finalF.toString());
+                            Utils.log("URL : " + finalF.toString());
+                            imgFlag = 1;
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     if (pd.isShowing())
@@ -585,11 +1189,16 @@ public class DTAddAlbum extends Activity {
                                     Log.d("TOUCHBASE", "FILE UPLOAD ID InnerThread  " + uploadedimgid);
                                     if (uploadedimgid.equals("0")) {
                                         Toast.makeText(DTAddAlbum.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
-                                        iv_event_photo.setImageResource(R.drawable.edit_image);
+                                        //iv_event_photo.setImageResource(R.drawable.edit_image);
+                                        iv_event_photo.setBackground(getResources().getDrawable(R.drawable.asset));
+                                        imgFlag = 0;
+                                        imageList.add(0, "");
                                     }
                                     //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
                                 }
                             });
+                            ll_photos.setVisibility(View.VISIBLE);
+                            Utils.log(imageList.toString());
                         }
                     });
                     thread.start();
@@ -627,7 +1236,9 @@ public class DTAddAlbum extends Activity {
                 c.close();
                 final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
-
+                imageList.remove(0);
+                imageList.add(0,picturePath.toString());
+                imgFlag = 1;
                 ///-------------------------------------------------------------------
                 pd = ProgressDialog.show(DTAddAlbum.this, "", "Loading...", false);
                 Thread thread = new Thread(new Runnable() {
@@ -639,17 +1250,143 @@ public class DTAddAlbum extends Activity {
                                     pd.dismiss();
                                 if (uploadedimgid.equals("0")) {
                                     Toast.makeText(DTAddAlbum.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
-                                    iv_event_photo.setImageResource(R.drawable.edit_image);
+                                    //iv_event_photo.setImageResource(R.drawable.edit_image);
+                                    imageList.remove(0);
+                                    imageList.add(0,"");
+                                    iv_event_photo.setBackground(getResources().getDrawable(R.drawable.asset));
+                                    imgFlag = 0;
                                 } else {
+                                    ll_photos.setVisibility(View.VISIBLE);
                                     iv_event_photo.setImageBitmap(thumbnail);
+                                    iv_event_photo.setBackground(null);
+
                                 }
                                 //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
                             }
                         });
+                        Utils.log("Images " + imageList.toString());
                     }
                 });
                 thread.start();
             }
+        } else if (requestCode == 6) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                final String picturePath = c.getString(columnIndex);
+                c.close();
+                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
+                //imageList.add(picturePath.toString());
+
+                if (flag == 2) {
+                    imageList.remove(1);
+                    imageList.add(1, picturePath.toString());
+                    iv_album_photo.setImageBitmap(thumbnail);
+                    iv_album_photo.setBackground(null);
+                    close2.setVisibility(View.VISIBLE);
+                } else if (flag == 3) {
+                    imageList.remove(2);
+                    imageList.add(2, picturePath.toString());
+                    iv_album_photo2.setImageBitmap(thumbnail);
+                    iv_album_photo2.setBackground(null);
+                    close3.setVisibility(View.VISIBLE);
+                } else if (flag == 4) {
+                    imageList.remove(3);
+                    imageList.add(3, picturePath.toString());
+                    iv_album_photo3.setImageBitmap(thumbnail);
+                    iv_album_photo3.setBackground(null);
+                    close4.setVisibility(View.VISIBLE);
+                } else if (flag == 5) {
+                    imageList.remove(4);
+                    imageList.add(4, picturePath.toString());
+                    iv_album_photo4.setImageBitmap(thumbnail);
+                    iv_album_photo4.setBackground(null);
+                    close5.setVisibility(View.VISIBLE);
+                }
+                Utils.log("Images " + imageList.toString());
+            }
         }
     }
+
+    private void getCategoryList() {
+
+        try {
+            progressDialog = new ProgressDialog(DTAddAlbum.this, R.style.TBProgressBar);
+            progressDialog.setCancelable(false);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.show();
+
+            JSONObject requestData = new JSONObject();
+            requestData.put("DistrictID", "0");
+
+            Log.d("Response", "PARAMETERS " + Constant.GetShowcaseDetails + " :- " + requestData.toString());
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.GetShowcaseDetails, requestData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    JSONObject result;
+                    setAllShowcaseDetails(response);
+                    Utils.log(response.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                    }
+                    Utils.log("VollyError:- " + error.toString());
+                    //showErrorDialog();
+                    //Utils.showMsg(context, "Something went wrong");
+                    //Toast.makeText(getApplicationContext(),"Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            request.setRetryPolicy(
+                    new DefaultRetryPolicy(120000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            AppController.getInstance().addToRequestQueue(context, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setAllShowcaseDetails(JSONObject response) {
+        try {
+            JSONObject ShowcaseDetails = response.getJSONObject("ShowcaseDetails");
+            String status = ShowcaseDetails.getString("status");
+            if (status.equalsIgnoreCase("0")) {
+                JSONObject result = ShowcaseDetails.getJSONObject("Result");
+                JSONArray Categories = result.getJSONArray("Categories");
+                if (Categories.length() > 0) {
+                    for (int i = 1; i < Categories.length(); i++) {
+                        JSONObject categoryObj = Categories.getJSONObject(i);
+                        AlbumData data = new AlbumData();
+                        data.setDistrict_id(categoryObj.getString("ID"));
+                        data.setDistrict_Name(categoryObj.getString("Name"));
+                        categoryList.add(i - 1, data);
+                    }
+                }
+                adapter = new SpinnerAdapter(context, categoryList);
+                sp_category.setAdapter(adapter);
+                progressDialog.dismiss();
+            } else {
+                progressDialog.dismiss();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            progressDialog.dismiss();
+        }
+
+    }
+
+
 }

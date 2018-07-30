@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,12 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SampleApp.row.Adapter.AlbumPhotoAdapter;
-import com.SampleApp.row.Data.AlbumData;
 import com.SampleApp.row.Data.AlbumPhotoData;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
 
 import org.apache.http.NameValuePair;

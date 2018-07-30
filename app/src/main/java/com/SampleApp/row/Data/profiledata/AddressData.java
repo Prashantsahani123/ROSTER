@@ -4,6 +4,9 @@ package com.SampleApp.row.Data.profiledata;
  * Created by USER1 on 21-03-2017.
  */
 public class AddressData {
+    public AddressData() {
+    }
+
     String addressID, addressType, address, city, state, country, pincode, phoneNo, fax, profileID;
 
     public String getAddressID() {

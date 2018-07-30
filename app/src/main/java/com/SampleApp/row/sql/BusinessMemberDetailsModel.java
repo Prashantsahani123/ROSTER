@@ -5,13 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.profiledata.BusinessMemberDetails;
-import com.SampleApp.row.Data.profiledata.ClassificationData;
 import com.SampleApp.row.Data.profiledata.Separator;
 import com.SampleApp.row.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by USER1 on 22-03-2017.

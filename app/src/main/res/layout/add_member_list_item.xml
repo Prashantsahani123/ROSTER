@@ -1,59 +1,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical" >
-
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:id="@+id/linear_name"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            android:layout_weight="2"
-            android:gravity="center"
-            >
+            android:layout_weight="5"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_centerInParent="true"
 
-                android:src="@drawable/photo"
-                />
+                android:src="@drawable/photo" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_gravity="center"
 
-            android:orientation="vertical" >
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvDescr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17dp"
-                    android:textColor="@color/black"
                     android:text="Members Name"
-                    />
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -65,35 +62,35 @@
                         android:id="@+id/country_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:textColor="@color/black"
                         android:text="+91"
-                        />
+                        android:textColor="@color/black"
+                        android:visibility="gone" />
+
                     <TextView
                         android:id="@+id/tv_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
                         android:layout_marginLeft="5dp"
                         android:text="8600162855"
-                        />
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:gravity="right">
 
             <CheckBox
                 android:id="@+id/cbBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                />
+                android:padding="5dp" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

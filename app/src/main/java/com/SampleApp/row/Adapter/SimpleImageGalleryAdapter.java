@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.SampleApp.row.Data.SimplePhotoData;
 import com.SampleApp.row.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.SimplePhotoData;
 
 /**
  * Created by SONU on 29/08/15.

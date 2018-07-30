@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.SampleApp.row.Data.ClubGalleryData;
-import com.SampleApp.row.Data.ClubMemberData;
 import com.SampleApp.row.R;
-import com.SampleApp.row.Utils.CircleTransform;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.ClubGalleryHolder;
-import com.SampleApp.row.holders.ClubMemberHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
 import com.squareup.picasso.Picasso;
 

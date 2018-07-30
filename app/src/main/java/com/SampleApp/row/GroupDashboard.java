@@ -42,7 +42,6 @@ public class GroupDashboard extends Activity {
     GridView gv;
     TextView tv_title;
     ImageView iv_backbutton;
-
     public static  ArrayList<ModuleData> listmodules = new ArrayList<>();
     private ImageView iv_actionbtn;
     private String flag_callwebsercie ="0";
@@ -54,16 +53,17 @@ public class GroupDashboard extends Activity {
     int myCategory = Constant.GROUP_CATEGORY_CLUB;
     int cnt=0,cnt_eve=0,cnt_ann=0, cnt_bulletin=0,cnt_doc=0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.groupdashboard);
 
         boolean present = new ModuleDataModel(this).moduleExists(965, "11");
+
         Log.d("moduleExists", "Module with id 11 exists : "+present);
 
-		Intent intent = getIntent();
+        Intent intent = getIntent();
         position= intent.getIntExtra("position",0);
         group_Id = intent.getStringExtra("groupId");
         myCategory = Integer.parseInt(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MY_CATEGORY));
@@ -73,20 +73,23 @@ public class GroupDashboard extends Activity {
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
         iv_actionbtn.setVisibility(View.VISIBLE);
         iv_actionbtn.setImageResource(R.drawable.overflow_btn_blue);
+
         if ( myCategory > Constant.GROUP_CATEGORY_CLUB) {
             iv_actionbtn.setVisibility(View.GONE);
         }
+
         //  iv_backbutton.setVisibility(View.GONE);
         tv_title.setText(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_NAME));
 
         moduleDataModel = new ModuleDataModel(this);
         moduleDataModel.printTable();
-        Log.d("TouchBase", "***************GRP ID PREF " + PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
+
+        Log.d("TouchBase", "*************** GRP ID PREF " + PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
 
        // webservices();
+
         masteruid = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MASTER_USER_ID));
         groupId = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
-
 
         Log.e("ModuleList", listmodules.toString());
 
@@ -96,10 +99,14 @@ public class GroupDashboard extends Activity {
         gv.setAdapter(groupDashboadAdapter_new);
 
         /*gv.setAdapter(new GroupDashboadAdapter_new(this, listmodules,group_Id));*/
+
  		groupDashboadAdapter_new.notifyDataSetChanged();
+
         init();
+
         final SharedPreferences prefs = getGCMPreferences(GroupDashboard.this);
         String registrationId = prefs.getString(GCMClientManager.PROPERTY_REG_ID, "");
+
         Utils.log("GCM ID : "+registrationId);
         //loadRSS();
     }
@@ -125,34 +132,42 @@ public class GroupDashboard extends Activity {
     }
 
     private void init() {
+
         iv_actionbtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
             PopupMenu popup = new PopupMenu(GroupDashboard.this, iv_actionbtn);
             //Inflating the Popup using xml file
             //popup.getMenuInflater().inflate(R.menu.dashboard_menu, popup.getMenu());
             popup.getMenu().add(1, R.id.myprofile, 1, "My Profile");
-            popup.getMenu().add(1, R.id.settings, 2, "Settings");
+//            popup.getMenu().add(1, R.id.settings, 2, "Settings");
             popup.getMenu().add(1, R.id.ll_anyclub, 2, "My Club");
            // popup.getMenu().add(1, R.id.selfremove, 3, "Exit Entity");
 //            if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("Yes")) {
 //                popup.getMenu().add(1, R.id.deleteentity, 4, "Delete Entity");
 //            }
             //registering popup with OnMenuItemClickListener
+
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
                 public boolean onMenuItemClick(MenuItem item) {
+
                 switch (item.getItemId()) {
+
                     case R.id.myprofile:
+
                         Intent i = new Intent(getApplicationContext(), NewProfileActivity.class);
                         i.putExtra("memberProfileId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID));
                         i.putExtra("groupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
                         i.putExtra("fromMainDirectory", "yes");
                         startActivity(i);
 
-
                         // read the listItemPosition here
                         return true;
+
                     case R.id.settings:
+
                         if ( InternetConnection.checkConnection(getApplicationContext())) {
                             Intent ii = new Intent(getApplicationContext(), GroupSettings.class);
                             startActivity(ii);
@@ -321,8 +336,6 @@ public class GroupDashboard extends Activity {
             this.url = url;
             this.argList = argList;
             context = ctx;
-
-
         }
 
         @Override
@@ -431,7 +444,7 @@ public class GroupDashboard extends Activity {
             JSONObject EventResult = jsonObj.getJSONObject("TBDeleteEntityResult");
             final String status = EventResult.getString("status");
             if (status.equals("0")) {
-                Intent i = new Intent(GroupDashboard.this, GroupsListingDashboard.class);
+                Intent i = new Intent(GroupDashboard.this, DashboardActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 finish();

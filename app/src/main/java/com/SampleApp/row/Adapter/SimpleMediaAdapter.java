@@ -6,15 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.SampleApp.row.Data.SimpleGalleryItemData;
+import com.SampleApp.row.Data.SimplePhotoData;
 import com.SampleApp.row.R;
+import com.SampleApp.row.holders.SimplePhotoHolder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.SimpleGalleryItemData;
-import com.SampleApp.row.Data.SimplePhotoData;
-import com.SampleApp.row.holders.SimplePhotoHolder;
 
 
 /**

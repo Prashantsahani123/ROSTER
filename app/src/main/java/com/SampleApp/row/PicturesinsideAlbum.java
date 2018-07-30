@@ -17,14 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.SampleApp.row.Adapter.PictureInsideAlbumAdapter;
 import com.SampleApp.row.Data.PictureInsideAlbumData;
 import com.SampleApp.row.Data.SimplePhotoData;
 import com.SampleApp.row.Utils.ImageCompression;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -87,7 +87,13 @@ public class PicturesinsideAlbum extends Activity  {
                         Iterator<PictureInsideAlbumData> iterator = selected.iterator();
                         while (iterator.hasNext()) {
                             PictureInsideAlbumData data = iterator.next();
-                            SimplePhotoData photoData = new SimplePhotoData(data.getFilepath(), "");
+
+                            String desc="";
+
+                            if(data.getDesc()!=null && !data.getDesc().isEmpty()){
+                                desc=data.getDesc();
+                            }
+                            SimplePhotoData photoData = new SimplePhotoData(data.getFilepath(), desc);
 
                             selectedPhotos.add(photoData);
                             Log.e("path", photoData.getUrl());

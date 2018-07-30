@@ -219,9 +219,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border_bg_white"
+                        android:hint="Enter Title"
+                        android:inputType="textCapSentences"
                         android:padding="10dp"
-                        android:singleLine="true"
-                        android:hint="Enter Title"/>
+                        android:singleLine="true" />
 
                 </LinearLayout>
 
@@ -318,27 +319,123 @@
                     android:background="@color/seperator_color"
                     android:visibility="gone" />
 
+                <!--<LinearLayout-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:layout_margin="20dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/tv_upload_pdf"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@drawable/upload_img" />-->
+
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_file_name"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+
+                        <!--android:textSize="15sp" />-->
+
+                <!--</LinearLayout>-->
+
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_margin="20dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
 
-                    <ImageView
-                        android:id="@+id/tv_upload_pdf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/upload_img" />
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
 
 
                     <TextView
-                        android:id="@+id/tv_file_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
 
-                        android:textSize="15sp" />
+                        android:text="Upload File"
+                        android:textSize="16sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="9"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tv_upload_pdf"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:background="@android:drawable/editbox_background"
+                                    android:gravity="center"
+                                    android:paddingBottom="7dp"
+                                    android:paddingLeft="30dp"
+                                    android:paddingRight="30dp"
+                                    android:paddingTop="7dp"
+                                    android:singleLine="true"
+                                    android:text="Attach PDF"
+                                    android:textColor="@color/black" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="fill_parent"
+                                android:layout_marginLeft="15dp"
+                                android:src="@drawable/pdf" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tv_file_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="10dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_delete"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv_delete"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center"
+                                android:src="@drawable/delete_gray" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -369,15 +466,16 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/date_time_wrapper"
-                                android:layout_marginRight="@dimen/rightMargin"
-
                                 android:id="@+id/tv_publishDate"
+                                style="@style/date_time_wrapper"
+
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/rightMargin"
                                 android:hint="Enter date"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
@@ -389,11 +487,11 @@
                             android:layout_weight="1">
 
                             <TextView
-                                style="@style/date_time_wrapper"
                                 android:id="@+id/tv_publishTime"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -427,14 +525,15 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/date_time_wrapper"
-                                android:layout_marginRight="@dimen/rightMargin"
                                 android:id="@+id/tv_expiryDate"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/rightMargin"
                                 android:hint="Enter date"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
@@ -446,11 +545,11 @@
                             android:layout_weight="1">
 
                             <TextView
-                                style="@style/date_time_wrapper"
                                 android:id="@+id/tv_expiryTime"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>

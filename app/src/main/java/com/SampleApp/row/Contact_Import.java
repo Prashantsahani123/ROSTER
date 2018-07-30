@@ -19,17 +19,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.ContactAdapter;
+import com.SampleApp.row.Data.ContactData;
+import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import com.SampleApp.row.Adapter.ContactAdapter;
-import com.SampleApp.row.Data.ContactData;
-import com.SampleApp.row.Utils.MarshMallowPermission;
 
 /**
  * Created by USER on 30-12-2015.
@@ -40,13 +41,11 @@ public class Contact_Import extends Activity  {
     ListView listview;
     ArrayAdapter<String> adapter;
     EditText et_serach_directory;
-
     TextView tv_title, ib_add;
     ImageView iv_backbutton;
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
     ArrayList<ContactData> n = new ArrayList<ContactData>();
     private static final int CONTACT_IMPORT = 101;
-
 
     ArrayList<String> selectedItems = new ArrayList<String>();
     private ContactAdapter adapter_contactData;
@@ -69,13 +68,31 @@ public class Contact_Import extends Activity  {
 
         // adapter = new ArrayAdapter<String>(this,R.layout.create_group_selection_list_item,R.id.tv_name,ebulletine );
         // listview.setAdapter(adapter);
-        if (!marshMallowPermission.checkPermissionForContacts()) {
-            // Apply this permission on click of the add contact button at previous activity
-            marshMallowPermission.requestPermissionForContacts();
-        } else {
-            LoadContactsAyscn lca = new LoadContactsAyscn();
-            lca.execute();
-        }
+//        if (!marshMallowPermission.checkPermissionForContacts()) {
+//            // Apply this permission on click of the add contact button at previous activity
+//            marshMallowPermission.requestPermissionForContacts();
+//        } else {
+//            LoadContactsAyscn lca = new LoadContactsAyscn();
+//            lca.execute();
+//        }
+
+        TedPermission.with(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        LoadContactsAyscn lca = new LoadContactsAyscn();
+                        lca.execute();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        Toast.makeText(Contact_Import.this,"Oops! Permission denied",Toast.LENGTH_SHORT).show();
+                        finish(); //added by satish suhas told to do this for fixed issue #3 of 'ROW Issues 16/1' sheet
+                    }
+                })
+
+                .setPermissions(android.Manifest.permission.READ_CONTACTS)
+                .check();
 
         init();
 
@@ -138,17 +155,20 @@ public class Contact_Import extends Activity  {
             public void onClick(View v) {
                 n.clear();
                 int count = 0;
-                for (ContactData p : adapter_contactData.getBox()) {
-                    if (p.box) {
-                        count = count + 1;
-                    }
+                if(adapter_contactData!=null){
+                    for (ContactData p : adapter_contactData.getBox()) {
+                        if (p.box) {
+                            count = count + 1;
+                        }
 
 
                         int pos = adapter_contactData.getPosition(p);
                         n.add(new ContactData(p.getContactName(), p.getContactNumber(), p.getCountryCode(), p.getIdNumber(), p.box, "" + pos));
 
 
+                    }
                 }
+
 
               /* Intent intent = new Intent(getApplicationContext(), Directory.class);
                 //Intent intent = new Intent(getApplicationContext(),EditMember.class);
@@ -160,7 +180,7 @@ public class Contact_Import extends Activity  {
 
 
                 if (count <= 0) {
-                    Toast.makeText(Contact_Import.this, "Please Select atleast 1 Member ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Contact_Import.this, "Please Select at least 1 Member ", Toast.LENGTH_LONG).show();
                 } else {
 
 
@@ -383,4 +403,21 @@ public class Contact_Import extends Activity  {
         }
     }
 
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == MarshMallowPermission.CONTACTS_PERMISSION_REQUEST_CODE) {
+//            if (!marshMallowPermission.checkPermissionForContacts()) {
+//                Toast.makeText(Contact_Import.this, "Contacts permission needed. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
+//
+//                finish();
+//                // Apply this permission on click of the add contact button at previous activity
+////                marshMallowPermission.requestPermissionForContacts();
+//            } else {
+//                LoadContactsAyscn lca = new LoadContactsAyscn();
+//                lca.execute();
+//            }
+//
+//        }
+//    }
 }

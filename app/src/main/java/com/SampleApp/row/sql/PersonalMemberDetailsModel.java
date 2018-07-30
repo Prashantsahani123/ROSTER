@@ -6,14 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-
 import com.SampleApp.row.Data.profiledata.DynamicFieldData;
 import com.SampleApp.row.Data.profiledata.PersonalMemberDetails;
 import com.SampleApp.row.Data.profiledata.Separator;
 import com.SampleApp.row.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Created by USER1 on 22-03-2017.

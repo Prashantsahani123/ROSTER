@@ -10,12 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.GroupProfileResultData;
 import com.SampleApp.row.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.GroupProfileResultData;
 
 
 /**

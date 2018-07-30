@@ -3,6 +3,7 @@ package com.SampleApp.row;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.Settings_Group_Adapter;
+import com.SampleApp.row.Data.SettingsData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -20,13 +27,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.Settings_Group_Adapter;
-import com.SampleApp.row.Data.SettingsData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.google.gson.JsonObject;
 
 /**
  * Created by user on 14-03-2016.
@@ -43,7 +43,7 @@ public class GroupSettings extends Activity {
 
 
     ImageView iv_toggle_isphone_myclub, iv_toggle_isphone_allclub, iv_email_myclub,iv_toggle_isemail_allclub;
-    String isphone_myclub, isphone_allclub, isemail_myclub,isemail_allclub;
+    String isphone_myclub, isphone_allclub, isemail_myclub,isemail_allclub,title,grpId,grpProfileId;
     private String flag_webservicecall = "0";
 
 
@@ -51,6 +51,11 @@ public class GroupSettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_settings_profile);
+
+        Intent  intent = getIntent();
+        title = intent.getStringExtra("grpName");
+        grpId = intent.getStringExtra("grpId");
+        grpProfileId = intent.getStringExtra("grpProfileId");
 
         lv = (ListView) findViewById(R.id.listView);
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -61,7 +66,7 @@ public class GroupSettings extends Activity {
         iv_email_myclub = (ImageView) findViewById(R.id.iv_email_myclub);
         iv_toggle_isemail_allclub = (ImageView)findViewById(R.id.iv_toggle_isemail_allclub);
 
-        tv_title.setText("Settings");
+        tv_title.setText(title);
 
         init();
         webservices();
@@ -178,8 +183,8 @@ public class GroupSettings extends Activity {
     private void webservices() {
         //{"groupProfileID":"43","grpId":"74","Type":"0","Admin":"0","searchText":""}
         List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        arrayList.add(new BasicNameValuePair("GroupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
-        arrayList.add(new BasicNameValuePair("GroupProfileId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID)));
+        arrayList.add(new BasicNameValuePair("GroupId", grpId));
+        arrayList.add(new BasicNameValuePair("GroupProfileId", grpProfileId   ));
         flag_webservicecall = "0";
         Log.d("Response", "PARAMETERS " + Constant.GetGroupSetting + " :- " + arrayList.toString());
         new WebConnectionAsyncDirectory(Constant.GetGroupSetting, arrayList, GroupSettings.this).execute();

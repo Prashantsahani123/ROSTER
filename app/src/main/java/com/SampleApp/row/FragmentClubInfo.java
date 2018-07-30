@@ -350,11 +350,19 @@ public class FragmentClubInfo extends Fragment {
                             imgMessage.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
                                     Intent msgIntent = new Intent(Intent.ACTION_VIEW);
-                                    msgIntent.setType("vnd.android-dir/mms-sms");
-                                    String address = Utils.implode(", ", Arrays.asList(mobileNumber));
-                                    msgIntent.putExtra("address", address);
+//                        msgIntent.setType("vnd.android-dir/mms-sms");
+//                        msgIntent.putExtra("address", myMsgList.get(0).getNumber());
+                                    msgIntent.setData(Uri.parse("smsto: "+Uri.encode(mobileNumber)));
                                     startActivity(msgIntent);
+//
+//                                    Intent msgIntent = new Intent(Intent.ACTION_VIEW);
+//                                    //msgIntent.setType("vnd.android-dir/mms-sms");
+//                                    //String address = Utils.implode(", ", Arrays.asList(mobileNumber));
+//                                    msgIntent.setData(Uri.parse("smsto: "+Uri.encode(", ", String.valueOf(Arrays.asList(mobileNumber)))));
+//                                    //msgIntent.putExtra("address", address);
+//                                    startActivity(msgIntent);
                                 }
                             });
 
@@ -413,9 +421,10 @@ public class FragmentClubInfo extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     Intent msgIntent = new Intent(Intent.ACTION_VIEW);
-                                    msgIntent.setType("vnd.android-dir/mms-sms");
-                                    String address = Utils.implode(", ", Arrays.asList(mobileNumber));
-                                    msgIntent.putExtra("address", address);
+                                    msgIntent.setData(Uri.parse("smsto: "+Uri.encode(mobileNumber)));
+//                                    msgIntent.setType("vnd.android-dir/mms-sms");
+//                                    String address = Utils.implode(", ", Arrays.asList(mobileNumber));
+//                                    msgIntent.putExtra("address", address);
                                     startActivity(msgIntent);
                                 }
                             });

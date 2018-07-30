@@ -17,16 +17,16 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.SampleApp.row.Data.CountryData;
+import com.SampleApp.row.Data.ProfileData;
+import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.Utils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import com.SampleApp.row.Data.CountryData;
-import com.SampleApp.row.Data.ProfileData;
-import com.SampleApp.row.R;
-import com.SampleApp.row.Utils.Utils;
 
 /**
  * Created by USER on 18-03-2016.

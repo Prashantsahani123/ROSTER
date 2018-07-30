@@ -12,16 +12,14 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-
+import com.SampleApp.row.Adapter.OptionMenuItemsAdapter;
+import com.SampleApp.row.Data.CalendarViewOption;
+import com.SampleApp.row.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import com.SampleApp.row.Adapter.OptionMenuItemsAdapter;
-import com.SampleApp.row.Data.CalendarViewOption;
-import com.SampleApp.row.R;
 
 
 /**

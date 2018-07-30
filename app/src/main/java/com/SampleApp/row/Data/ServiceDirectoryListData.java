@@ -1,9 +1,13 @@
 package com.SampleApp.row.Data;
 
+import android.util.Log;
+
+import java.io.Serializable;
+
 /**
  * Created by USER1 on 19-07-2016.
  */
-public class ServiceDirectoryListData {
+public class ServiceDirectoryListData implements Serializable {
 
     String serviceDirId;
     String groupId;
@@ -24,6 +28,10 @@ public class ServiceDirectoryListData {
     String city,state,country,zip, moduleId;
     int categoryId;
     String website;
+    String countryCode1;
+    String countryCode2;
+    String keywords;
+
 
     /*public ServiceDirectoryListData() {
     }*/
@@ -45,6 +53,35 @@ public class ServiceDirectoryListData {
     }
 */
 
+    public ServiceDirectoryListData(String serviceDirId, String groupId, String memberName, String image, String contactNo, String isdeleted, String description, String contactNo2, String pax, String email, String address,String lat,String lng, int countryId1, int countryId2, String csv,String city,String state,String country,String zip, String moduleId,int categoryId,String website,String countryCode1,String countryCode2,String keywords) {
+
+        this.serviceDirId = serviceDirId;
+        this.groupId = groupId;
+        this.memberName = memberName;
+        this.image = image;
+        this.contactNo = contactNo;
+        this.isdeleted = isdeleted;
+        this.description = description;
+        this.contactNo2 = contactNo2;
+        this.pax = pax;
+        this.email = email;
+        this.address = address;
+        this.lat = lat;
+        this.lng = lng;
+        this.countryId1 = countryId1;
+        this.countryId2= countryId2;
+        this.csv = csv;
+        this.city = city;
+        this.country = country;
+        this.state = state;
+        this.zip = zip;
+        this.moduleId = moduleId;
+        this.countryCode1 = countryCode1;
+        this.countryCode2 = countryCode2;
+        this.keywords = keywords;
+        this.categoryId = categoryId;
+        this.website = website;
+    }
     public ServiceDirectoryListData(String serviceDirId, String groupId, String memberName, String image, String contactNo, String isdeleted, String description, String contactNo2, String pax, String email, String address,String lat,String lng, int countryId1, int countryId2, String csv,String city,String state,String country,String zip, String moduleId,int categoryId,String website) {
 
         this.serviceDirId = serviceDirId;
@@ -70,6 +107,34 @@ public class ServiceDirectoryListData {
         this.moduleId = moduleId;
         this.categoryId = categoryId;
         this.website = website;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public String getCountryCode1() {
+        return countryCode1;
+    }
+
+    public void setCountryCode1(String countryCode1) {
+        this.countryCode1 = countryCode1;
+    }
+
+    public String getCountryCode2() {
+        return countryCode2;
+    }
+
+    public void setCountryCode2(String countryCode2) {
+        this.countryCode2 = countryCode2;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public String getCity() {
@@ -270,6 +335,7 @@ public class ServiceDirectoryListData {
     }
 
     public int getCategoryId() {
+        Log.d("categoryId",categoryId+"");
         return categoryId;
     }
 

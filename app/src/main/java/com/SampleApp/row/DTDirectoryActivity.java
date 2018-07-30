@@ -3,6 +3,7 @@ package com.SampleApp.row;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -16,18 +17,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -40,15 +37,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SampleApp.row.Adapter.ClassificationRVAdapter;
-import com.SampleApp.row.Adapter.DirectoryRVAdapter;
+import com.SampleApp.row.Adapter.DistrictAdapter;
 import com.SampleApp.row.Data.profiledata.AddressData;
 import com.SampleApp.row.Data.profiledata.BusinessMemberDetails;
 import com.SampleApp.row.Data.profiledata.CompleteProfile;
 import com.SampleApp.row.Data.profiledata.FamilyMemberData;
 import com.SampleApp.row.Data.profiledata.PersonalMemberDetails;
 import com.SampleApp.row.Data.profiledata.ProfileMasterData;
+import com.SampleApp.row.Inteface.OnLoadMoreListener;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.EndlessOnScrollListener;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
@@ -62,7 +61,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -84,7 +82,7 @@ import java.util.Hashtable;
 /**
  * Created by USER on 17-12-2015.
  */
-public class DTDirectoryActivity extends Activity {
+public class DTDirectoryActivity extends Activity implements OnLoadMoreListener {
     private static final int DELETE_PROFILE_REQUEST = 100;
     private static final boolean NO_ANIMATE = false, ANIMATE = true;
     private static final int ADD_MANUALY_REQUEST = 1;
@@ -115,8 +113,8 @@ public class DTDirectoryActivity extends Activity {
     private long masterUid, grpId;
     //ImageView ivSearch;
 
-    DirectoryRVAdapter adapter;
-    ArrayList<ProfileMasterData> list;
+    DistrictAdapter adapter;
+    ArrayList<ProfileMasterData> list=new ArrayList<>();
 
     private LinearLayout llCenterMessage;
     private TextView tvCenterButton;
@@ -127,12 +125,20 @@ public class DTDirectoryActivity extends Activity {
     Spinner sp_filter;
     ClassificationRVAdapter classificationAdapter;
 
+    private boolean isLoading;
+    int totalPages, currentPage=1;
+    RecyclerView rvDirectory;
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_dt_directory);
+
         context = this;
+
         receiver = new DownloadCompleteReceiver();
         updateStatusReceiver = new UpdateStatusReceiver();
         profileModel = new ProfileModel(context);
@@ -148,7 +154,22 @@ public class DTDirectoryActivity extends Activity {
         initComponents();
         init();
         checkadminrights();
-        loadFromDB();
+//        loadFromDB();
+//        list.add(null);
+//        adapter=new DistrictAdapter(context,list);
+//        rvDirectory.setAdapter(adapter);
+        if (InternetConnection.checkConnection(context)) {
+            if(dialog==null){
+                dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                dialog.setCancelable(false);
+                dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            }
+            dialog.show();
+            getDistrictList(1);
+        } else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+        }
+
         loadDynamicFields();
         sp_filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -222,12 +243,156 @@ public class DTDirectoryActivity extends Activity {
         addFromPhonebook = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);*/
 
         rvDirectory = (RecyclerView) findViewById(R.id.rvDirectory);
-
-        list = new ArrayList<>();
-        adapter = new DirectoryRVAdapter(context, list, "0");
         rvDirectory.setLayoutManager(new LinearLayoutManager(context));
-        rvDirectory.setAdapter(adapter);
         rvDirectory.setVisibility(View.VISIBLE);
+
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rvDirectory.getLayoutManager();
+//        rvDirectory.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                totalItemCount = linearLayoutManager.getItemCount();
+//                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+//                Utils.log(totalItemCount +" / "+lastVisibleItem);
+//                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+//
+//                    if (mOnLoadMoreListener != null) {
+//                        mOnLoadMoreListener.onLoadMore();
+//                    }
+//                    isLoading = true;
+//                }
+//            }
+//        });
+
+        rvDirectory.addOnScrollListener(new EndlessOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onScrolledToEnd() {
+                if (!isLoading) {
+                    isLoading = true;
+                   onLoadMore();
+                    // add 10 by 10 to tempList then notify changing in data
+                }
+                isLoading = false;
+            }
+        });
+
+    }
+
+    public void getDistrictList(int page){
+
+        Hashtable<String, String> paramTable = new Hashtable<>();
+        paramTable.put("masterUID", String.valueOf(masterUid));
+        paramTable.put("grpID", "" + grpId);
+        paramTable.put("searchText",et_serach_directory.getText().toString());
+        paramTable.put("pageNo",String.valueOf(page));
+        paramTable.put("recordCount","10");
+
+        JSONObject jsonRequestData = null;
+        try {
+            jsonRequestData = new JSONObject(new Gson().toJson(paramTable));
+            Utils.log("Url : " + Constant.GetDistrictMemberList+ " Data : " + jsonRequestData);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    Constant.GetDistrictMemberList,
+                    jsonRequestData,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+//                            Log.d("suhas","inside api");
+//                            manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                            Utils.log("Success : " + response);
+                            //handleSyncInfo(response);
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            parseJson(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(dialog!=null && dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+
+//                            if (list.size() == 0) {
+//                                manageCenterMessage(
+//                                        View.VISIBLE,
+//                                        "Something went wrong. Please try again after sometime.",
+//                                        View.VISIBLE,
+//                                        "Try Now",
+//                                        View.VISIBLE,
+//                                        new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//                                                llCenterMessage.setVisibility(View.GONE);
+//                                                loadFromDB();
+//                                            }
+//                                        }, NO_ANIMATE);
+//                            }
+                            Utils.log("Error is : " + error);
+                            error.printStackTrace();
+                        }
+                    });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    1200000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+
+            AppController.getInstance().addToRequestQueue(context, request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void parseJson(JSONObject response){
+        try {
+            String status=response.getString("status");
+
+            if(status.equals("0")){
+//                list.remove(list.size()-1);
+//                adapter.notifyItemRemoved(list.size());
+
+                totalPages= Integer.parseInt(response.getString("TotalPages"));
+                JSONArray result=response.getJSONArray("Result");
+                for(int i=0;i<result.length();i++){
+                    JSONObject data=result.getJSONObject(i);
+
+                    ProfileMasterData profileMasterData=new ProfileMasterData();
+                    profileMasterData.setMasterId(data.getString("masterUID"));
+                    profileMasterData.setGrpId(data.getString("grpID"));
+                    profileMasterData.setProfileId(data.getString("profileID"));
+                    profileMasterData.setMemberName(data.getString("memberName"));
+                    profileMasterData.setProfilePic(data.getString("pic"));
+                    profileMasterData.setMemberMobile(data.getString("membermobile"));
+
+                    list.add(profileMasterData);
+                }
+
+//                DistrictAdapter adapter= (DistrictAdapter)rvDirectory.getAdapter();
+                if(adapter!=null){
+
+//                    ArrayList<ProfileMasterData> arrayList=adapter.getArrayList();
+//                    arrayList.addAll(list);
+                    adapter.notifyDataSetChanged();
+                    isLoading=false;
+                }
+                else {
+                    adapter=new DistrictAdapter(context,list);
+                    adapter.setOnMemberSelectedListener(memberSelectedListener);
+                    rvDirectory.setAdapter(adapter);
+                }
+
+
+            }
+            else {
+//                list.remove(list.size()-1);
+//                adapter.notifyItemRemoved(list.size());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -394,23 +559,24 @@ public class DTDirectoryActivity extends Activity {
         et_serach_directory.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                String q = et_serach_directory.getText().toString();
-                if (q.equals("")) {
-                    refreshData("");
-                } else {
-                    list = profileModel.search(grpId, et_serach_directory.getText().toString());
-                    Utils.log("MyList Size : " + list.size());
-                    adapter = new DirectoryRVAdapter(context, list, "0");
-                    rvDirectory.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    adapter.setOnMemberSelectedListener(memberSelectedListener);
-                    rvDirectory.setVisibility(View.VISIBLE);
-                    if (list.size() == 0) {
-                        manageCenterMessage(View.VISIBLE, "No results", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);
+               // String q = et_serach_directory.getText().toString();
+//                rvDirectory.setAdapter(null);
+                if(et_serach_directory.getText().toString().isEmpty()){
+                    list.clear();
+
+                    if (InternetConnection.checkConnection(context)) {
+                        if(dialog==null){
+                            dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                            dialog.setCancelable(false);
+                            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                        }
+                        dialog.show();
+                        getDistrictList(1);
                     } else {
-                        manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
+                        Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
                     }
                 }
+               
             }
 
             @Override
@@ -429,7 +595,22 @@ public class DTDirectoryActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    list.clear();
+//                list.add(null);
+//                adapter=new DistrictAdapter(context,list);
+//                rvDirectory.setAdapter(adapter);
 
+                    if (InternetConnection.checkConnection(context)) {
+                        if(dialog==null){
+                            dialog=new ProgressDialog(context,R.style.TBProgressBar);
+                            dialog.setCancelable(false);
+                            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                        }
+                        dialog.show();
+                        getDistrictList(1);
+                    } else {
+                        Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+                    }
 
                     return true;
                 }
@@ -445,7 +626,7 @@ public class DTDirectoryActivity extends Activity {
                 startActivity(intent);
             }
         });
-        adapter.setOnMemberSelectedListener(memberSelectedListener);
+     //  adapter.setOnMemberSelectedListener(memberSelectedListener);
 
         // Code for filter selection
 
@@ -463,16 +644,21 @@ public class DTDirectoryActivity extends Activity {
         });
     }
 
-    DirectoryRVAdapter.OnMemberSelectedListener memberSelectedListener = new DirectoryRVAdapter.OnMemberSelectedListener() {
+    DistrictAdapter.OnMemberSelectedListener memberSelectedListener = new DistrictAdapter.OnMemberSelectedListener() {
         @Override
         public void onMemberSelected(ProfileMasterData data, int position) {
             try {
-                Intent intent = new Intent(context, NewProfileActivity.class);
-                intent.putExtra("memberProfileId", data.getProfileId());
-                intent.putExtra("groupId", data.getGrpId());
-                intent.putExtra("fromMainDirectory", "no");
-                intent.putExtra("fromDTDirectory", "yes");
-                startActivityForResult(intent, DELETE_PROFILE_REQUEST);
+                if (InternetConnection.checkConnection(context)) {
+                    Intent intent = new Intent(context, NewProfileActivity.class);
+                    intent.putExtra("memberProfileId", data.getProfileId());
+                    intent.putExtra("groupId", data.getGrpId());
+                    intent.putExtra("pic",data.getProfilePic());
+                    intent.putExtra("fromMainDirectory", "no");
+                    intent.putExtra("fromDTDirectory", "yes");
+                    startActivityForResult(intent, DELETE_PROFILE_REQUEST);
+                } else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
             } catch (Exception e) {
                 Utils.log("Error is : " + e);
                 e.printStackTrace();
@@ -576,13 +762,8 @@ public class DTDirectoryActivity extends Activity {
         }
     }
 
-    //-----------------------All new declarations -----------
-    RecyclerView rvDirectory;
-
-    ArrayList<ProfileMasterData> profileList = new ArrayList<>();
-
-
     public void getProfileSyncInfo() {
+        // TODO: 18-01-2018 suhas
         //final ProgressDialog pd = new ProgressDialog(context);
         //pd.setCancelable(false);
         if (firstTime.equalsIgnoreCase("yes")) {
@@ -623,6 +804,7 @@ public class DTDirectoryActivity extends Activity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d("suhas","inside api");
                             manageCenterMessage(View.GONE, "", View.GONE, "", View.GONE, null, NO_ANIMATE);
                             //Utils.log("Success : " + response);
                             handleSyncInfo(response);
@@ -631,6 +813,7 @@ public class DTDirectoryActivity extends Activity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Log.d("suhas","error api");
                             if (list.size() == 0) {
                                 manageCenterMessage(
                                         View.VISIBLE,
@@ -651,7 +834,7 @@ public class DTDirectoryActivity extends Activity {
                         }
                     });
             request.setRetryPolicy(new DefaultRetryPolicy(
-                    Constant.VOLLEY_MAX_REQUEST_TIMEOUT,
+                    1200000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
             ));
@@ -743,6 +926,48 @@ public class DTDirectoryActivity extends Activity {
                 }, ANIMATE);
         //loadDynamicFieldsFromServer();
     }
+
+    @Override
+    public void onLoadMore() {
+//        Log.e("haint", "Load More");
+//        mUsers.add(null);
+//        adapter.notifyItemInserted(mUsers.size() - 1);
+//        //Load more data for reyclerview
+//        new Handler().postDelayed(new Runnable() {
+//            @Override public void run() {
+//                Log.e("haint", "Load More 2");
+//                //Remove loading item
+//                mUsers.remove(mUsers.size() - 1);
+//                adapter.notifyItemRemoved(mUsers.size());
+//                //Load data
+//                int index = mUsers.size();
+//                int end = index + 20;
+//                for (int i = index; i < end; i++) {
+//                    User user = new User();
+//                    user.setName("Name " + i);
+//                    user.setEmail("alibaba" + i + "@gmail.com");
+//                    mUsers.add(user);
+//                }
+//                adapter.notifyDataSetChanged();
+//                isLoading=false;
+//            }
+//        }, 5000);
+
+        if(currentPage<totalPages){
+            currentPage=currentPage+1;
+//            list.add(null);
+//            adapter.notifyItemInserted(list.size() - 1);
+            if (InternetConnection.checkConnection(context)) {
+                getDistrictList(currentPage);
+            } else {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+
+    }
+
 
     public class DownloadCompleteReceiver extends BroadcastReceiver {
 
@@ -914,10 +1139,10 @@ public class DTDirectoryActivity extends Activity {
         list = profileModel.getMembers(grpId);
         if (list.size() > 0) {
             Utils.log("MyList Size : " + list.size());
-            adapter = new DirectoryRVAdapter(context, list, "0");
+            adapter = new DistrictAdapter(context, list);
             rvDirectory.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-            adapter.setOnMemberSelectedListener(memberSelectedListener);
+           // adapter.setOnMemberSelectedListener(memberSelectedListener);
             rvDirectory.setVisibility(View.VISIBLE);
             Utils.log("Loaded from local db");
             manageCenterMessage(View.GONE, "", View.VISIBLE, "", View.GONE, null, NO_ANIMATE);

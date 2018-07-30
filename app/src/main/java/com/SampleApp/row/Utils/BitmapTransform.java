@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import com.squareup.picasso.Transformation;
 
 /**
- * Created by USER on 08-09-2016.
+ * Created by admin on 22-06-2018.
  */
+
 public class BitmapTransform implements Transformation {
 
-    int maxWidth;
-    int maxHeight;
+    private final int maxWidth;
+    private final int maxHeight;
 
     public BitmapTransform(int maxWidth, int maxHeight) {
         this.maxWidth = maxWidth;
@@ -44,4 +45,4 @@ public class BitmapTransform implements Transformation {
         return maxWidth + "x" + maxHeight;
     }
 
-};
+}

@@ -19,6 +19,7 @@ import com.SampleApp.row.Data.AlbumData;
 import com.SampleApp.row.Gallery;
 import com.SampleApp.row.GalleryDescription;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.BitmapTransform;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
@@ -39,15 +40,21 @@ import java.util.List;
  */
 public class GalleryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int EMPTY_VIEW = 1, NON_EMPTY_VIEW = 2;
-    public ArrayList<AlbumData> albumlist;
+    public ArrayList<AlbumData> albumlist = new ArrayList<>();
     Context context;
     String flag;
     String isdelete = "false";
+    String type;
+    private static final int MAX_WIDTH = 1024;
+    private static final int MAX_HEIGHT = 768;
 
-    public GalleryListAdapter (Context con,ArrayList<AlbumData> list,String edit){
+    int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
+
+    public GalleryListAdapter (Context con,ArrayList<AlbumData> list,String edit,String type){
         this.context = con;
         this.albumlist = list;
         this.flag = edit;
+        this.type = type;
     }
 
     @Override
@@ -93,25 +100,42 @@ public class GalleryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //            hol.tv_description.setVisibility(View.GONE);
 //        }else{
 
+        if(type.equals("1")){
             hol.tv_description.setText(albumlist.get(position).getDescription());
+            hol.tv_tile.setText(albumlist.get(position).getTitle());
+        }else{
+            hol.tv_description.setText(albumlist.get(position).getTitle());
+            hol.tv_tile.setText(albumlist.get(position).getClub_Name());
+        }
+
       //  }
-        if (albumlist.get(position).getImage().trim().length() == 0 || albumlist.get(position).getImage() == null || albumlist.get(position).getImage().isEmpty()) {
+        if (albumlist.get(position).getImage() == null || albumlist.get(position).getImage().trim().length() == 0 || albumlist.get(position).getImage().isEmpty()) {
             hol.image.setImageResource(R.drawable.dashboardplaceholder);
         } else {
+//            Picasso.with(context).load(albumlist.get(position).getImage())
+//                    .placeholder(R.drawable.dashboardplaceholder)
+////                    .resize(100,100)
+//                    .into(hol.image);
+
             Picasso.with(context).load(albumlist.get(position).getImage())
                     .placeholder(R.drawable.dashboardplaceholder)
+                    .skipMemoryCache()
+                    .transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                    //.fit()
                     .into(hol.image);
         }
 
-        hol.tv_tile.setText(albumlist.get(position).getTitle());
+
         hol.linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, GalleryDescription.class);
-                i.putExtra("albumname", albumlist.get(position).getTitle());
-                i.putExtra("albumDescription", albumlist.get(position).getDescription());
-                i.putExtra("albumId", albumlist.get(position).getAlbumId());
-                i.putExtra("albumImage", albumlist.get(position).getImage());
+//                i.putExtra("albumname", albumlist.get(position).getTitle());
+//                i.putExtra("albumDescription", albumlist.get(position).getDescription());
+//                i.putExtra("albumId", albumlist.get(position).getAlbumId());
+//                i.putExtra("albumImage", albumlist.get(position).getImage());
+                i.putExtra("albumData",albumlist.get(position));
+                i.putExtra("fromShowcase",type);
                 ((Activity)context).startActivityForResult(i, Gallery.UPDATE_ALBUM_REQEUST);
             }
         });
@@ -163,8 +187,11 @@ public class GalleryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void deleteAlbum(String albumId){
+
         Log.e("Touchbase", "------ deleteAlbum() is called");
+
         String url = Constant.DeleteAlbum;
+
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
         arrayList.add(new BasicNameValuePair("typeID",albumId));
         arrayList.add(new BasicNameValuePair("type","Gallery"));
@@ -184,14 +211,11 @@ public class GalleryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         String url = null;
         List<NameValuePair> argList = null;
 
-
         public DeleteAlbumAsyncTask(String url, List<NameValuePair> argList, Context ctx) {
             this.url = url;
             this.argList = argList;
             con = ctx;
         }
-
-
 
         @Override
         protected void onPreExecute() {

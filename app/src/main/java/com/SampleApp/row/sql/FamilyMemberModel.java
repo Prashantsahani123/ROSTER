@@ -6,12 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.SampleApp.row.Data.profiledata.FamilyMemberData;
+import com.SampleApp.row.Utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
-import com.SampleApp.row.Data.profiledata.FamilyMemberData;
-import com.SampleApp.row.Utils.Utils;
 
 /**
  * Created by USER1 on 22-03-2017.

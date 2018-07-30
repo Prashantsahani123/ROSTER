@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.SampleApp.row.Adapter.BODListAdapter;
 import com.SampleApp.row.Adapter.RotaryLibraryListAdapter;
 import com.SampleApp.row.Data.RotaryLibraryData;
 import com.SampleApp.row.Utils.AppController;
@@ -26,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +35,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /**
  * Created by admin on 22-05-2017.
@@ -273,7 +270,6 @@ public class RotaryLibraryActivity extends Activity {
             if(count >0){
                 rotaryLibraryList.clear();
                 for (int i = 0; i < count; i++) {
-
                     RotaryLibraryData data = new RotaryLibraryData();
                     JSONObject jsonData = jsonRotaryLibraryListResult.getJSONObject(i);
                     data.setTitle(jsonData.get("title").toString());
@@ -283,8 +279,6 @@ public class RotaryLibraryActivity extends Activity {
 
                 rv_adapter = new RotaryLibraryListAdapter(RotaryLibraryActivity.this, rotaryLibraryList);
                 mRecyclerView.setAdapter(rv_adapter);
-
-
             }
             Utils.log("Loaded from local file");
 

@@ -8,19 +8,24 @@
         <item name="android:textColorHint">#c9c9c9</item>
         <item name="colorAccent">@color/view_color_blue</item>
         <item name="android:spinnerStyle">@style/TBSpinner</item>
+        <item name="drawerArrowStyle">@style/DrawerIcon</item>
     </style>
 
-
+    <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/colorPrimary</item>
+    </style>
 
     <style name="TBProgressBar" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:textColorPrimary">@color/view_color_blue</item>
-        <item name="android:backgroundDimEnabled">false</item>
+        <!--<item name="android:backgroundDimEnabled">false</item>-->
         <item name="android:textColor">@color/view_color_blue</item>
         <item name="android:textStyle">bold</item>
-
+        <!--<item name="android:indeterminateDrawable">@drawable/my_progress_indeterminate</item>-->
+        <!--<item name="android:background">@drawable/images</item>-->
     </style>
+
     <style name="CustomAlertDialogStyle">
         <item name="android:bottomBright">@color/transparent</item>
         <item name="android:bottomDark">@color/transparent</item>
@@ -45,6 +50,7 @@
 
         <item name="android:textSize">18sp</item>
     </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="contentsStyle">
@@ -62,8 +68,8 @@
         <item name="android:layout_height">@dimen/crop__bar_height</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:divider">@drawable/crop__divider</item>
-        <item name="android:showDividers" >middle</item>
-        <item name="android:dividerPadding" >12dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dividerPadding">12dp</item>
         <item name="android:background">@color/crop__button_bar</item>
     </style>
 
@@ -138,6 +144,7 @@
         <item name="android:padding">4dp</item>
 
     </style>
+
     <style name="TBSpinner" parent="@style/Widget.AppCompat.Spinner">
         <item name="overlapAnchor">true</item>
         <item name="android:background">@drawable/spinner_selector</item>
@@ -149,6 +156,7 @@
         <item name="android:scaleY">0.8</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!--End of for Crop Image-->
 </resources>

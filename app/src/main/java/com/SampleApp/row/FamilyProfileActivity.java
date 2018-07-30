@@ -339,9 +339,9 @@ public class FamilyProfileActivity extends Activity {
                     picturePath = imageCompression.compressImage(path, getApplicationContext());
                     Log.d("==picturePath====","0000...."+picturePath);
                     if(flag.equalsIgnoreCase("profilePic")) {
-                        responsefromimageupload = Utils.doFileUploadForProfilePic(new File(picturePath.toString()), memberProfileId, groupId, "profile"); // Upload File to server
+                        responsefromimageupload = Utils.doFileUploadForProfilePic(FamilyProfileActivity.this,new File(picturePath.toString()), memberProfileId, groupId, "profile"); // Upload File to server
                     }else{
-                        responsefromimageupload = Utils.doFileUploadForProfilePic(new File(picturePath.toString()), memberProfileId, groupId, "family"); // Upload File to server
+                        responsefromimageupload = Utils.doFileUploadForProfilePic(FamilyProfileActivity.this,new File(picturePath.toString()), memberProfileId, groupId, "family"); // Upload File to server
                     }
                     Log.d("TOUCHBASE", "RESPONSE FILE UPLOAD " + responsefromimageupload);
                     updated = true;
@@ -364,6 +364,8 @@ public class FamilyProfileActivity extends Activity {
                             .placeholder(R.drawable.profile_pic)
                             .into(ivNewProfileImage);
                     updateProfileImage = true;
+
+
                 }else{
                     ((PhotoData)list.get(list.size()-1)).setFamilyPic("file://"+picturePath);
                     adapter.notifyDataSetChanged();
@@ -443,8 +445,18 @@ public class FamilyProfileActivity extends Activity {
                         hasfamilypicflag = "0";
                     }else{
                         hasfamilypicflag = "1";
+                        Intent zoomImage = new Intent(context, ImageZoom.class);
+                        zoomImage.putExtra("imgageurl",profileData.getFamilyPic());
+                        startActivity(zoomImage);
                     }
 
+//
+                }
+            });
+
+            adapter.setOnFamilyPicEditedListener(new ProfileRVAdapter.OnFamilyPicEditedListener() {
+                @Override
+                public void onFamilyPicEdited(int position) {
                     if (InternetConnection.checkConnection(getApplicationContext())) {
                         if (!marshMallowPermission.checkPermissionForCamera()) {
                             marshMallowPermission.requestPermissionForCamera();
@@ -462,6 +474,7 @@ public class FamilyProfileActivity extends Activity {
                     }
                 }
             });
+
             tvMemberName.setText(profileData.getMemberName());
             if ( ! profileData.getProfilePic().trim().equals("") ) {
                 Picasso.with(context)
@@ -471,6 +484,15 @@ public class FamilyProfileActivity extends Activity {
                         .into(ivNewProfileImage);
                 hasimageflag = "1";
                 pbPic.setVisibility(View.GONE);
+
+                ivNewProfileImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent zoomImage = new Intent(context, ImageZoom.class);
+                        zoomImage.putExtra("imgageurl",profileData.getProfilePic());
+                        startActivity(zoomImage);
+                    }
+                });
             } else {
                 pbPic.setVisibility(View.GONE);
                 hasimageflag = "0";
@@ -813,8 +835,11 @@ public class FamilyProfileActivity extends Activity {
 
     public void showEmailPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = getLayoutInflater().inflate(R.layout.popup_email, null);
+        View view = getLayoutInflater().inflate(R.layout.new_mail_popup, null);
         builder.setView(view);
+
+        final RecyclerView rvMail = (RecyclerView) view.findViewById(R.id.rvMail);
+        rvMail.setLayoutManager(new LinearLayoutManager(context));
 
         final AlertDialog mailDialog = builder.create();
         view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
@@ -837,15 +862,61 @@ public class FamilyProfileActivity extends Activity {
                 startActivity(emailIntent);
             }
         });
-        RecyclerView rvMail = (RecyclerView) view.findViewById(R.id.rvMail);
-        rvMail.setLayoutManager(new LinearLayoutManager(context));
+
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = 0;
+                ArrayList<PopupEmailData> myMsgList =((PopupEmailRVAdapter)rvMail.getAdapter()).getList();
+                int n = myMsgList.size();
+                ArrayList<String> selectedList = new ArrayList<>();
+
+                for (int i = 0; i < n; i++) {
+                    PopupEmailData pnd = myMsgList.get(i);
+                    if (pnd.isSelected()) {
+                        selectedList.add(pnd.getEmailId());
+                        count++;
+                    }
+                }
+
+                if (count == 0) {
+                    Toast.makeText(context, "Please select at least one email id to send mail", Toast.LENGTH_LONG).show();
+                    return;
+                }else {
+                    String address = Utils.implode(", ", selectedList);
+
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                    emailIntent.setType("plain/text");
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+                    try {
+                        context.startActivity(emailIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Sorry. Something went wrong.", Toast.LENGTH_LONG).show();
+                    }
+
+                    int m = myMsgList.size();
+                    for (int i = 0; i < m; i++) {
+                        myMsgList.get(i).setSelected(false);
+                    }
+                }
+                mailDialog.hide();
+
+            }
+        });
+
+
+
         rvMail.setAdapter(popupMailRVAdapter);
         mailDialog.show();
     }
 
     public void showMsgPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = getLayoutInflater().inflate(R.layout.popup_message, null);
+        View view = getLayoutInflater().inflate(R.layout.new_popup_msg, null);
         builder.setView(view);
 
         final AlertDialog msgDialog = builder.create();
@@ -856,7 +927,7 @@ public class FamilyProfileActivity extends Activity {
             }
         });
 
-        view.findViewById(R.id.ivSend).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
@@ -879,7 +950,7 @@ public class FamilyProfileActivity extends Activity {
             }
         });
 
-        view.findViewById(R.id.ivSend).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ll_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int count = 0;
@@ -888,7 +959,6 @@ public class FamilyProfileActivity extends Activity {
                     PopupPhoneNumberData pnd = myMsgList.get(i);
 
                     if (pnd.isSelected()) {
-
                         count++;
                     }
                 }

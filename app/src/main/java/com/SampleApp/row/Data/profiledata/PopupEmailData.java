@@ -5,7 +5,7 @@ package com.SampleApp.row.Data.profiledata;
  */
 public class PopupEmailData {
     private String emailId, name, extra;
-
+    private boolean selected;
     public PopupEmailData(String emailId, String name) {
         this.emailId = emailId;
         this.name = name;
@@ -40,4 +40,13 @@ public class PopupEmailData {
     public void setExtra(String extra) {
         this.extra = extra;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean checked) {
+        this.selected = checked;
+    }
+
 }

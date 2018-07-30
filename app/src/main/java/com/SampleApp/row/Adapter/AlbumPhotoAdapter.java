@@ -15,7 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Data.AlbumPhotoData;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -24,12 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Data.AlbumPhotoData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
 
 /**
  * Created by USER1 on 17-09-2016.
@@ -82,8 +81,6 @@ public class AlbumPhotoAdapter extends BaseAdapter {
             holder.framelayout = (FrameLayout) rowView.findViewById(R.id.framelayout);
             holder.imgview = (ImageView) rowView.findViewById(R.id.cb_select);
             rowView.setTag(holder);
-
-
         } else {
             holder = (Holder) rowView.getTag();
         }
@@ -100,8 +97,8 @@ public class AlbumPhotoAdapter extends BaseAdapter {
             holder.img.setImageResource(R.drawable.dashboardplaceholder);
        } else {
             Picasso.with(context).load(listAlbum.get(position).getUrl())
-                    .centerCrop()
-                    .resize(200,200)
+                    //.fit()
+                    //.resize(200,200)
                     .placeholder(R.drawable.dashboardplaceholder)
                     .into(holder.img);
                     //.resize(150, 150)

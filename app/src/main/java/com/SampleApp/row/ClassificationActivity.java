@@ -322,6 +322,7 @@ public class ClassificationActivity extends Activity {
         public void onClassificationSelected(ClassificationData data, int position) {
             try {
                 Intent intent = new Intent(context, ClassificationDirectoryActivity.class);
+                intent.putExtra("module","Club");
                 intent.putExtra("classification", data.getClassificationName());
                 startActivity(intent);
             } catch(Exception e) {

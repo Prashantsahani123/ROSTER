@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,9 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.SampleApp.row.Adapter.DTEventAdapter;
 import com.SampleApp.row.Adapter.DTNewslettersAdapter;
-import com.SampleApp.row.Data.DTEventsData;
 import com.SampleApp.row.Data.DTNewslettersData;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
@@ -192,19 +189,19 @@ public class DTNewsLetters extends Activity {
                 //adapter.getFilter().filter(cs);
                 //adapter.getFilter().filter(cs.toString());
 
-                int textlength = cs.length();
-                ArrayList<DTNewslettersData> tempArrayList = new ArrayList<>();
-                for (DTNewslettersData c : list) {
-                    if (c.getEbulletinTitle().toLowerCase().contains(cs.toString().toLowerCase())) {
-                        tempArrayList.add(c);
+                    int textlength = cs.length();
+                    ArrayList<DTNewslettersData> tempArrayList = new ArrayList<>();
+                    for (DTNewslettersData c : list) {
+                        if (c.getEbulletinTitle().toLowerCase().contains(cs.toString().toLowerCase())) {
+                            tempArrayList.add(c);
+                        }
                     }
-                }
-                //Data_array= tempArrayList;
-                //DirectoryAdapter adapter = new DirectoryAdapter(Directory.this, tempArrayList);
+                    //Data_array= tempArrayList;
+                    //DirectoryAdapter adapter = new DirectoryAdapter(Directory.this, tempArrayList);
 
-                adapter = new DTNewslettersAdapter(context, tempArrayList);
-                rvEvents.setAdapter(adapter);
-                adapter.setOnItemSelectedListener(onItemSelectedListener);
+                    adapter = new DTNewslettersAdapter(context, tempArrayList);
+                    rvEvents.setAdapter(adapter);
+                    adapter.setOnItemSelectedListener(onItemSelectedListener);
             }
 
             @Override

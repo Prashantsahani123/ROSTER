@@ -14,7 +14,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center"
         android:orientation="vertical">
 
@@ -26,9 +25,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 >
-
 
                 <ImageView
                     android:id="@+id/iv_profileimage"
@@ -38,8 +35,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/b_profile_pic" />
-
-
 
                 <ImageView
                     android:id="@+id/iv_imageedit"

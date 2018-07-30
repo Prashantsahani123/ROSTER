@@ -9,12 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Utils.Constant;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-
-import com.SampleApp.row.Utils.Constant;
 
 /**
  * Created by user on 15-03-2016.
@@ -36,11 +35,15 @@ public class ImageZoom extends Activity {
 
         iv = (ImageView) findViewById(R.id.image);
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
+
         Bundle intent = getIntent().getExtras();
 
         if (intent != null) {
+
             imgageurl = intent.getString("imgageurl"); // Created Group ID
+
             Log.e("Touchbase", "♦♦♦♦Url : " + imgageurl);
+
             if ( intent.containsKey("mode") ) {
                 mode = intent.getString("mode");
             }

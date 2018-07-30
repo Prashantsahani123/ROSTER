@@ -17,16 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.CreateGroupModuleAdapter;
 import com.SampleApp.row.Data.CreateModuleData;
 import com.SampleApp.row.Data.UpdateModuleLabels;
@@ -37,6 +27,15 @@ import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.JSONHttpConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+import com.google.gson.Gson;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by USER on 30-12-2015.

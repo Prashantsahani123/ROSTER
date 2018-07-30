@@ -31,16 +31,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.DirectoryAdapter;
 import com.SampleApp.row.Data.ContactData;
 import com.SampleApp.row.Data.DirectoryData;
@@ -51,6 +41,15 @@ import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.TBPrefixes;
 import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.DirectoryDataModel;
+import com.github.clans.fab.FloatingActionMenu;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by USER on 17-12-2015.
@@ -440,7 +439,6 @@ public class Directory extends Activity {
         });
     }
 
-
     public void finishActivity(View v) {
         finish();
     }
@@ -463,7 +461,6 @@ public class Directory extends Activity {
         Log.d("Response", "PARAMETERS " + Constant.GetDirectoryList + " :- " + arrayList.toString());
         new WebConnectionAsyncDirectory(Constant.GetDirectoryList, arrayList, Directory.this).execute();
     }
-
 
     private void searchOnline() {
         //{"masterUID":"1","grpID":"","searchText":"","page":""}
@@ -687,8 +684,6 @@ public class Directory extends Activity {
         }
     }
 
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("TOUCHBASE", "REQUEST CODE" + resultCode);
@@ -875,9 +870,9 @@ public class Directory extends Activity {
             super.onPreExecute();
             //	dialog.show();
 
-            /*progressDialog.setCancelable(false);
+            progressDialog.setCancelable(false);
             progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-            progressDialog.show();*/
+            progressDialog.show();
         }
 
         @Override
@@ -896,7 +891,7 @@ public class Directory extends Activity {
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
 
-            //progressDialog.dismiss();
+            progressDialog.dismiss();
             //	Log.d("response","Do post"+ result.toString());
 
             if (result != "" && result!=null) {

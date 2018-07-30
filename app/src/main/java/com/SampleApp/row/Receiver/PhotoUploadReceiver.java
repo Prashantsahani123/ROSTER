@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.services.UploadPhotoService;
 

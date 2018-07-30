@@ -73,7 +73,10 @@
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"></ListView>
+                android:background="@color/white">
+
+            </ListView>
+
             <TextView
                 android:id="@+id/tv_no_records_found"
                 android:layout_width="match_parent"
@@ -84,6 +87,7 @@
                 android:visibility="gone" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 

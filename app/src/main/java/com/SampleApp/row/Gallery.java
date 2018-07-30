@@ -17,40 +17,54 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SampleApp.row.Adapter.AlbumAdapter;
 import com.SampleApp.row.Adapter.GalleryListAdapter;
 import com.SampleApp.row.Data.AlbumData;
+import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.TBPrefixes;
+import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.sql.GalleryMasterModel;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by user on 02-09-2016.
  */
 public class Gallery extends Activity {
+
     public static final int UPDATE_ALBUM_REQEUST = 25;
-    TextView tv_title;
+    TextView tv_title,tv_no_records_found;
     ImageView iv_backbutton;
+    EditText et_serach;
     private ImageView iv_actionbtn,iv_actionbtn2;
     GridView gv;
     FloatingActionButton fab;
@@ -68,35 +82,66 @@ public class Gallery extends Activity {
     EditText edt_search;
     Button btn_close;
     boolean isinUpdatemode = false;
-
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-
     boolean isInGridviewMode = false;
     GalleryListAdapter  listAdapter;
-
     String moduleId = "";
+    ProgressDialog progressDialog;
+    String district_id,year,club_id,fromShowcase = "1",category_id="0";
+    ArrayList<AlbumData> categoryList;
+    LinearLayout ll_details;
+    TextView tv_cop,tv_beneficiary,tv_manHrSpent,tv_top;
+    Spinner sp_year;
+    private String fromYear, toYear;
+    ArrayList<String> filtertype;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_gallery);
 
-        grpId = Long.parseLong(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID));
+        if(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID)!=null) {
+            grpId = Long.parseLong(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID));
+        }
+
         moduleId = PreferenceManager.getPreference(this,PreferenceManager.MODULE_ID);
         gv = (GridView)findViewById(R.id.gridview);
 
         Intent intent = getIntent();
         this.moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Gallery");
+
         String modulename = intent.getExtras().getString("moduleName", "Gallery");
+        district_id = intent.getExtras().getString("districtId","0");
+        club_id = intent.getExtras().getString("clubId","0");
+        year = intent.getExtras().getString("year","");
+        fromShowcase = intent.getExtras().getString("fromShowcase","1");
+        category_id = intent.getExtras().getString("categoryList","0");
+
+
         tv_title = (TextView) findViewById(R.id.tv_title);
+        tv_no_records_found = (TextView)findViewById(R.id.tv_no_records_found);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
         iv_actionbtn2 = (ImageView)findViewById(R.id.iv_actionbtn2);
         iv_actionbtn2.setImageResource(R.drawable.grid_view);
         iv_actionbtn.setImageResource(R.drawable.search_blue);
-        iv_actionbtn.setVisibility(View.VISIBLE);
-        iv_actionbtn2.setVisibility(View.VISIBLE);
-        tv_title.setText(modulename);
+        iv_actionbtn.setVisibility(View.GONE);
+        iv_actionbtn2.setVisibility(View.GONE);
+
+
+
+        ll_details = (LinearLayout)findViewById(R.id.ll_details);
+        tv_cop = (TextView)findViewById(R.id.tv_cop);
+        tv_beneficiary = (TextView)findViewById(R.id.tv_beneficiary);
+        tv_manHrSpent = (TextView)findViewById(R.id.tv_manHrSpent);
+        tv_top = (TextView)findViewById(R.id.tv_top);
+
+        sp_year = (Spinner) findViewById(R.id.sp_year);
+
+
+
         ll_search = (RelativeLayout) findViewById(R.id.ll_search);
         edt_search = (EditText)findViewById(R.id.edt_search);
         btn_close = (Button)findViewById(R.id.btn_close);
@@ -114,6 +159,35 @@ public class Gallery extends Activity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
+
+        if(fromShowcase.equalsIgnoreCase("0")){
+            tv_title.setText("Showcase");
+            ll_details.setVisibility(View.GONE);
+            sp_year.setVisibility(View.GONE);
+            getAlbumList();
+        }else {
+            tv_title.setText(modulename);
+            ll_details.setVisibility(View.GONE);
+            sp_year.setVisibility(View.VISIBLE);
+            sp_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedYear = sp_year.getSelectedItem().toString();
+                    String array[] = selectedYear.split("-");
+                    fromYear = array[0];
+                    toYear = array[1];
+                    Utils.log(fromYear + " " + toYear);
+                    year = sp_year.getSelectedItem().toString();
+                    getAlbumList();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,6 +197,7 @@ public class Gallery extends Activity {
                     i.putExtra("albumDescription", albumlist.get(position).getDescription());
                     i.putExtra("albumId", albumlist.get(position).getAlbumId());
                     i.putExtra("albumImage", albumlist.get(position).getImage());
+                    i.putExtra("fromShowcase",fromShowcase);
                     startActivityForResult(i, UPDATE_ALBUM_REQEUST);
                 } else {
                 }
@@ -132,23 +207,138 @@ public class Gallery extends Activity {
 
         init();
         checkadminrights();
-        loadFromDB();
+        //loadFromDB();
+        if(InternetConnection.checkConnection(this)) {
+            //getAlbumList();
+        }else{
+            Toast.makeText(Gallery.this,"No Internet Connection.",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
-    /*@Override
+    private void getAlbumList() {
+        try {
+            progressDialog=new ProgressDialog(Gallery.this,R.style.TBProgressBar);
+            progressDialog.setCancelable(false);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.show();
+
+            JSONObject requestData = new JSONObject();
+            requestData.put("groupId", PreferenceManager.getPreference(Gallery.this,PreferenceManager.GROUP_ID));
+            requestData.put("profileId", PreferenceManager.getPreference(this, PreferenceManager.GRP_PROFILE_ID));
+            requestData.put("moduleId",moduleId);
+            requestData.put("district_id", district_id);
+            requestData.put("club_id", club_id);
+            requestData.put("category_id", category_id);
+            requestData.put("year", year);
+            requestData.put("SharType",fromShowcase);
+
+
+            Log.d("Response", "PARAMETERS " + Constant.GetAlbumsList_New + " :- " + requestData.toString());
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constant.GetAlbumsList_New, requestData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    JSONObject result;
+                    getAlbumData(response);
+                    Utils.log(response.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(progressDialog!=null){
+                        progressDialog.dismiss();
+                    }
+                    Utils.log("VollyError:- " + error.toString());
+                    //showErrorDialog();
+                    //Utils.showMsg(context, "Something went wrong");
+                    //Toast.makeText(getApplicationContext(),"Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            request.setRetryPolicy(
+                    new DefaultRetryPolicy(120000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            AppController.getInstance().addToRequestQueue(Gallery.this, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getAlbumData(JSONObject response) {
+        try {
+            JSONObject TBAlbumsListResult = response.getJSONObject("TBAlbumsListResult");
+            String status = TBAlbumsListResult.getString("status");
+            if(status.equalsIgnoreCase("0")){
+                JSONObject resultObject = TBAlbumsListResult.getJSONObject("Result");
+                JSONArray newAlbums = resultObject.getJSONArray("newAlbums");
+
+//                JSONArray totalArray = resultObject.getJSONArray("TotalList");
+//                for(int i = 0; i < totalArray.length(); i++){
+//                    JSONObject totalObj = totalArray.getJSONObject(i);
+//                    tv_top.setText(totalObj.getString("TOTAL_PROJECTS"));
+//                    tv_cop.setText(totalObj.getString("COST_OF_PROJECT"));
+//                    tv_beneficiary.setText(totalObj.getString("BENEFICIARY"));
+//                    tv_manHrSpent.setText(totalObj.getString("MEN_HOURS_SPENT"));
+//                }
+
+                albumlist.clear();
+
+                if(newAlbums.length()>0) {
+                    for (int i = 0; i < newAlbums.length(); i++) {
+                        JSONObject albumObj = newAlbums.getJSONObject(i);
+                        AlbumData data = new AlbumData();
+                        data.setAlbumId(albumObj.getString("albumId"));
+                        data.setTitle(albumObj.getString("title"));
+                        data.setDescription(albumObj.getString("description"));
+                        data.setImage(albumObj.getString("image"));
+                        data.setGrpId(albumObj.getString("groupId"));
+                        data.setModuleId(albumObj.getString("moduleId"));
+                        data.setIsAdmin(albumObj.getString("isAdmin"));
+                        data.setClub_Name(albumObj.getString("clubname"));
+                        data.setProject_date(albumObj.getString("project_date"));
+                        data.setProject_cost(albumObj.getString("project_cost"));
+                        data.setBeneficiary(albumObj.getString("beneficiary"));
+                        data.setWorking_hour(albumObj.getString("working_hour"));
+                        data.setWorking_hour_type(albumObj.getString("working_hour_type"));
+                        data.setCost_of_project_type(albumObj.getString("cost_of_project_type"));
+                        data.setNoOfRotarians(albumObj.getString("NumberOfRotarian"));
+                        data.setShareType(albumObj.getString("sharetype"));
+                        albumlist.add(data);
+                    }
+                    listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
+                    mRecyclerView.setAdapter(listAdapter);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    tv_no_records_found.setVisibility(View.GONE);
+                }else{
+                    mRecyclerView.setVisibility(View.GONE);
+                    tv_no_records_found.setVisibility(View.VISIBLE);
+                }
+                progressDialog.dismiss();
+            }else{
+                progressDialog.dismiss();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Utils.log(e.getMessage());
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-
-
-    }*/
+        checkadminrights();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ( requestCode == UPDATE_ALBUM_REQEUST) {
             if (InternetConnection.checkConnection(this)) {
-                checkForUpdate();
+                //checkForUpdate();
+                getAlbumList();
                 Log.d("---------------", "Check for update gets called------");
             } else {
                 Toast.makeText(this, "No internet connection to get Updated Records", Toast.LENGTH_LONG).show();
@@ -157,6 +347,47 @@ public class Gallery extends Activity {
     }
 
     public void init() {
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        Utils.log("Month: " + month + " year : " + year);
+        if (month > 6) {
+            fromYear = String.valueOf(year);
+            toYear = String.valueOf(year + 1);
+        } else {
+            toYear = String.valueOf(year);
+            fromYear = String.valueOf(year - 1);
+        }
+
+        filtertype = new ArrayList<>();
+        int flag = 0;
+        for (int i = year; i >= 2015; i--) {
+            String filterYear;
+
+            if (month > 6 && i == year) {
+                filterYear = (i) + "-" + (i + 1);
+                flag=1;
+            } else if (month <= 6 && i == year) {
+                filterYear = (i-1) + "-" + (i);
+                flag=2;
+            } else {
+                if(flag==1){
+                    filterYear = (i) + "-" + (i+1);
+                }else {
+                    filterYear = (i-1) + "-" + (i);
+                }
+            }
+
+            filtertype.add(filterYear);
+        }
+        if(flag!=1){
+
+            filtertype.remove(filtertype.size()-1);
+        }
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, filtertype);
+        sp_year.setAdapter(spinnerArrayAdapter);
+
+
         addAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,16 +404,19 @@ public class Gallery extends Activity {
         });
 
         deleteAlbum.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 mode = 1;
                 materialDesignFAM.close(false);
                 materialDesignFAM.setVisibility(View.GONE);
+
                 if(isInGridviewMode) {
                     gridAdapter = new AlbumAdapter(Gallery.this, albumlist, "0");
                     gv.setAdapter(gridAdapter);
                 }else{
-                    listAdapter = new GalleryListAdapter(Gallery.this,albumlist,"0");
+                    listAdapter = new GalleryListAdapter(Gallery.this,albumlist,"0",fromShowcase);
                     mRecyclerView.setAdapter(listAdapter);
                 }
             }
@@ -206,14 +440,23 @@ public class Gallery extends Activity {
 
     }
     private void checkadminrights() {
-        if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")) {
-            //iv_actionbtn.setVisibility(View.GONE);
+
+        if(fromShowcase.equalsIgnoreCase("0")){
             materialDesignFAM.setVisibility(View.GONE);
+        }else {
+            if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")) {
+                //iv_actionbtn.setVisibility(View.GONE);
+                materialDesignFAM.setVisibility(View.GONE);
+            } else {
+                materialDesignFAM.setVisibility(View.VISIBLE);
+            }
         }
 
 
         edt_search.addTextChangedListener(new TextWatcher() {
+
             String albumname = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -222,37 +465,58 @@ public class Gallery extends Activity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 albumname = edt_search.getText().toString();
+
+                int textlength = s.length();
+                ArrayList<AlbumData> tempArrayList = new ArrayList<AlbumData>();
+                for (AlbumData c : albumlist) {
+                    if (textlength <= c.getTitle().length()) {
+                        if (c.getClub_Name().toLowerCase().contains(s.toString().toLowerCase())||c.getTitle().toLowerCase().contains(s.toString().toLowerCase())) {
+                            tempArrayList.add(c);
+                        }
+                    }
+                }
+
+                if(tempArrayList.size()<1){
+                    mRecyclerView.setVisibility(View.GONE);
+                    tv_no_records_found.setVisibility(View.VISIBLE);
+                }else {
+                    tv_no_records_found.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    listAdapter = new GalleryListAdapter(Gallery.this, tempArrayList, "1", fromShowcase);
+                    listAdapter.notifyDataSetChanged();
+                    mRecyclerView.setAdapter(listAdapter);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                albumlist = albumModel.getAlbumByName(albumname,String.valueOf(grpId),moduleId);
-                if(albumlist!= null && albumlist.size() > 0) {
-                    if(isInGridviewMode) {
-                        gridAdapter = new AlbumAdapter(Gallery.this, albumlist, "1");
-                        gv.setAdapter(gridAdapter);
-                        gridAdapter.notifyDataSetChanged();
-                    }else{
-                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1");
-                        mRecyclerView.setAdapter(listAdapter);
-                        listAdapter.notifyDataSetChanged();
-                    }
-
-                } else {
-//                    Toast.makeText(Gallery.this, "No Albums Found ", Toast.LENGTH_SHORT).show();
-                    //tv_no_records_found
-                    if(isInGridviewMode) {
-                        TextView tvEmpty = (TextView) findViewById(R.id.tv_no_records_found);
-                        gv.setEmptyView(tvEmpty);
-                        gv.setAdapter(null);
-                    }else{
-                        albumlist.add(new AlbumData("-1","","","","","",""));
-                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1");
-                        mRecyclerView.setAdapter(listAdapter);
-                        listAdapter.notifyDataSetChanged();
-
-                    }
-                }
+//                albumlist = albumModel.getAlbumByName(albumname,String.valueOf(grpId),moduleId);
+//                if(albumlist!= null && albumlist.size() > 0) {
+//                    if(isInGridviewMode) {
+//                        gridAdapter = new AlbumAdapter(Gallery.this, albumlist, "1");
+//                        gv.setAdapter(gridAdapter);
+//                        gridAdapter.notifyDataSetChanged();
+//                    }else{
+//                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
+//                        mRecyclerView.setAdapter(listAdapter);
+//                        listAdapter.notifyDataSetChanged();
+//                    }
+//
+//                } else {
+////                    Toast.makeText(Gallery.this, "No Albums Found ", Toast.LENGTH_SHORT).show();
+//                    //tv_no_records_found
+//                    if(isInGridviewMode) {
+//                        TextView tvEmpty = (TextView) findViewById(R.id.tv_no_records_found);
+//                        gv.setEmptyView(tvEmpty);
+//                        gv.setAdapter(null);
+//                    }else{
+//                        albumlist.add(new AlbumData("-1","","","","","",""));
+//                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
+//                        mRecyclerView.setAdapter(listAdapter);
+//                        listAdapter.notifyDataSetChanged();
+//
+//                    }
+//                }
 
             }
         });
@@ -291,7 +555,7 @@ public class Gallery extends Activity {
                         iv_actionbtn2.setImageResource(R.drawable.grid_view);
                         gv.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.VISIBLE);
-                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1");
+                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
                         mRecyclerView.setAdapter(listAdapter);
                     }
                 }else{
@@ -309,7 +573,7 @@ public class Gallery extends Activity {
                         iv_actionbtn2.setImageResource(R.drawable.grid_view);
                         gv.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.VISIBLE);
-                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "0");
+                        listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "0",fromShowcase);
                         mRecyclerView.setAdapter(listAdapter);
                     }
                 }
@@ -317,10 +581,10 @@ public class Gallery extends Activity {
         });
     }
 
-
     public void loadFromDB() {
 
         Log.d("Touchbase", "Trying to load Album from local db");
+
         albumlist = albumModel.getAlbums(String.valueOf(grpId),moduleId);
 
         boolean isDataAvailable = albumModel.isDataAvailable(grpId,moduleId);
@@ -328,13 +592,18 @@ public class Gallery extends Activity {
         Log.e("DataAvailable", "Data available : " + isDataAvailable);
 
         if (!isDataAvailable) {
+
             Log.d("Touchbase---@@@@@@@@", "Loading from server");
+
             if (InternetConnection.checkConnection(this))
                 webservices();
             else
                 Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
+
         } else {
-            GalleryListAdapter adapter = new GalleryListAdapter(Gallery.this,albumlist,"1");
+
+            GalleryListAdapter adapter = new GalleryListAdapter(Gallery.this,albumlist,"1",fromShowcase);
+
             mRecyclerView.setAdapter(adapter);
 
             if (InternetConnection.checkConnection(this)) {
@@ -347,9 +616,11 @@ public class Gallery extends Activity {
     }
 
     public void checkForUpdate() {
+
         isinUpdatemode = true;
 
         Log.e("Touchbase", "------ checkForUpdate() called for update");
+
         String url = Constant.GetAllAlbumList;
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
         arrayList.add(new BasicNameValuePair("profileId", PreferenceManager.getPreference(this, PreferenceManager.GRP_PROFILE_ID)));
@@ -362,6 +633,7 @@ public class Gallery extends Activity {
         Log.e("request", arrayList.toString());
         GalleryDataAsyncTask task = new GalleryDataAsyncTask(url, arrayList,this);
         task.execute();
+
         Log.d("Response", "PARAMETERS " + Constant.GetAllAlbumList + " :- " + arrayList.toString());
     }
 
@@ -382,7 +654,6 @@ public class Gallery extends Activity {
         Log.d("Request", "PARAMETERS " + Constant.GetAllAlbumList + " :- " + arrayList.toString());
         GalleryDataAsyncTask task = new GalleryDataAsyncTask(url, arrayList,this);
         task.execute();
-
     }
 
     public class GalleryDataAsyncTask extends AsyncTask<String, Object, Object> {
@@ -393,14 +664,11 @@ public class Gallery extends Activity {
         String url = null;
         List<NameValuePair> argList = null;
 
-
         public GalleryDataAsyncTask(String url, List<NameValuePair> argList, Context ctx) {
             this.url = url;
             this.argList = argList;
             context = ctx;
         }
-
-
 
         @Override
         protected void onPreExecute() {
@@ -468,7 +736,6 @@ public class Gallery extends Activity {
                     AlbumData data = new AlbumData();
 
                     JSONObject result_object = jsonNewAlbumList.getJSONObject(i);
-
                     data.setAlbumId(result_object.getString("albumId").toString());
                     data.setTitle(result_object.getString("title").toString());
                     data.setDescription(result_object.getString("description").toString());
@@ -488,9 +755,7 @@ public class Gallery extends Activity {
 
                 final ArrayList<AlbumData> UpdatedAlbumList = new ArrayList<AlbumData>();
                 JSONArray jsonUpdatedAlbumList = jsonResult.getJSONArray("updatedAlbums");
-
                 int updateAlbumListCount = jsonUpdatedAlbumList.length();
-
                 for (int i = 0; i < updateAlbumListCount; i++) {
 
                     AlbumData data = new AlbumData();
@@ -525,7 +790,6 @@ public class Gallery extends Activity {
                         AlbumData data = new AlbumData();
                         data.setAlbumId(String.valueOf(deletedAlbumArray[i].toString()));
                         DeletedAlbumList.add(data);
-
                     }
 
                 }
@@ -549,7 +813,7 @@ public class Gallery extends Activity {
                             albumlist = new ArrayList<>();
                             albumlist = albumModel.getAlbums(String.valueOf(grpId),moduleId);
                             if(!isInGridviewMode) {
-                                listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1");
+                                listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
                                 mRecyclerView.setAdapter(listAdapter);
                             }else{
                                 gridAdapter = new AlbumAdapter(Gallery.this, albumlist, "1");
@@ -564,9 +828,11 @@ public class Gallery extends Activity {
 
                 System.out.println("Number of records received for albums  : " + overAllCount);
                 if (newAlbumListCount + updateAlbumListCount + deleteAlbumListCount != 0) {
-
                     Albumdatahandler.sendEmptyMessageDelayed(0, 1000);
                 } else {
+                    TextView tvEmpty = (TextView) findViewById(R.id.tv_no_records_found);
+                    gv.setEmptyView(tvEmpty);
+                    gv.setAdapter(null);
                     Log.e("NoUpdate", "No updates found");
                 }
             }
@@ -590,9 +856,9 @@ public class Gallery extends Activity {
         else if(mode==1){
 
             if(!isInGridviewMode){
-                listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1");
+                listAdapter = new GalleryListAdapter(Gallery.this, albumlist, "1",fromShowcase);
                 if(listAdapter.getIsdelete().equalsIgnoreCase("true")){
-                    checkForUpdate();
+                    getAlbumList();
                 }
                 else {
                     mRecyclerView.setAdapter(listAdapter);

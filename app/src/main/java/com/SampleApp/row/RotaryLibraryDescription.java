@@ -8,8 +8,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.SampleApp.row.Utils.PreferenceManager;
-
 /**
  * Created by admin on 22-05-2017.
  */
@@ -26,17 +24,24 @@ public class RotaryLibraryDescription extends Activity {
         context = this;
         actionbarfunction();
         init();
-
+        tv_title.setText("Rotary Library");
         Intent i = getIntent();
         if(i.hasExtra("title")){
             String name = i.getStringExtra("title");
             tv_libraryName.setText(name);
+            //tv_title.setText(name);
         }
         if(i.hasExtra("description")){
             String description = i.getStringExtra("description");
             webview.getSettings().setJavaScriptEnabled(true);
             webview.loadData(description,"text/html","utf-8");
         }
+//        if(i.hasExtra("modulename")){
+//            String name = i.getStringExtra("modulename");
+//
+//            tv_title.setText(name);
+//        }
+
     }
 
     private void actionbarfunction() {

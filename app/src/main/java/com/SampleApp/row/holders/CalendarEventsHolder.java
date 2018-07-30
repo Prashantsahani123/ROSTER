@@ -19,6 +19,8 @@ public class CalendarEventsHolder extends RecyclerView.ViewHolder {
        public TextView tv_type;
        public TextView tv_eventtime;
        public LinearLayout ll_calendar;
+       public TextView tv_name;
+
 
     public CalendarEventsHolder(View view){
         super(view);
@@ -27,7 +29,7 @@ public class CalendarEventsHolder extends RecyclerView.ViewHolder {
         tv_type = (TextView)view.findViewById(R.id.type);
         tv_eventtime = (TextView)view.findViewById(R.id.eventtime);
         ll_calendar = (LinearLayout)view.findViewById(R.id.ll_calendar);
-
+        tv_name = (TextView)view.findViewById(R.id.tv_name);
     }
 
     public TextView getDate() {
@@ -62,5 +64,11 @@ public class CalendarEventsHolder extends RecyclerView.ViewHolder {
         this.tv_eventtime = tv_eventtime;
     }
 
+    public TextView getTv_name() {
+        return tv_name;
+    }
 
+    public void setTv_name(TextView tv_name) {
+        this.tv_name = tv_name;
+    }
 }

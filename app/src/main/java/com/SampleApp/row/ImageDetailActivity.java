@@ -7,10 +7,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.FileProvider;
@@ -27,6 +27,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.SlidingImageGalleryAdapter;
+import com.SampleApp.row.Data.AlbumPhotoData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.TBPrefixes;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.sql.AlbumPhotosMasterModel;
+import com.squareup.picasso.Picasso;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -39,20 +50,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.SlidingImageGalleryAdapter;
-import com.SampleApp.row.Data.AlbumPhotoData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.TBPrefixes;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.sql.AlbumPhotosMasterModel;
-import com.SampleApp.row.sql.GalleryMasterModel;
-
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by USER1 on 22-09-2016.
@@ -88,6 +85,7 @@ public class ImageDetailActivity extends Activity {
     private long grpId;
     String updatedOn = "";
     AlbumPhotosMasterModel albumPhotosMasterModel;
+    String url,fromShowcase;
 
     //private SlidingUpPanelLayout slidingLayout;
     @Override
@@ -95,7 +93,9 @@ public class ImageDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_detail);
 
-        grpId = Long.parseLong(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID));
+        if(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID)!=null) {
+            grpId = Long.parseLong(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID));
+        }
         albumPhotosMasterModel = new AlbumPhotosMasterModel(this);
         ivTemp = (ImageView) findViewById(R.id.ivTemp);
         ivTemp.setDrawingCacheEnabled(true);
@@ -112,8 +112,12 @@ public class ImageDetailActivity extends Activity {
         model = new AlbumPhotosMasterModel(this);
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
 
-        if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("Yes")) {
-            iv_actionbtn.setVisibility(View.VISIBLE);
+        if(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN)!=null) {
+            if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("Yes")) {
+                iv_actionbtn.setVisibility(View.VISIBLE);
+            }
+        }else {
+            iv_actionbtn.setVisibility(View.GONE);
         }
         iv_actionbtn.setImageResource(R.drawable.overflow_btn_blue);
         isAdmin = PreferenceManager.getPreference(context, PreferenceManager.IS_GRP_ADMIN, "No");
@@ -121,6 +125,7 @@ public class ImageDetailActivity extends Activity {
             fromMain = getIntent().getStringExtra("fromMain");
         }
 
+        fromShowcase = getIntent().getExtras().getString("fromShowcase");
        /*overlayHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -142,6 +147,7 @@ public class ImageDetailActivity extends Activity {
 
         photoList = getIntent().getExtras().getParcelableArrayList("photos");
         albumId = getIntent().getStringExtra("albumId");
+        url = getIntent().getStringExtra("imgUrl");
         size = photoList.size();
         adapter = new SlidingImageGalleryAdapter(context, photoList);
         photoPager.setAdapter(adapter);
@@ -151,6 +157,7 @@ public class ImageDetailActivity extends Activity {
         }
 
         ViewPager.OnPageChangeListener listner = new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -264,10 +271,13 @@ public class ImageDetailActivity extends Activity {
 
                 PopupMenu popup = new PopupMenu(ImageDetailActivity.this, iv_actionbtn);
                 popup.getMenu().add(1, R.id.tv_share, 3, "Share");
-                if (fromMain.equalsIgnoreCase("Yes") && !isAdmin.equalsIgnoreCase("no")) {
-                    popup.getMenu().add(1, R.id.edit, 1, "Edit");
-                    popup.getMenu().add(1, R.id.iv_delete, 2, "Delete");
-                }
+
+//                if(fromShowcase.equalsIgnoreCase("1")) {
+//                    if (fromMain.equalsIgnoreCase("Yes") && !isAdmin.equalsIgnoreCase("no")) {
+//                        popup.getMenu().add(1, R.id.edit, 1, "Edit");
+//                        popup.getMenu().add(1, R.id.iv_delete, 2, "Delete");
+//                    }
+//                }
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -298,7 +308,6 @@ public class ImageDetailActivity extends Activity {
                                     @Override
                                     public void onClick(View v) {
                                         dialog.dismiss();
-
                                     }
                                 });
 
@@ -350,8 +359,8 @@ public class ImageDetailActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Bitmap bitmap = ivTemp.getDrawingCache();
-
+        //Bitmap bitmap = ivTemp.getDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable)ivTemp.getDrawable()).getBitmap();
         File filesDir = getFilesDir();
         File imageDirectory = new File(filesDir, "ROW");
         if (!imageDirectory.exists()) {
@@ -384,12 +393,13 @@ public class ImageDetailActivity extends Activity {
 
     public void loadImage() {
         try {
-            GalleryMasterModel model = new GalleryMasterModel(context);
-            AlbumPhotoData data = model.getPhotoData(photoid);
-            Picasso.with(context).load(data.getUrl())
+//            GalleryMasterModel model = new GalleryMasterModel(context);
+//            AlbumPhotoData data = new AlbumPhotoData();
+//            data = model.getPhotoData(photoid);
+            Picasso.with(context).load(photoList.get(position).getUrl())
                     .placeholder(R.drawable.dashboardplaceholder)
                     .into(ivTemp);
-            tvDescription.setText(data.getDescription());
+            tvDescription.setText(photoList.get(position).getDescription());
         } catch (NullPointerException npe) {
             npe.printStackTrace();
             //Toast.makeText(ImageDetailActivity.this, "Failed to load the photo", Toast.LENGTH_LONG).show();

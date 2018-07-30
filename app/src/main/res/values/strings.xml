@@ -47,12 +47,19 @@
     <string name="popupmsg_registration">Roster On Wheels Mobile Application is only\nfor Rotarians / IW Members / Rotaractors</string>
     <string name="terms_and_condition">Terms &amp; Conditions</string>
     <string name="find_a_rotarian_msg">This feature allows you to search any Rotarian\n from \'Roster On Wheels\' subscribed clubs.</string>
-    <string name="msg_no_records_found">No Results</string>
+    <string name="msg_no_records_found">No Record Found</string>
     <string name="msg_hint_feedback">Please enter your feedback</string>
 
     <string name="msgRetry">Something went wrong. Please try again after sometime.</string>
 
-    <string name="No_Results">No results</string>
+    <string name="No_Results">No Record Found</string>
+    <string name="noDoc">Unable to load Document</string>
+    <string name="published">Published</string>
+    <string name="unPublished">Un-Published</string>
+    <string name="expired">Expired</string>
+    <string name="lblBirthday">Birthday</string>
+    <string name="lblAnniversary">Anniversary</string>
+    <string name="lblEvent">Event</string>
     <string-array name="bloodGroup">
         <item>--- Select ---</item>
         <item>A +ve</item>
@@ -82,4 +89,29 @@
         <item>Rotarian</item>
         <item>District\nCommittee</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="noCalendarData">No Birthday, Anniversary and Event</string>
+    <string name="navigation_drawer_open">open drawer</string>
+    <string name="navigation_drawer_close">close drawer</string>
+    <string name="title_activity_dash_board">DashBoardActivity</string>
+
+
+    <!--Drawer String Items-->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="lbl_aboutdeveloper">About Developer</string>
+    <string name="lbl_privacySetting">Settings</string>
+    <string name="lbl_notificationSetting">Notification Settings</string>
+    <string name="lbl_faq">FAQ\'s</string>
+    <string name="lbl_rowHelpLine">ROW Helpline</string>
+    <string name="noInternet">No internet connection</string>
+    <string name="no_events">No Events</string>
+    <string name="no_anniversary">No Anniversary</string>
+    <string name="no_birthday">No Birthday</string>
+    <string name="add_attendance">Add Attendance</string>
+    <string name="select_event_from_list">Select Event from list</string>
+    <string name="new_event">New Event</string>
+
 </resources>

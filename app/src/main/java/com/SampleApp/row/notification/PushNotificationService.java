@@ -4,15 +4,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.SampleApp.row.R;
-import com.google.android.gms.gcm.GcmListenerService;
-
-import java.util.Random;
 
 import com.SampleApp.row.Announcement_details;
 import com.SampleApp.row.Documents;
@@ -21,9 +14,14 @@ import com.SampleApp.row.EventDetails;
 import com.SampleApp.row.GroupInfo_New;
 import com.SampleApp.row.Improvement_details;
 import com.SampleApp.row.Profile;
+import com.SampleApp.row.R;
 import com.SampleApp.row.Splash;
 import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.calendar.CalendarNotificationDetails;
+import com.google.android.gms.gcm.GcmListenerService;
+
+import java.util.Random;
 
 /**
  * Created by kundan on 10/22/2015.
@@ -128,7 +126,7 @@ public class PushNotificationService extends GcmListenerService {
 
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+       // Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         // Build notification
         // Actions are just fake
         Notification noti = new Notification.Builder(this)
@@ -138,7 +136,7 @@ public class PushNotificationService extends GcmListenerService {
                 .setSmallIcon(R.drawable.touchbase_icon_transparent_one)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setContentIntent(pIntent)
-                .setSound(uri)
+                .setSound(Utils.notiUri)
                 .build();
         // .addAction(R.mipmap.ic_launcher, "Call", pIntent)
         // .addAction(R.mipmap.ic_launcher, "More", pIntent)

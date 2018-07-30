@@ -95,7 +95,7 @@ public class GroupCreated extends Activity {
             @Override
             public void onClick(View v) {
                 // Intent i = new Intent(GroupCreated.this,Contact_Import.class);
-                Intent i = new Intent(GroupCreated.this, GroupsListingDashboard.class);
+                Intent i = new Intent(GroupCreated.this, DashboardActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 finish();

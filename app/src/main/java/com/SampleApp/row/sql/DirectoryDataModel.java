@@ -6,12 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.SampleApp.row.Data.DirectoryData;
+import com.SampleApp.row.Utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.SampleApp.row.Data.DirectoryData;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.Utils;
 
 
 /**

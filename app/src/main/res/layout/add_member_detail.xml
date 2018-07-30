@@ -46,12 +46,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_bg_white"
-                android:inputType="textCapSentences"
-                android:singleLine="true"
+                android:hint="Enter Name"
+                android:inputType="textCapWords"
                 android:paddingBottom="5dp"
                 android:paddingLeft="8dp"
                 android:paddingTop="5dp"
-                android:hint="Enter Name"/>
+                android:singleLine="true" />
 
 
             <TextView

@@ -13,6 +13,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="#b6b6b6" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -23,7 +32,7 @@
             android:id="@+id/rl_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
             <EditText
                 android:id="@+id/et_serach_directory"
                 android:layout_width="fill_parent"
@@ -71,11 +80,25 @@
             android:orientation="vertical"
             >
 
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/memberRecyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="vertical" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/separator_height"
+                android:background="#b6b6b6" />
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 android:id="@+id/recyclerview"
+                android:nestedScrollingEnabled="false"
                 />
 
             <TextView
@@ -90,6 +113,6 @@
 
         </LinearLayout>
     </LinearLayout>
-
+    </ScrollView>
 
 </LinearLayout>

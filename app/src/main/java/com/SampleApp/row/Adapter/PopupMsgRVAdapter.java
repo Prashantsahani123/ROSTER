@@ -42,7 +42,7 @@ public class PopupMsgRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         pHolder.getTvExtra().setText(phoneNumber.getExtra());
         pHolder.getTvPhoneNo().setText(phoneNumber.getNumber());
         pHolder.getTvTitle().setText(phoneNumber.getName());
-        pHolder.getCbSelected().setChecked(phoneNumber.isSelected());
+        //pHolder.getCbSelected().setChecked(phoneNumber.isSelected());
 
         try {
             pHolder.getTvPhoneNo().setOnClickListener(new View.OnClickListener() {

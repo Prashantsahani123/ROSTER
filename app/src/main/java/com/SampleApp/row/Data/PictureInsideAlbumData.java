@@ -8,7 +8,7 @@ public class PictureInsideAlbumData {
     String uri;
     String filepath;
     public boolean box = false;
-
+    String desc;
 
     public PictureInsideAlbumData() {
 
@@ -49,9 +49,13 @@ public class PictureInsideAlbumData {
     }
 
 
+    public String getDesc() {
+        return desc;
+    }
 
-
-
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 }
 
 

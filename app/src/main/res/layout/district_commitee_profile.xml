@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/fragment"
+        class="com.SampleApp.row.ActionbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            >
+                            <ImageView
+                                android:id="@+id/ivNewProfileImage"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="20dp"
+                                android:src="@drawable/profile_pic" />
+                            <!--android:background="@drawable/blue_border_circle"-->
+
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tvRotaryDesignation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+
+                                android:gravity="right">
+
+                                <ImageView
+                                    android:id="@+id/ivNewCallButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:padding="7dp"
+                                    android:src="@drawable/blue_call" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/ivNewMessage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:padding="7dp"
+                                    android:src="@drawable/blue_message" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/ivNewMail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:padding="7dp"
+                                    android:src="@drawable/p_g_mail" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#b6b6b6" />
+
+                <LinearLayout
+                    android:id="@+id/ll_mobile"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Telephone No."
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_mobile"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:padding="5dp"
+                        android:textColorHint="@color/pale_gray"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:textSize="16dp"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Email ID"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_clubName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Club Name"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_clubName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_districtDesignation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textSize="14dp"
+                        android:text="District Designation"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_districtDesig"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp"
+                        android:textSize="16dp"
+                        />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_classification"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Classification"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_classification"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_keyword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textSize="14dp"
+                        android:text="Keywords about your profession "
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_keyword"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_businessName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Business Name"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_businessName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_designation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Designation"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_designation"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_businessAddress"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Business Address"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_businessAddress"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_rotaryId"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Rotary ID"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_rotaryId"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:padding="5dp"
+                        />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_donarRecognition"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Donar Recognition"
+                        android:textSize="14dp"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_donarRegcognition"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/pale_gray"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:padding="5dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#b6b6b6" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

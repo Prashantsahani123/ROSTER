@@ -18,14 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Data.E_BulletineListData;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Constant;
@@ -35,14 +27,23 @@ import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by USER on 11-02-2016.
  */
-public class E_BulletineAdapter extends ArrayAdapter<E_BulletineListData> {
+public class E_BulletineAdapter extends ArrayAdapter<E_BulletineListData>{
 
     private Context mContext;
     private int layoutResourceId;
     private ArrayList<E_BulletineListData> list_ebulletineData = new ArrayList<E_BulletineListData>();
+    private ArrayList<E_BulletineListData> filterList = null;
     String link;
     private int pos;
     public static int count_read_ebulletines = 0;
@@ -53,6 +54,8 @@ public class E_BulletineAdapter extends ArrayAdapter<E_BulletineListData> {
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
         this.list_ebulletineData = list_ebulletineData;
+        this.filterList=new ArrayList<>();
+        this.filterList.addAll(list_ebulletineData);
         marshMallowPermission = new MarshMallowPermission((Activity)mContext);
     }
 
@@ -108,38 +111,49 @@ public class E_BulletineAdapter extends ArrayAdapter<E_BulletineListData> {
                 }
 
                 if (item.getEbulletinType().equals("Link")) {
-                    String url = item.getEbulletinlink();
-                    if (!url.startsWith("http://") && !url.startsWith("https://"))
-                        url = "http://" + url;
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    mContext.startActivity(browserIntent);
-                    readFlagWebservices();
-                } else {
-                    final String link = item.getEbulletinlink();
-                    Uri u = Uri.parse(link);
-                    File f = new File("" + u);
-                    String fileName = f.getName();
-                    Log.d("-----LINK---------", "-----Downloaded-----" + fileName);
-                    String servicestring = Context.DOWNLOAD_SERVICE;
-                    DownloadManager downloadmanager;
-                    downloadmanager = (DownloadManager) mContext.getSystemService(servicestring);
-                    Uri uri = Uri.parse(link);
-                    Log.d("-----LINK---------", "-----Downloaded-----" + uri);
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
-                    Log.d("-----LINK---------", "-----Downloaded-----" + request);
-                    //  Long reference = downloadmanager.enqueue(request);
-                    // Log.d("-----LINK---------","-----Downloaded-----"+reference);
 
-                    if (!marshMallowPermission.checkPermissionForExternalStorage()) {
-                        marshMallowPermission.requestPermissionForExternalStorage();
-                    } else {
-                        long id = downloadmanager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setAllowedOverRoaming(false).setTitle("File Downloading...").setDescription("File Download").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName));
-                        Log.d("-----LINK---------", "-----Downloaded-----" + id);
-                        //documentsafeat6d89-cover23032016021718PM.png
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    String url = item.getEbulletinlink();
+                    if(url!=null && !url.isEmpty()){
+                        if (!url.startsWith("http://") && !url.startsWith("https://"))
+                            url = "http://" + url;
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         mContext.startActivity(browserIntent);
                         readFlagWebservices();
+                    }else {
+                        Utils.showToastWithTitleAndContext(mContext,mContext.getString(R.string.noDoc));
                     }
+
+                } else {
+                    final String link = item.getEbulletinlink();
+                    if(link!=null && !link.isEmpty()){
+                        Uri u = Uri.parse(link);
+                        File f = new File("" + u);
+                        String fileName = f.getName();
+                        Log.d("-----LINK---------", "-----Downloaded-----" + fileName);
+                        String servicestring = Context.DOWNLOAD_SERVICE;
+                        DownloadManager downloadmanager;
+                        downloadmanager = (DownloadManager) mContext.getSystemService(servicestring);
+                        Uri uri = Uri.parse(link);
+                        Log.d("-----LINK---------", "-----Downloaded-----" + uri);
+                        DownloadManager.Request request = new DownloadManager.Request(uri);
+                        Log.d("-----LINK---------", "-----Downloaded-----" + request);
+                        //  Long reference = downloadmanager.enqueue(request);
+                        // Log.d("-----LINK---------","-----Downloaded-----"+reference);
+
+                        if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                            marshMallowPermission.requestPermissionForExternalStorage();
+                        } else {
+                            long id = downloadmanager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).setAllowedOverRoaming(false).setTitle("File Downloading...").setDescription("File Download").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName));
+                            Log.d("-----LINK---------", "-----Downloaded-----" + id);
+                            //documentsafeat6d89-cover23032016021718PM.png
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                            mContext.startActivity(browserIntent);
+                            readFlagWebservices();
+                        }
+                    }else {
+                        Utils.showToastWithTitleAndContext(mContext,mContext.getString(R.string.noDoc));
+                    }
+
                 }
             }
         });
@@ -386,6 +400,27 @@ public class E_BulletineAdapter extends ArrayAdapter<E_BulletineListData> {
         } catch (Exception e) {
             Log.d("exec", "Exception :- " + e.toString());
         }
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText=charText.toLowerCase();
+        list_ebulletineData.clear();
+        if (charText.length() == 0) {
+            list_ebulletineData.addAll(filterList);
+        }
+        else
+        {
+            for (E_BulletineListData wp : filterList)
+            {
+                Utils.log(wp.getEbulletinTitle());
+                if (wp.getEbulletinTitle().toLowerCase().contains(charText))
+                {
+                    list_ebulletineData.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

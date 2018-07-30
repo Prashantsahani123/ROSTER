@@ -1,7 +1,6 @@
 package com.SampleApp.row.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +9,9 @@ import android.view.ViewGroup;
 
 import com.SampleApp.row.Data.ClubMemberData;
 import com.SampleApp.row.R;
-import com.SampleApp.row.RotarianBusinessDetails_ProfileActivity;
 import com.SampleApp.row.Utils.CircleTransform;
 import com.SampleApp.row.holders.ClubMemberHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
-import com.SampleApp.row.holders.RotarianListHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -9,12 +9,13 @@
     <color name="background">#0099FF</color>
     <color name="bottom_button">#ffffff</color>
     <color name="dark_gray">#727272</color>
+    <color name="slider">#E6E6E6</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="pale_gray">#D9D9D9</color>
     <color name="peach_color">#FF4C4D</color>
     <color name="text_color_pale_gray">#EEEEEE</color>
-    <color name="seperator_color">#c9c9c9</color>
+    <color name="seperator_color">#BDBDBD</color>
     <color name="tabbar_gray">#D9D9D9</color>
     <color name="rounded_square">#ECECEC</color>
     <color name="grey_shade">#bbbbbb</color>
@@ -25,7 +26,7 @@
     <color name = "pale_green">#cceddc</color>
     <color name="coral_blue">#1DAEFA</color>
     <color name="dark_blue">#125D9D</color>
-    <color name="light_gray">#ABBAC2</color>
+    <color name="light_gray">#d8d8d8</color>
     <color name="red">#FF3333</color>
     <color name = "pale_red">#FFd6d6</color>
     <color name="circleProgressCompleteStartGradient">@color/dark_blue</color>
@@ -51,6 +52,25 @@
     <color name="actionbar_text_color">#505050</color>
 
     <color name="bigSeperatorColor">#f2f3f5</color>
+    <color name="ClubBirthday">#4CA5EF</color>
+    <color name="DistrictBirthday">#93CB4F</color>
+    <color name="ClubAnniversary">#AF2872</color>
+    <color name="DistrictAnniversary">#5B2476</color>
+    <color name="Event1">#30B971</color>
+    <color name="Event2">#E55A3F</color>
+    <color name="Event3">#202B4B</color>
+    <color name="Event4">#A87853</color>
+    <color name="blogs">#112A49</color>
+    <color name="news">#AF7752</color>
+
+
+    <color name="lb_project">#FF9338</color>
+    <color name="lb_cost">#89BE4A</color>
+    <color name="lb_beneficiaries">#FA5951</color>
+    <color name="lb_menhr">#EA4E95</color>
+    <color name="lb_rotarians">#0089AE</color>
+    <color name="lb_members">#00B49B</color>
+    <color name="lb_trf">#D3A885</color>
 
 </resources>
 

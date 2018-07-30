@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -18,6 +19,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Data.CalendarData;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.Utils.MarshMallowPermission;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -26,14 +34,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.HttpConnection;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
 
 /**
  * Created by USER on 17-12-2015.
@@ -46,7 +51,7 @@ public class EventDetails extends Activity {
     TextView event_title;
     TextView event_desc;
     TextView event_venue;
-    TextView event_datetime;
+    TextView event_datetime,event_date,event_time;
     TextView total_count;
     TextView tv_yes_count;
     TextView tv_no_count;
@@ -57,7 +62,7 @@ public class EventDetails extends Activity {
 
     TextView tv_question_attending,tv_members_with_you;
 
-    LinearLayout tv_green, tv_red, tv_gray;
+    LinearLayout tv_green, tv_red, tv_gray,ll_main,ll_eventDateTime,ll_eventTime,ll_eventLoc;
 
     String flag_callwebsercie = "0";
     String getIsQuesEnable = "";
@@ -75,6 +80,11 @@ public class EventDetails extends Activity {
     private String grpID = "0";
     private String memberProfileID = "0";
     private String isAdmin = "No";
+    CalendarData data;
+    SimpleDateFormat oldFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat newFormat=new SimpleDateFormat("dd MMM yyyy");
+    MarshMallowPermission marshMallowPermission;
+    //LinearLayout ll_actionbtn,ll_actionbtn2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +98,26 @@ public class EventDetails extends Activity {
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         // iv_backbutton.setVisibility(View.GONE);
+//        ll_actionbtn = (LinearLayout) findViewById(R.id.ll_actionbtn);
+//        ll_actionbtn2 = (LinearLayout) findViewById(R.id.ll_actionbtn2);
+
         iv_actionbtn = (ImageView) findViewById(R.id.iv_actionbtn);
         iv_actionbtn.setVisibility(View.VISIBLE); // EDIT ANNOUNCEMEBT
+        //ll_actionbtn.setVisibility(View.VISIBLE);
         iv_actionbtn.setImageResource(R.drawable.edit); // EDIT ANNOUNCEMEBT
 
         iv_actionbtn2 = (ImageView) findViewById(R.id.iv_actionbtn2);
 
         iv_actionbtn.setVisibility(View.VISIBLE); // EDIT ANNOUNCEMEBT
+        //ll_actionbtn.setVisibility(View.VISIBLE);
         iv_actionbtn.setImageResource(R.drawable.edit); // EDIT ANNOUNCEMEBT
 
         iv_actionbtn2.setVisibility(View.VISIBLE); // EDIT ANNOUNCEMEBT
+       // ll_actionbtn2.setVisibility(View.VISIBLE);
         iv_actionbtn2.setImageResource(R.drawable.delete); // EDIT ANNOUNCEMEBT
 
         moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Events");
-        tv_title.setText(moduleName);
+        tv_title.setText("Events");
         tv_yes = (TextView) findViewById(R.id.tv_yes);
         tv_no = (TextView) findViewById(R.id.tv_no);
 
@@ -114,6 +130,8 @@ public class EventDetails extends Activity {
         tv_no_count = (TextView) findViewById(R.id.tv_no_count);
         tv_maybe_count = (TextView) findViewById(R.id.tv_maybe_count);
         tv_maybe = (TextView) findViewById(R.id.tv_maybe);
+        event_date = (TextView) findViewById(R.id.event_date);
+        event_time = (TextView) findViewById(R.id.event_time);
 
         tv_question_attending = (TextView) findViewById(R.id.tv_question_attending);
         tv_green = (LinearLayout) findViewById(R.id.tv_green);
@@ -121,18 +139,18 @@ public class EventDetails extends Activity {
         tv_gray = (LinearLayout) findViewById(R.id.tv_gray);
         iv_eventimg = (ImageView) findViewById(R.id.iv_eventimg);
         linear_image = (LinearLayout) findViewById(R.id.linear_image);
-
+        ll_main = (LinearLayout) findViewById(R.id.ll_main);
+        ll_eventDateTime = (LinearLayout) findViewById(R.id.ll_evntDateTime);
+        ll_eventTime = (LinearLayout) findViewById(R.id.ll_evntTime);
+        ll_eventLoc = (LinearLayout) findViewById(R.id.ll_eventLoc);
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
 
         grpID = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID);
         memberProfileID = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID);
-        isAdmin =PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN);
+        isAdmin =PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN,"No");
 
         Log.d("Touchbase", "ID ID ID :- " + grpID + " - " + memberProfileID);
-        Bundle intent = getIntent().getExtras();
-        if (intent != null) {
-            eventid = intent.getString("eventid"); // Created Group ID
-        }
+
         Intent intenti = getIntent();
         if (intenti.hasExtra("memID")) {
             memberProfileID = intenti.getStringExtra("memID");
@@ -142,13 +160,32 @@ public class EventDetails extends Activity {
         Log.d("Touchbase", "ID ID ID AFTER :- " + grpID + " - " + memberProfileID);
 
 //        webservices();
-        if (InternetConnection.checkConnection(getApplicationContext())) {
-            // Avaliable
-            webservices();
-        } else {
-            Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
-            // Not Available...
+
+        Bundle intent = getIntent().getExtras();
+        if (intent != null) {
+
+            if(intent.containsKey("data")){
+                data= (CalendarData) intent.getSerializable("data");
+                ll_eventTime.setVisibility(View.GONE);
+                ll_eventDateTime.setVisibility(View.VISIBLE);
+                setEventData(data);
+            }else {
+                eventid = intent.getString("eventid");
+                if(intent.containsKey("grpID")){
+                    grpID=intent.getString("grpID");
+                }
+                if (InternetConnection.checkConnection(getApplicationContext())) {
+                    // Avaliable
+                    ll_eventTime.setVisibility(View.VISIBLE);
+                    ll_eventDateTime.setVisibility(View.GONE);
+                    webservices();
+                } else {
+                    Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
+                    // Not Available...
+                }
+            }
         }
+
         //  Log.d("@@@@@@@@", "My Response --- " + Response);
         init();
 
@@ -161,10 +198,14 @@ public class EventDetails extends Activity {
         if (isAdmin.equals("No")) {
             iv_actionbtn.setVisibility(View.GONE);
             iv_actionbtn2.setVisibility(View.GONE);
+//            ll_actionbtn.setVisibility(View.GONE);
+//            ll_actionbtn2.setVisibility(View.GONE);
             Log.e("In no : ", "We are in is admin no");
         } else if (isAdmin.equals("Yes")){
             iv_actionbtn.setVisibility(View.VISIBLE);
             iv_actionbtn2.setVisibility(View.VISIBLE);
+//            ll_actionbtn.setVisibility(View.VISIBLE);
+//            ll_actionbtn2.setVisibility(View.VISIBLE);
             Log.e("Inside yes : ", "We are in is admin yes");
         }
     }
@@ -195,6 +236,43 @@ public class EventDetails extends Activity {
     }
 
     private void init() {
+
+//        ll_actionbtn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Dialog dialog = new Dialog(EventDetails.this, android.R.style.Theme_Translucent);
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                dialog.setContentView(R.layout.popup_confrm_delete);
+//                TextView tv_no = (TextView) dialog.findViewById(R.id.tv_no);
+//                TextView tv_yes = (TextView) dialog.findViewById(R.id.tv_yes);
+//                tv_no.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                tv_yes.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        if (InternetConnection.checkConnection(getApplicationContext())) {
+//                            //Utils.showToastWithTitleAndContext(getApplicationContext(), "Delete");
+//                            deletewebservices();
+//                        } else {
+//                            Utils.showToastWithTitleAndContext(getApplicationContext(), "No Internet Connection!");
+//
+//                        }
+//                    }
+//                });
+//
+//                dialog.show();
+//            }
+//        });
+
+
         iv_actionbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,6 +308,22 @@ public class EventDetails extends Activity {
             }
 
         });
+
+//
+//        ll_actionbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if ( InternetConnection.checkConnection(getApplicationContext())) {
+//                    Intent i = new Intent(getApplicationContext(), AddEvent.class);
+//                    i.putExtra("event_id", eventid);
+//                    i.putExtra("edit", "yes");
+//                    startActivityForResult(i, 1);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         iv_actionbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -273,7 +367,7 @@ public class EventDetails extends Activity {
                         tv_members_with_you.setText(questionText);
 
 
-                        TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
+                        final TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
 
 
 
@@ -283,6 +377,7 @@ public class EventDetails extends Activity {
                             public void onClick(View v) {
                                 answerByme = et_answer.getText().toString();
                                 AnsweringEventwebservices();
+                                Utils.hideKeyBoard(EventDetails.this,tv_submit);
                                 dialog.dismiss();
 
                             }
@@ -379,6 +474,39 @@ public class EventDetails extends Activity {
                 Intent i = new Intent(EventDetails.this, ImageZoom.class);
                 i.putExtra("imgageurl", imageurl);
                 startActivity(i);
+            }
+        });
+
+
+        ll_eventLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!event_venue.getText().toString().isEmpty())
+                {
+                    marshMallowPermission = new MarshMallowPermission(EventDetails.this);
+
+                /*Intent i = new Intent(mContext, Map.class);
+                Bundle bundle = new Bundle();
+                //Add your data from getFactualResults method to bundle
+                bundle.putString("Long", item.getVenueLon());
+                bundle.putString("Lat", item.getVenueLat());
+                i.putExtras(bundle);*/
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?daddr=" + event_venue.getText().toString()));
+
+                    if (!marshMallowPermission.checkPermissionForLocation()) {
+                        marshMallowPermission.requestPermissionForLocation();
+                    }else {
+                        // mContext.startActivity(i);
+                        startActivity(intent);
+                    }
+
+               /* if (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    mContext.startActivity(i);
+                }*/
+                }
+
             }
         });
 
@@ -513,6 +641,7 @@ public class EventDetails extends Activity {
 
                     event_title.setText(objects.getString("eventTitle").toString());
                     event_desc.setText(objects.getString("eventDesc").toString());
+
                     event_datetime.setText(objects.getString("eventDateTime").toString());
                     total_count.setText(objects.getString("totalCount").toString());
                     tv_yes_count.setText(objects.getString("goingCount").toString());
@@ -527,54 +656,75 @@ public class EventDetails extends Activity {
                     if ( rsvpEnabled.equals("1")) {
                         yesNopanel.setVisibility(View.VISIBLE);
                         rsvpResponsePanel.setVisibility(View.VISIBLE);
-                    } else {
-                        yesNopanel.setVisibility(View.GONE);
-                        rsvpResponsePanel.setVisibility(View.GONE);
-                    }
-
-                    if(objects.getString("filterType").toString().equals("3")){
-                        iv_actionbtn.setVisibility(View.GONE);
-                    }
-
-
-
-                    if (objects.has("eventImg")) {
-                        String a = objects.getString("eventImg").toString();
-                        if (objects.getString("eventImg").toString().length() == 0 || objects.getString("eventImg").toString() == null) {
-                            linear_image.setVisibility(View.GONE);
-                        } else {
-                            imageurl = objects.getString("eventImg").toString();
-                            progressbar.setVisibility(View.VISIBLE);
-                            Picasso.with(EventDetails.this).load(objects.getString("eventImg").toString())
-                                    .placeholder(R.drawable.imageplaceholder)
-                                    .into(iv_eventimg, new Callback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            progressbar.setVisibility(View.GONE);
-                                        }
-
-                                        @Override
-                                        public void onError() {
-
-                                        }
-                                    });
-                        }
-                    }
-                    //Picasso.with(this).load("").placeholder()
-                    String Response = objects.getString("myResponse").toString();
-                    clearselectedtext(objects.getString("myResponse").toString());
+                        String Response = objects.getString("myResponse").toString();
+                        clearselectedtext(objects.getString("myResponse").toString());
 
                    /* JSONArray questionArray = objects.getJSONArray("questionArray");
                     for (int j = 0; j < questionArray.length(); j++) {
                         JSONObject qobject = questionArray.getJSONObject(j);
                         JSONObject questionList = qobject.getJSONObject("QuestionList");*/
 
-                    questionType = objects.getString("questionType").toString();
-                    questionText = objects.getString("questionText").toString();
-                    questionId = objects.getString("questionId").toString();
-                    option1 = objects.getString("option1").toString();
-                    option2 = objects.getString("option2").toString();
-                    clearselectedtext(objects.getString("myResponse").toString());
+                        questionType = objects.getString("questionType").toString();
+                        questionText = objects.getString("questionText").toString();
+                        questionId = objects.getString("questionId").toString();
+                        option1 = objects.getString("option1").toString();
+                        option2 = objects.getString("option2").toString();
+                        clearselectedtext(objects.getString("myResponse").toString());
+                    } else {
+                        yesNopanel.setVisibility(View.GONE);
+                        rsvpResponsePanel.setVisibility(View.GONE);
+                        tv_gray.setVisibility(View.GONE);
+                        tv_green.setVisibility(View.GONE);
+                        tv_red.setVisibility(View.GONE);
+                    }
+
+                    if(objects.getString("filterType").toString().equals("3")){
+                        iv_actionbtn.setVisibility(View.GONE);
+                       // ll_actionbtn.setVisibility(View.GONE);
+                        yesNopanel.setVisibility(View.GONE);
+                        rsvpResponsePanel.setVisibility(View.GONE);
+                        tv_gray.setVisibility(View.GONE);
+                        tv_green.setVisibility(View.GONE);
+                        tv_red.setVisibility(View.GONE);
+                    }
+
+                    String thisGrpId=PreferenceManager.getPreference(EventDetails.this,PreferenceManager.GROUP_ID,"");
+                    if(!thisGrpId.equalsIgnoreCase(grpId)){
+                        yesNopanel.setVisibility(View.GONE);
+                        rsvpResponsePanel.setVisibility(View.GONE);
+                        tv_gray.setVisibility(View.GONE);
+                        tv_green.setVisibility(View.GONE);
+                        tv_red.setVisibility(View.GONE);
+                        iv_actionbtn.setVisibility(View.GONE);
+                        iv_actionbtn2.setVisibility(View.GONE);
+                    }
+
+                    if (objects.has("eventImg")) {
+
+                        if (objects.getString("eventImg").toString().length() == 0 || objects.getString("eventImg").toString() == null) {
+                            linear_image.setVisibility(View.GONE);
+                        } else {
+                            linear_image.setVisibility(View.VISIBLE);
+                            imageurl = objects.getString("eventImg").toString();
+                            progressbar.setVisibility(View.VISIBLE);
+                            Picasso.with(EventDetails.this).load(objects.getString("eventImg").toString())
+                                    .placeholder(R.drawable.edit_image)
+                                    .into(iv_eventimg, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                            progressbar.setVisibility(View.GONE);
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            progressbar.setVisibility(View.GONE);
+                                        }
+                                    });
+                        }
+                    }
+                    //Picasso.with(this).load("").placeholder()
+
                     // Log.d("@@@@@@@@@", "---------" + questionType);
 
                  /*   }*/
@@ -651,7 +801,7 @@ public class EventDetails extends Activity {
                 setResult(1, intent);
                 finish();//finishing activity
                 finish();
-                Utils.showToastWithTitleAndContext(getApplicationContext(), " Deleted Successfully");
+                Utils.showToastWithTitleAndContext(getApplicationContext(), "Event Deleted Successfully");
             }else{
                 Utils.showToastWithTitleAndContext(getApplicationContext(), "Could not DELETE, please Try Again!");
             }
@@ -659,6 +809,46 @@ public class EventDetails extends Activity {
         } catch (Exception e) {
             Log.d("exec", "Exception :- " + e.toString());
         }
+    }
+
+    private void setEventData(CalendarData data){
+        String imgUrl=data.getEventImg();
+
+        if(imgUrl!=null && !imgUrl.isEmpty()){
+            linear_image.setVisibility(View.VISIBLE);
+            progressbar.setVisibility(View.VISIBLE);
+            Picasso.with(EventDetails.this).load(imgUrl)
+                    .placeholder(R.drawable.imageplaceholder)
+                    .into(iv_eventimg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                            progressbar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            progressbar.setVisibility(View.GONE);
+                        }
+                    });
+        }
+        else {
+            linear_image.setVisibility(View.GONE);
+        }
+
+        event_title.setText(data.getTitle());
+        event_desc.setText(data.getDescription());
+        event_time.setText(data.getEventTime());
+
+        Date date=null;
+
+        try {
+            date=oldFormat.parse(data.getEventDate());
+            event_date.setText(newFormat.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

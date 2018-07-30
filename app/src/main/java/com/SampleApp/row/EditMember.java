@@ -16,6 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Adapter.EditMemberAdapter;
+import com.SampleApp.row.Data.ContactData;
+import com.SampleApp.row.Data.DirectoryData;
+import com.SampleApp.row.Data.Newmember;
+import com.SampleApp.row.Data.PostNewContact;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.PreferenceManager;
+import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.sql.DirectoryDataModel;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
@@ -27,16 +36,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.SampleApp.row.Adapter.EditMemberAdapter;
-import com.SampleApp.row.Data.ContactData;
-import com.SampleApp.row.Data.DirectoryData;
-import com.SampleApp.row.Data.Newmember;
-import com.SampleApp.row.Data.PostNewContact;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.PreferenceManager;
-import com.SampleApp.row.Utils.Utils;
-import com.SampleApp.row.sql.DirectoryDataModel;
 
 /**
  * Created by USER on 29-12-2015.
@@ -278,10 +277,10 @@ public class EditMember extends Activity  {
         @Override
         protected void onPreExecute()
         {
-            progressDialog=new ProgressDialog(EditMember.this);
+            progressDialog=new ProgressDialog(EditMember.this,R.style.TBProgressBar);
             progressDialog.setMessage("Loading...");
             progressDialog.setCancelable(false);
-          //  progressDialog.show();
+            progressDialog.show();
 
             super.onPreExecute();
         }
@@ -325,6 +324,8 @@ public class EditMember extends Activity  {
         @Override
         protected void onPostExecute(String result)
         {
+
+            Utils.log(""+result);
 
             if(progressDialog!=null)
             {

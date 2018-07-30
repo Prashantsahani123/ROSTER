@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.ReplicaInfoData;
+
+import java.util.ArrayList;
 
 /**
  * Created by USER1 on 15-11-2016.

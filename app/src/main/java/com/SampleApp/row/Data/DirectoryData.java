@@ -3,10 +3,12 @@ package com.SampleApp.row.Data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by USER on 01-02-2016.
  */
-public class DirectoryData implements Parcelable {
+public class DirectoryData implements Parcelable,Serializable {
     String masterUID;
     String grpID;
     String profileID;
@@ -16,7 +18,9 @@ public class DirectoryData implements Parcelable {
     String membermobile;
     String grpCount;
     public boolean box;
-    boolean isDeleted;
+    boolean isDeleted,isEdited=false;
+    String designation;
+    String type="";
     //boolean isVisible;
     public DirectoryData() {
     }
@@ -58,6 +62,30 @@ public class DirectoryData implements Parcelable {
 
 
     }*/
+
+    public boolean isEdited() {
+        return isEdited;
+    }
+
+    public void setEdited(boolean edited) {
+        isEdited = edited;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getMasterUID() {
         return masterUID;
@@ -154,7 +182,8 @@ public class DirectoryData implements Parcelable {
                 ", membermobile='" + membermobile + '\'' +
                 ", grpCount='" + grpCount + '\'' +
                 ", box=" + box +'\'' +
-                ", isDeleted=" + isDeleted +
+                ", isDeleted=" + isDeleted +'\'' +
+                ", isEdited=" + isEdited +
                 '}';
     }
 
@@ -168,6 +197,7 @@ public class DirectoryData implements Parcelable {
         membermobile = in.readString();
         grpCount = in.readString();
         box = in.readByte() != 0x00;
+        isEdited= in.readByte() != 0x00;
     }
 
     /*//public boolean isVisible() {
@@ -193,10 +223,11 @@ public class DirectoryData implements Parcelable {
         dest.writeString(membermobile);
         dest.writeString(grpCount);
         dest.writeByte((byte) (box ? 0x01 : 0x00));
+        dest.writeByte((byte) (isEdited ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<DirectoryData> CREATOR = new Parcelable.Creator<DirectoryData>() {
+    public static final Creator<DirectoryData> CREATOR = new Creator<DirectoryData>() {
         @Override
         public DirectoryData createFromParcel(Parcel in) {
             return new DirectoryData(in);

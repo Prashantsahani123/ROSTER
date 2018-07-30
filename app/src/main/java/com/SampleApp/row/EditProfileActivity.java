@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,12 +23,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,7 +95,7 @@ public class EditProfileActivity extends Activity {
     private CountrySpAdapter countryAdapterPersonal, countryAdapterBusiness;
     private ArrayList<DynamicFieldData> dynamicFieldDatas;
     private Hashtable<String, EditText> componentTable;
-    private LinearLayout llFamilyMembers, llDynamicFields, llWrapper;
+    private LinearLayout llFamilyMembers, llDynamicFields, llWrapper,bottomLayout;
     // Action Bar component
     private TextView tvTitle;
     private ImageView ivEdit;
@@ -126,10 +128,8 @@ public class EditProfileActivity extends Activity {
     private ImageView ivDeleteDoa;
     private ImageView ivAddFamilyMember;
     private ImageView ivDeleteSecondaryMobile;
-
     private Spinner spBloodGroup;
     private Spinner spPersonalCountry;
-
     private EditText etCountryCodeSecMob;
     private EditText etSecondaryMobNo;
     private EditText etMemberEmail;
@@ -148,24 +148,33 @@ public class EditProfileActivity extends Activity {
     private EditText etBusinessPincode;
     private EditText etBusinessState;
     private EditText etClassification, etKeywords, etRotaryID, etClubDesignation, etDTDesignation, etDonarRecognition;
-
+    private ScrollView scrollView;
     private EditText etBusinessPhoneCountryCode;
     private EditText etBusinessContact;
     private EditText etBusinessFax;
     private Spinner spBusinessCountry;
     //private Spinner spSecMobCountryCode
     private ArrayList<String> deletedFamilyMembers = new ArrayList<>();
+    private String residential_addressId="";
+    private String bussiness_addressId="";
+    private static final String[] MONTHS = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     // End of all component declaration
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.new_edit_profile);
+
         context = this;
+
         grpId = getIntent().getStringExtra("groupId");
         updatedOn = PreferenceManager.getPreference(this, TBPrefixes.DIRECTORY_PREFIX + grpId, "1970/01/01 00:00:00");
         profileId = getIntent().getStringExtra("profileId");
+
         profileModel = new ProfileModel(context);
+
         componentTable = new Hashtable<>();
         staticDataTable = new Hashtable<>();
         familyList = new ArrayList<>();
@@ -174,8 +183,11 @@ public class EditProfileActivity extends Activity {
         businessDetails = new Hashtable<>();
         familyLayoutTable = new Hashtable<>();
         isAdmin = PreferenceManager.getPreference(context, PreferenceManager.IS_GRP_ADMIN, "No");
+
         Utils.log("IsAdmin : "+isAdmin);
+
         init();
+
         loadDynamicFields();
         loadPersonalDetails();
         loadFamilyDetails();
@@ -196,9 +208,22 @@ public class EditProfileActivity extends Activity {
 
         countryAdapterPersonal = new CountrySpAdapter(context, R.layout.select_country_item_sp, personalCountryList);
         //actvPersonalCountry.setAdapter(countryAdapterPersonal);
-        etMemberName.requestFocus();
+
+      /*  etMemberName.requestFocus();
+        etMemberName.setFocusable(true);
+        etMemberName.setInputType(InputType.TYPE_NULL);*/
+
+        initAllCountrySelection();
         initEvents();
         checkAdminRights();
+
+        //added by satish for fixed issue #43 of 'ROW Issues 16/1'
+        scrollView.post(new Runnable() {
+
+            public void run() {
+                scrollView.smoothScrollTo(0,-10);
+            }
+        });
     }
 
     public void checkAdminRights() {
@@ -209,15 +234,18 @@ public class EditProfileActivity extends Activity {
         } else {
             etMemberName.setEnabled(true);
             etClubDesignation.setEnabled(true);
-            etDTDesignation.setEnabled(true);
+//            etDTDesignation.setEnabled(true);
         }
     }
+
     public void init() {
+
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         llFamilyMembers = (LinearLayout) findViewById(R.id.llFamilyMembers);
         llDynamicFields = (LinearLayout) findViewById(R.id.llDynamicFields);
         llWrapper = (LinearLayout) findViewById(R.id.llWrapper);
-
+        bottomLayout = (LinearLayout)findViewById(R.id.bottomLayout);
 
         etMemberName = (EditText) findViewById(R.id.etMemberName);
 
@@ -268,9 +296,54 @@ public class EditProfileActivity extends Activity {
 
         tvDone = (TextView) findViewById(R.id.btnDone);
         tvheader = (TextView) findViewById(R.id.tv_title);
+
         tvheader.setText("Edit Profile");
 
+        tvDob.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (tvDob.getText().toString().trim().equals("")) {
+                    ivDeleteDob.setVisibility(View.GONE);
+                } else {
+                    ivDeleteDob.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tvDoa.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (tvDob.getText().toString().trim().equals("")) {
+                    ivDeleteDoa.setVisibility(View.GONE);
+                } else {
+                    ivDeleteDoa.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     public void initEvents() {
@@ -283,11 +356,15 @@ public class EditProfileActivity extends Activity {
 
     }
 
-    /*public void initAllCountrySelection() {
+    public void initAllCountrySelection() {
         spBusinessCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                etBusinessPhoneCountryCode.setText(businessCountryList.get(position).getCountryCode());
+                if(position>0){
+                    etBusinessPhoneCountryCode.setText(businessCountryList.get(position).getCountryCode());
+                }else {
+                    etBusinessPhoneCountryCode.setText("");
+                }
             }
 
             @Override
@@ -299,7 +376,12 @@ public class EditProfileActivity extends Activity {
         spPersonalCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                etResidentialCountryCode.setText(personalCountryList.get(position).getCountryCode());
+                if(position>0){
+                    etResidentialCountryCode.setText(personalCountryList.get(position).getCountryCode());
+
+                }else {
+                    etResidentialCountryCode.setText("");
+                }
             }
 
             @Override
@@ -307,9 +389,9 @@ public class EditProfileActivity extends Activity {
 
             }
         });
-    }*/
+    }
 
-    public void initSecondaryMobileDelete() {
+    public void initSecondaryMobileDelete()  {
         ivDeleteSecondaryMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,7 +402,14 @@ public class EditProfileActivity extends Activity {
     }
 
     public void initUpdateEvent() {
-        tvDone.setOnClickListener(new View.OnClickListener() {
+//        tvDone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                updateMember();
+//            }
+//        });
+
+        bottomLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateMember();
@@ -381,6 +470,7 @@ public class EditProfileActivity extends Activity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         etBusinessPhoneCountryCode.setText(adapter.getItem(position).getCountryCode());
+                        spBusinessCountry.setSelection((getIndex(adapter.getList(),adapter.getItem(position).getCountryCode()))+1);
                         countryDialog.dismiss();
                     }
                 });
@@ -414,6 +504,7 @@ public class EditProfileActivity extends Activity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         etResidentialCountryCode.setText(adapter.getItem(position).getCountryCode());
+                        spPersonalCountry.setSelection((getIndex(adapter.getList(),adapter.getItem(position).getCountryCode()))+1);
                         countryDialog.dismiss();
                     }
                 });
@@ -430,6 +521,7 @@ public class EditProfileActivity extends Activity {
     }
 
     public void initAddFamilyMemberEvent() {
+
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -445,21 +537,28 @@ public class EditProfileActivity extends Activity {
     }
 
     public void initDobSelection() {
+
         ivEditDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                 int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
                 int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dpd = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         monthOfYear = monthOfYear + 1;
-                        tvDob.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                        tvDob.setText(dayOfMonth + " " + MONTHS[monthOfYear]);
                         tvDob.setTag(year + "/" + monthOfYear + "/" + dayOfMonth);
                     }
                 }, currentYear, currentMonth, currentDay);
+
+                dpd.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dpd.setTitle("Date of Birth");
+                //dpd.getDatePicker().findViewById(getResources().getIdentifier("year","id","android")).setVisibility(View.GONE);
+
                 dpd.show();
             }
         });
@@ -481,16 +580,19 @@ public class EditProfileActivity extends Activity {
                 int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
                 int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dpd = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         monthOfYear = monthOfYear + 1;
-                        tvDoa.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                        tvDoa.setText(dayOfMonth + " " + MONTHS[monthOfYear] );
                         tvDoa.setTag(year + "/" + monthOfYear + "/" + dayOfMonth);
                         ivDeleteDoa.setVisibility(View.VISIBLE);
                     }
                 }, currentYear, currentMonth, currentDay);
+                dpd.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dpd.setTitle("Date of Anniversary");
+                //dpd.getDatePicker().findViewById(getResources().getIdentifier("year","id","android")).setVisibility(View.GONE);
                 dpd.show();
             }
         });
@@ -593,7 +695,6 @@ public class EditProfileActivity extends Activity {
         tvPrimaryMobNo.setText(masterData.getMemberMobile());
         //etSecondaryMobNo.setText(masterData.get);
         etMemberEmail.setText(masterData.getMemberEmail());
-
         //if (masterData.getFamilyPic().trim().length() == 0 || masterData.getFamilyPic() == "null" || masterData.getFamilyPic().isEmpty()) {
     }
 
@@ -604,24 +705,32 @@ public class EditProfileActivity extends Activity {
     int familyCount = -1;
 
     public void loadFamilyDetails() {
+
         familyList = profileModel.getFamilyMembers(Long.parseLong(profileId));
+
         /*if ( familyList.size() == 0 ) {
             FamilyMemberData data = new FamilyMemberData(sessionProfileId, ""+familyCount, "Family Member Name","","","","","","","");
             familyList.add(data);
             familyCount--;
         }*/
+
         int n = familyList.size();
+
         for (int i = 0; i < n; i++) {
             final FamilyMemberData familyData = familyList.get(i);
             renderFamilyMember(familyData, View.GONE);
         }
+
     }
 
     public void renderFamilyMember(final FamilyMemberData familyData, int layoutVisibility) {
 
         final LinearLayout familyLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.family_member_layout, null);
+
         llFamilyMembers.addView(familyLayout);
 
+        RelativeLayout rl_family_details=(RelativeLayout) familyLayout.findViewById(R.id.rl_family_details);
+        LinearLayout ll_family_delete=(LinearLayout)familyLayout.findViewById(R.id.ll_family_delete);
         final ImageView ivEditFamilyMember = (ImageView) familyLayout.findViewById(R.id.ivEditFamilyMember);
         ImageView ivDeleteFamilyMember = (ImageView) familyLayout.findViewById(R.id.ivDeleteFamilyMember);
         final TextView tvMemberTitle = (TextView) familyLayout.findViewById(R.id.tvFamilyMemberTitle);
@@ -632,14 +741,18 @@ public class EditProfileActivity extends Activity {
         etFamilyMemberName.setTag(familyData.getFamilyMemberId());
 
         etFamilyMemberName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
                 if (hasFocus) {
                     etFamilyMemberName.selectAll();
                 }
             }
         });
+
         etFamilyMemberName.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -657,6 +770,7 @@ public class EditProfileActivity extends Activity {
         });
 
         EditText etFamilyEmailId = (EditText) familyLayout.findViewById(R.id.etFamilyEmailId);
+
         etFamilyEmailId.setText(familyData.getEmailID());
 
         if (layoutVisibility == View.GONE) {
@@ -668,7 +782,24 @@ public class EditProfileActivity extends Activity {
 
         final LinearLayout llFamilyWrapper = (LinearLayout) familyLayout.findViewById(R.id.llFamilyDetails);
         llFamilyWrapper.setVisibility(layoutVisibility);
+
         ivEditFamilyMember.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (llFamilyWrapper.getVisibility() == View.GONE) {
+                    llFamilyWrapper.setVisibility(View.VISIBLE);
+                    etFamilyMemberName.requestFocus();
+                    ivEditFamilyMember.setImageDrawable(context.getResources().getDrawable(R.drawable.top_arrow));
+                } else {
+                    llFamilyWrapper.setVisibility(View.GONE);
+                    ivEditFamilyMember.setImageDrawable(context.getResources().getDrawable(R.drawable.down_arrow_01));
+                }
+            }
+        });
+
+        rl_family_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (llFamilyWrapper.getVisibility() == View.GONE) {
@@ -682,7 +813,7 @@ public class EditProfileActivity extends Activity {
             }
         });
 
-        ivDeleteFamilyMember.setOnClickListener(new View.OnClickListener() {
+        ll_family_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -789,14 +920,18 @@ public class EditProfileActivity extends Activity {
                 int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
                 int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dpd = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog,  new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         monthOfYear = monthOfYear + 1;
-                        tvDob.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                        tvDob.setText(dayOfMonth + " " + MONTHS[monthOfYear]);
                         tvDob.setTag(year + "/" + monthOfYear + "/" + dayOfMonth);
                     }
                 }, currentYear, currentMonth, currentDay);
+                dpd.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dpd.setTitle("Date of Birth");
+               // dpd.getDatePicker().findViewById(getResources().getIdentifier("year","id","android")).setVisibility(View.GONE);
+
                 dpd.show();
             }
         });
@@ -811,6 +946,7 @@ public class EditProfileActivity extends Activity {
 
 
         tvDob.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -830,19 +966,23 @@ public class EditProfileActivity extends Activity {
 
             }
         });
-        tvDob.setText(familyData.getDob());
+       // tvDob.setText(familyData.getDob());
         tvDob.setTag(familyData.getDob());
         try {
             String[] dateFields = familyData.getDob().split("/");
+            tvDob.setText(dateFields[0] + " " + MONTHS[Integer.parseInt(dateFields[1])]);
             tvDob.setTag(dateFields[2] + "/" + dateFields[1] + "/" + dateFields[0]);
         } catch (ArrayIndexOutOfBoundsException iae) {
             tvDob.setTag("");
+            tvDob.setText(familyData.getDob());
         }
         final TextView tvDoa = (TextView) familyLayout.findViewById(R.id.tvFamilyDoa);
 
         ImageView ivEditFamilyDoa = (ImageView) familyLayout.findViewById(R.id.ivEditFamilyDoa);
         final ImageView ivDeleteFamilyDoa = (ImageView) familyLayout.findViewById(R.id.ivDeleteFamilyDoa);
+
         tvDoa.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -850,6 +990,7 @@ public class EditProfileActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if (tvDoa.getText().toString().trim().equals("")) {
                     ivDeleteFamilyDoa.setVisibility(View.GONE);
                 } else {
@@ -862,14 +1003,16 @@ public class EditProfileActivity extends Activity {
 
             }
         });
-        tvDoa.setText(familyData.getAnniversary());
 
         try {
             String[] dateFields = familyData.getAnniversary().split("/");
             tvDoa.setTag(dateFields[2] + "/" + dateFields[1] + "/" + dateFields[0]);
+            tvDoa.setText(dateFields[0]+" "+MONTHS[Integer.parseInt(dateFields[1])]);
         } catch (ArrayIndexOutOfBoundsException iae) {
             tvDoa.setTag("");
+            tvDoa.setText(familyData.getAnniversary());
         }
+
         ivEditFamilyDoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -877,14 +1020,18 @@ public class EditProfileActivity extends Activity {
                 int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
                 int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dpd = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog,  new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         monthOfYear = monthOfYear + 1;
-                        tvDoa.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                        tvDoa.setText(dayOfMonth + " " + MONTHS[monthOfYear]);
                         tvDoa.setTag(year + "/" + monthOfYear + "/" + dayOfMonth);
                     }
                 }, currentYear, currentMonth, currentDay);
+                dpd.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dpd.setTitle("Date of Anniversary");
+               // dpd.getDatePicker().findViewById(getResources().getIdentifier("year","id","android")).setVisibility(View.GONE);
+
                 dpd.show();
             }
         });
@@ -924,10 +1071,11 @@ public class EditProfileActivity extends Activity {
             } catch (ArrayIndexOutOfBoundsException aie) {
                 Utils.log("Error while loading secondary mobile no. : " + aie);
                 etCountryCodeSecMob.setText("");
-                etSecondaryMobNo.setText(secondaryMobileNo);
+
                 if (secondaryMobileNo.trim().equals("") || secondaryMobileNo.trim().isEmpty()) {
                     ivDeleteSecondaryMobile.setVisibility(View.GONE);
                 } else {
+                    etSecondaryMobNo.setText(secondaryMobileNo);
                     ivDeleteSecondaryMobile.setVisibility(View.VISIBLE);
                 }
             }
@@ -940,9 +1088,10 @@ public class EditProfileActivity extends Activity {
         }
         try {
             String dob = staticDataTable.get("member_date_of_birth").getValue();
-            tvDob.setText(dob);
+
             try {
                 String[] dateFields = dob.split("/");
+                tvDob.setText(dateFields[0] + " " + MONTHS[Integer.parseInt(dateFields[1])]);
                 tvDob.setTag(dateFields[2] + "/" + dateFields[1] + "/" + dateFields[0]);
             } catch (ArrayIndexOutOfBoundsException iae) {
 
@@ -955,11 +1104,11 @@ public class EditProfileActivity extends Activity {
 
         try {
             String doa = staticDataTable.get("member_date_of_wedding").getValue();
-            tvDoa.setText(doa);
+            //tvDoa.setText(doa);
             try {
                 String[] dateFields = doa.split("/");
                 tvDoa.setTag(dateFields[2] + "/" + dateFields[1] + "/" + dateFields[0]);
-                tvDoa.setText(dateFields[0] + "/" + dateFields[1] + "/" + dateFields[2]);
+                tvDoa.setText(dateFields[0] + " " + MONTHS[Integer.parseInt(dateFields[1])] );
                 ivDeleteDoa.setVisibility(View.VISIBLE);
             } catch (ArrayIndexOutOfBoundsException iae) {
                 tvDoa.setText("");
@@ -1198,7 +1347,7 @@ public class EditProfileActivity extends Activity {
         Hashtable<String, String> personalMemberDetails = new Hashtable<>();
         personalMemberDetails.put("memberName", etMemberName.getText().toString());
         personalMemberDetails.put("memberEmail", etMemberEmail.getText().toString());
-        personalMemberDetails.put("secondaryMobileNo", etCountryCodeSecMob.getText().toString() + " " + etSecondaryMobNo.getText().toString());
+
         try {
             personalMemberDetails.put("memberDOB", tvDob.getTag().toString());
         } catch (NullPointerException npe) {
@@ -1217,18 +1366,25 @@ public class EditProfileActivity extends Activity {
         personalMemberDetails.put("clubDesignation", etClubDesignation.getText().toString());
         personalMemberDetails.put("districtDesignation", etDTDesignation.getText().toString());
         personalMemberDetails.put("donarRecognition", etDonarRecognition.getText().toString());
-        String secondaryMobileNo = etSecondaryMobNo.getText().toString();
-        try {
-            while (secondaryMobileNo.charAt(0) == '0') {
-                secondaryMobileNo = secondaryMobileNo.substring(1);
+
+        if(etSecondaryMobNo.getText().toString().trim().isEmpty()){
+            personalMemberDetails.put("secondaryMobileNo", "");
+
+        }else {
+            String secondaryMobileNo = etSecondaryMobNo.getText().toString();
+            try {
+                while (secondaryMobileNo.charAt(0) == '0') {
+                    secondaryMobileNo = secondaryMobileNo.substring(1);
+                }
+            } catch (ArrayIndexOutOfBoundsException aie) {
+                aie.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (ArrayIndexOutOfBoundsException aie) {
-            aie.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            personalMemberDetails.put("secondaryMobileNo", etCountryCodeSecMob.getText().toString() + " " + secondaryMobileNo);
+
         }
 
-        personalMemberDetails.put("secondaryMobileNo", etCountryCodeSecMob.getText().toString()+" "+secondaryMobileNo);
         if (spBloodGroup.getSelectedItemPosition() == 0) {
             personalMemberDetails.put("bloodGroup", "");
         } else {
@@ -1245,9 +1401,21 @@ public class EditProfileActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+//        Utils.log(""+spPersonalCountry.getSelectedItemPosition());
+//        if(etPersonalAddress.getText().toString().trim().isEmpty() && etResidentialCity.getText().toString().trim().isEmpty() && etResidentialState.getText().toString().trim().isEmpty() && etResidentialPinCode.getText().toString().trim().isEmpty() && etResidentialCountryCode.getText().toString().trim().isEmpty() && etResidentialContactNo.getText().toString().trim().isEmpty() && spPersonalCountry.getSelectedItemPosition()<=0 ){
+//            residential_addressId=etPersonalAddress.getTag().toString();
+//        }else if(etPersonalAddress.getText().toString().trim().isEmpty() && etResidentialCity.getText().toString().trim().isEmpty() && etResidentialState.getText().toString().trim().isEmpty() ){
+//            residential_addressId="-1";
+//        }
+//        else {
+//            residential_addressId=etPersonalAddress.getTag().toString();
+//        }
+
+        residential_addressId=etPersonalAddress.getTag().toString();
         AddressData personalAddress = new AddressData(
                 profileId,
-                etPersonalAddress.getTag().toString(),
+                residential_addressId,
                 "Residence",
                 etPersonalAddress.getText().toString(),
                 etResidentialCity.getText().toString(),
@@ -1268,9 +1436,20 @@ public class EditProfileActivity extends Activity {
             e.printStackTrace();
         }
         // etBusinessAddress contains addressID as tag value
+
+//        if(etBusinessAddress.getText().toString().trim().isEmpty() && etBusinessCity.getText().toString().trim().isEmpty() && etBusinessState.getText().toString().trim().isEmpty() ){
+//            bussiness_addressId="-1";
+//        }
+//        else {
+//            bussiness_addressId=etBusinessAddress.getTag().toString();
+//        }
+
+        bussiness_addressId=etBusinessAddress.getTag().toString();
+
         AddressData businessAddress = new AddressData(
                 profileId,
-                etBusinessAddress.getTag().toString(),
+
+                bussiness_addressId,
                 "Business",
                 etBusinessAddress.getText().toString(),
                 etBusinessCity.getText().toString(),
@@ -1404,7 +1583,6 @@ public class EditProfileActivity extends Activity {
         }
     }
 
-
     public boolean isValidForm() {
 
         if (etCountryCodeSecMob.getText().toString().trim().equals("") && etSecondaryMobNo.getText().toString().trim().length() > 0) {
@@ -1414,12 +1592,12 @@ public class EditProfileActivity extends Activity {
             return false;
         }
 
-        if (etCountryCodeSecMob.getText().toString().trim().length() > 0 && etSecondaryMobNo.getText().toString().trim().length() == 0) {
-            Toast.makeText(context, "Please enter secondary mobile number", Toast.LENGTH_LONG).show();
-            etSecondaryMobNo.requestFocus();
-            showKeyboard(etSecondaryMobNo);
-            return false;
-        }
+//        if (etSecondaryMobNo.getText().toString().trim().length() == 0) {
+//            Toast.makeText(context, "Please enter secondary mobile number", Toast.LENGTH_LONG).show();
+//            etSecondaryMobNo.requestFocus();
+//            showKeyboard(etSecondaryMobNo);
+//            return false;
+//        }
 
         String emailId = etMemberEmail.getText().toString().trim();
         if (emailId.length() > 0) {
@@ -1430,6 +1608,17 @@ public class EditProfileActivity extends Activity {
                 return false;
             }
         }
+
+        String bemailId = etBusinessEmail.getText().toString().trim();
+        if (bemailId.length() > 0) {
+            if (!(Utils.isValidEmailId(bemailId))) {
+                Toast.makeText(context, "Please enter valid email id", Toast.LENGTH_LONG).show();
+                etBusinessEmail.requestFocus();
+                showKeyboard(etBusinessEmail);
+                return false;
+            }
+        }
+
         if (etResidentialCountryCode.getText().toString().trim().equals("") && etResidentialContactNo.getText().toString().trim().length() > 0) {
             Toast.makeText(context, "Please select country code for residential contact number", Toast.LENGTH_LONG).show();
             etResidentialCountryCode.requestFocus();
@@ -1437,15 +1626,18 @@ public class EditProfileActivity extends Activity {
             return false;
         }
 
-        if (etResidentialCountryCode.getText().toString().trim().length() > 0 && etResidentialContactNo.getText().toString().trim().length() == 0) {
-            Toast.makeText(context, "Please enter residential contact number", Toast.LENGTH_LONG).show();
-            etResidentialContactNo.requestFocus();
-            showKeyboard(etResidentialContactNo);
-            return false;
-        }
+//        if (etResidentialCountryCode.getText().toString().trim().length() > 0 && etResidentialContactNo.getText().toString().trim().length() == 0) {
+//            Toast.makeText(context, "Please enter residential contact number", Toast.LENGTH_LONG).show();
+//            etResidentialContactNo.requestFocus();
+//            showKeyboard(etResidentialContactNo);
+//            return false;
+//        }
 
         if (!etPersonalAddress.getText().toString().trim().equals("") && spPersonalCountry.getSelectedItemPosition() == 0) {
-            Toast.makeText(context, "Please select country", Toast.LENGTH_LONG).show();
+            spPersonalCountry.setFocusable(true);
+            spPersonalCountry.setFocusableInTouchMode(true);
+            spPersonalCountry.requestFocus();
+            Toast.makeText(context, "Please select country for residential address", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -1456,15 +1648,19 @@ public class EditProfileActivity extends Activity {
             return false;
         }
 
-        if (etBusinessPhoneCountryCode.getText().toString().trim().length() > 0 && etBusinessContact.getText().toString().trim().length() == 0) {
-            Toast.makeText(context, "Please enter business contact number", Toast.LENGTH_LONG).show();
-            etBusinessContact.requestFocus();
-            showKeyboard(etBusinessContact);
-            return false;
-        }
+//        if (etBusinessPhoneCountryCode.getText().toString().trim().length() > 0 && etBusinessContact.getText().toString().trim().length() == 0) {
+//            Toast.makeText(context, "Please enter business contact number", Toast.LENGTH_LONG).show();
+//            etBusinessContact.requestFocus();
+//            showKeyboard(etBusinessContact);
+//            return false;
+//        }
 
         if (!etBusinessAddress.getText().toString().trim().equals("") && spBusinessCountry.getSelectedItemPosition() == 0) {
-            Toast.makeText(context, "Please select country", Toast.LENGTH_LONG).show();
+            spBusinessCountry.setFocusable(true);
+            spBusinessCountry.setFocusableInTouchMode(true);
+            spBusinessCountry.requestFocus();
+            Toast.makeText(context, "Please select country for business address", Toast.LENGTH_LONG).show();
+
             return false;
         }
 
@@ -1600,6 +1796,18 @@ public class EditProfileActivity extends Activity {
             Utils.log("Response is : " + response);
             String status = response.getString("status");
             if (status.equals("0")) {
+
+                if(bussiness_addressId.equals("-1")){
+
+                    new ProfileModel(context).deleteAddress(profileId,"Business");
+
+                }
+
+                if(residential_addressId.equals("-1")){
+
+                    new ProfileModel(context).deleteAddress(profileId,"Residence");
+
+                }
 
                 updatedOn = response.getString("curDate");
                 try {
@@ -1926,7 +2134,8 @@ public class EditProfileActivity extends Activity {
                         } else {
                             PreferenceManager.savePreference(context, TBPrefixes.DIRECTORY_PREFIX + grpId, updatedOn);
                             //if ( numberOfRecordsProcessed != 0 ) {
-                            Toast.makeText(context, numberOfRecordsProcessed + " contacts processed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, numberOfRecordsProcessed + " contacts processed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
                             //}
                             refreshData("");
                         }
@@ -2156,6 +2365,7 @@ public class EditProfileActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.popup_confrm_delete);
@@ -2181,5 +2391,41 @@ public class EditProfileActivity extends Activity {
 
         dialog.show();
 
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        View view = getLayoutInflater().inflate(R.layout.popup_confrm_delete, null);
+//        builder.setView(view);
+//
+//        TextView tvYes = (TextView) view.findViewById(R.id.tv_yes);
+//        TextView tvNo = (TextView) view.findViewById(R.id.tv_no);
+//        TextView tv_line1 = (TextView) view.findViewById(R.id.tv_line1);
+//        tv_line1.setText("Are you sure you want to go back? All your changes will not be saved.");
+//        final AlertDialog dialog = builder.create();
+//
+//        tvYes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//                finish();
+//            }
+//        });
+//
+//        tvNo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
+
+    }
+
+    private int getIndex(ArrayList<CountryData> list, String myString){
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).getCountryCode().toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+        return 0;
     }
 }

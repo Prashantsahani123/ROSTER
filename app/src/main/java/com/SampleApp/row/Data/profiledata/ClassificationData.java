@@ -7,6 +7,10 @@ package com.SampleApp.row.Data.profiledata;
 public class ClassificationData {
     private String classificationName;
 
+    public ClassificationData(){
+
+    }
+
     public ClassificationData(String classificationName) {
         this.classificationName = classificationName;
     }

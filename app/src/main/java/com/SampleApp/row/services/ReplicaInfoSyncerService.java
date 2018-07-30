@@ -1,5 +1,6 @@
 package com.SampleApp.row.services;
 //http://servicestest.touchbase.in/v5/api/Group/GetReplicaInfo?LastModuleID=17
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.SampleApp.row.Data.ReplicaInfoData;
+import com.SampleApp.row.MyApplication;
+import com.SampleApp.row.Utils.Constant;
+import com.SampleApp.row.Utils.InternetConnection;
+import com.SampleApp.row.sql.DBHelper;
+import com.SampleApp.row.sql.ReplicaInfoModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -20,13 +28,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.ReplicaInfoData;
-import com.SampleApp.row.MyApplication;
-import com.SampleApp.row.Utils.Constant;
-import com.SampleApp.row.Utils.InternetConnection;
-import com.SampleApp.row.sql.DBHelper;
-import com.SampleApp.row.sql.ReplicaInfoModel;
 
 /**
  * Created by USER1 on 15-11-2016.

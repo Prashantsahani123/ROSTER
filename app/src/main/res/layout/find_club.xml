@@ -345,14 +345,14 @@
                                 android:id="@+id/edt_range"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:textSize="13sp"
                                 android:background="@drawable/border_bg_white"
                                 android:focusable="true"
+                                android:hint="10"
                                 android:inputType="numberDecimal"
-                                android:hint="40"
+                                android:padding="10dp"
+                                android:text="10"
 
-                                />
+                                android:textSize="13sp" />
 
                             <!--<ImageView-->
                                 <!--android:layout_width="30dp"-->
@@ -376,14 +376,13 @@
                                 android:id="@+id/radio_miles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="Miles"
-                                />
+                                android:text="Miles" />
 
                             <RadioButton
                                 android:id="@+id/radio_kilometers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:checked="true"
                                 android:text="Kms" />
 
                         </RadioGroup>

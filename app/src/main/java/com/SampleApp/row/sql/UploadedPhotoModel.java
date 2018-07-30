@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.UploadPhotoData;
 import com.SampleApp.row.Utils.ImageCompression;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by user on 09-11-2016.
@@ -62,11 +62,12 @@ public class UploadedPhotoModel {
                 String isUploaded = cursor.getString(cursor.getColumnIndex(Tables.UploadedPhoto.Columns.IS_UPLOADED));
                 String id = cursor.getString(cursor.getColumnIndex(Tables.UploadedPhoto.Columns._ID));
 
-                File f = new File(path);
-                String image=  compress.compressImage(f.toString(),context);
-
-                UploadPhotoData ad = new UploadPhotoData(photoId,image, description, albumId, grpId, createdBy,isUploaded,id);
-                list.add(ad);
+                if(!path.isEmpty()) {
+                    File f = new File(path);
+                   String image = compress.compressImage(f.toString(), context);
+                    UploadPhotoData ad = new UploadPhotoData(photoId, f.toString(), description, albumId, grpId, createdBy, isUploaded, id);
+                    list.add(ad);
+                }
 
             }
             //if (list.size() == 0 ) return null;

@@ -16,14 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import com.SampleApp.row.Data.ContactData;
 import com.SampleApp.row.EditMember;
 import com.SampleApp.row.Inteface.StartActivityForResultInterface;
 import com.SampleApp.row.R;
 import com.SampleApp.row.SelectCountry;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static com.SampleApp.row.EditMember.list_contactData;
 

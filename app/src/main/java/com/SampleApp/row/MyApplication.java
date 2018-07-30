@@ -5,6 +5,9 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
+
+
 /**
  * Created by USER on 26-07-2016.
  */
@@ -16,6 +19,8 @@ public class MyApplication extends Application {
         Log.e("AppStarted", "application is started bro");
         context = getApplicationContext();
         MultiDex.install(this);
+
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override

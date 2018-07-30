@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.SampleApp.row.Data.CategoryData;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 04-02-2016.

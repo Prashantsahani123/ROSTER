@@ -15,16 +15,14 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import com.SampleApp.row.Adapter.OptionMenuItemsAdapter;
 import com.SampleApp.row.Adapter.YearAdapter;
 import com.SampleApp.row.Data.CalendarViewOption;
 import com.SampleApp.row.R;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created by user on 10-08-2016.

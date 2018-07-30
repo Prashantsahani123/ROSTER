@@ -18,14 +18,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.SampleApp.row.Adapter.AnnouncementListAdapter;
 import com.SampleApp.row.Data.AnnouncementListData;
 import com.SampleApp.row.Utils.Constant;
@@ -33,6 +25,14 @@ import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.SampleApp.row.Adapter.AnnouncementListAdapter.count_read_announcements;
 import static com.SampleApp.row.Adapter.DocumentAdapter.count_read_documents;
@@ -49,9 +49,9 @@ public class Announcement extends Activity {
     ImageView iv_backbutton;
     EditText et_serach_announcement;
     Spinner spinner_filter_type;
-    String filtertype[] = {"All", "Published", "UnPublished", "Expired"};
-    String filtertype_notadmin[] = {"All", "Published", "Expired"};
-    String type_filter_flag = "0";
+    String filtertype[] = {"Published","All", "UnPublished", "Expired"};
+    String filtertype_notadmin[] = {"Published","All",  "Expired"};
+    String type_filter_flag = "1";
 
     public static String moduleName = "";
     private ArrayList<AnnouncementListData> list_announcmentdata = new ArrayList<AnnouncementListData>();
@@ -99,6 +99,7 @@ public class Announcement extends Activity {
         // condition is compared here because if user is not admin so spinner is not visible and websevie method is never called for him. So to call webservice.
         // below code is written.
         if (PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN).equals("No")) {
+
             if (InternetConnection.checkConnection(getApplicationContext())) {
                 // Avaliable
                 webservices();

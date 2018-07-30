@@ -7,7 +7,7 @@ package com.SampleApp.row.Data;
 public class RotaryLibraryData {
     String title;
     String description;
-
+    String moduleName;
     public RotaryLibraryData(){
 
     }
@@ -15,6 +15,14 @@ public class RotaryLibraryData {
     public RotaryLibraryData(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     public String getTitle() {

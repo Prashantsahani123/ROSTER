@@ -11,15 +11,14 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.SampleApp.row.Data.PictureInsideAlbumData;
+import com.SampleApp.row.Data.SimplePhotoData;
 import com.SampleApp.row.R;
+import com.SampleApp.row.Utils.ImageCompression;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.PictureInsideAlbumData;
-import com.SampleApp.row.Data.SimplePhotoData;
-import com.SampleApp.row.Utils.ImageCompression;
 
 /**
  * Created by user on 18-10-2016.
@@ -195,6 +194,7 @@ public class PictureInsideAlbumAdapter extends BaseAdapter {
                     String path = existinglist.get(i).getUrl();
                     if (listAlbum.get(j).getFilepath().equalsIgnoreCase(path)) {
                         listAlbum.get(j).setBox(true);
+                        listAlbum.get(j).setDesc(existinglist.get(i).getDescription());
                     }
 
                 }

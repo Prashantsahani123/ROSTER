@@ -35,7 +35,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    >
 
                     <TextView
                         android:layout_width="fill_parent"
@@ -79,7 +81,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
 
                             <RadioButton
@@ -96,7 +99,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+
+                            >
 
 
                             <RadioButton
@@ -255,7 +260,7 @@
                         android:background="@drawable/border_bg_white"
                         android:gravity="top|left"
                         android:hint="Enter Description Here"
-                        android:inputType="textMultiLine"
+                        android:inputType="textCapSentences|textMultiLine"
                         android:padding="10dp"
                         android:scrollHorizontally="false" />
 
@@ -290,13 +295,45 @@
                         android:focusableInTouchMode="false"
                         android:gravity="top|left"
                         android:hint="Tap to add venue"
-                        android:inputType="textMultiLine"
+                        android:inputType="textCapSentences|textMultiLine"
                         android:lines="8"
                         android:maxLines="10"
                         android:minLines="6"
                         android:padding="10dp"
                         android:scrollbars="vertical" />
 
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Link"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_eventLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:hint="Enter Link Here"
+                        android:inputType="textCapSentences"
+                        android:padding="10dp"
+                        android:singleLine="true" />
 
                 </LinearLayout>
 
@@ -329,14 +366,15 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/date_time_wrapper"
-                                android:layout_marginRight="@dimen/rightMargin"
                                 android:id="@+id/tv_eventDate"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/rightMargin"
                                 android:hint="Enter date"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
@@ -348,12 +386,13 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
-                                style="@style/date_time_wrapper"
                                 android:id="@+id/tv_eventTime"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -390,14 +429,15 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/date_time_wrapper"
-                                android:layout_marginRight="@dimen/rightMargin"
                                 android:id="@+id/tv_publishDate"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/rightMargin"
                                 android:hint="Enter date"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
@@ -409,11 +449,11 @@
                             android:layout_weight="1">
 
                             <TextView
-                                style="@style/date_time_wrapper"
                                 android:id="@+id/tv_publishTime"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -449,14 +489,15 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/date_time_wrapper"
-                                android:layout_marginRight="@dimen/rightMargin"
                                 android:id="@+id/tv_expiryDate"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/rightMargin"
                                 android:hint="Enter date"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
@@ -468,11 +509,11 @@
                             android:layout_weight="1">
 
                             <TextView
-                                style="@style/date_time_wrapper"
                                 android:id="@+id/tv_expiryTime"
+                                style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -485,6 +526,19 @@
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
 
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/cb_display"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Display on Banner" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"

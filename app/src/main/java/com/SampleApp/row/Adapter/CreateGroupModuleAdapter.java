@@ -18,13 +18,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SampleApp.row.Data.CreateModuleData;
 import com.SampleApp.row.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import com.SampleApp.row.Data.CreateModuleData;
 
 
 /**

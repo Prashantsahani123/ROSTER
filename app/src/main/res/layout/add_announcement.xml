@@ -201,6 +201,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border_bg_white"
                         android:hint="Enter Title Here"
+                        android:inputType="textCapSentences"
                         android:padding="10dp"
                         android:singleLine="true" />
 
@@ -248,12 +249,14 @@
 
                     <EditText
                         android:id="@+id/et_announce_desc"
-                        android:layout_width="fill_parent"
-                        android:layout_height="130dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border_bg_white"
                         android:gravity="top|left"
                         android:hint="Enter Description Here"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:minLines="4"
                         android:padding="10dp" />
 
                 </LinearLayout>
@@ -275,9 +278,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Publish date and time"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -288,7 +289,8 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
                                 android:id="@+id/publish_date"
@@ -323,7 +325,7 @@
                                 style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -346,9 +348,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Expiry date and time"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -359,7 +359,8 @@
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="gone">
 
                             <TextView
                                 android:id="@+id/expiry_date"
@@ -384,7 +385,7 @@
                                 style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Enter time"
+                                android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
                         </LinearLayout>
@@ -407,9 +408,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Send SMS To "
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

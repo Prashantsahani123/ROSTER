@@ -75,6 +75,15 @@
             android:textSize="22sp" />
 
         <TextView
+            android:id="@+id/tvClubDesignation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tvRotaryDesignation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

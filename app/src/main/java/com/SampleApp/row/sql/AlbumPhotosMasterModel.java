@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.SampleApp.row.Data.AlbumPhotoData;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.SampleApp.row.Data.AlbumPhotoData;
 
 /**
  * Created by USER1 on 17-09-2016.

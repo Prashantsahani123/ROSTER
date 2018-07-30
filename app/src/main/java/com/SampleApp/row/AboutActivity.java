@@ -6,10 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-
 import android.widget.TextView;
 
 import com.SampleApp.row.Utils.Constant;
@@ -34,6 +32,7 @@ public class AboutActivity extends Activity {
         //tvRecommendFriend = (TextView) findViewById(R.id.tvKaizenRecommend);
         tvContact = (TextView) findViewById(R.id.etKaizenContact);
         tvVersionNo = (TextView) findViewById(R.id.tvVersionNo);
+
         init();
     }
 

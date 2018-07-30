@@ -7,19 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 import com.SampleApp.row.DTCalendarEventDetails;
 import com.SampleApp.row.Data.CalendarData;
-import com.SampleApp.row.Data.DirectoryData;
 import com.SampleApp.row.EventDetails;
 import com.SampleApp.row.NewProfileActivity;
-import com.SampleApp.row.ProfileActivityV4;
 import com.SampleApp.row.R;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.PreferenceManager;
@@ -27,6 +19,11 @@ import com.SampleApp.row.Utils.Utils;
 import com.SampleApp.row.holders.CalendarEventsHolder;
 import com.SampleApp.row.holders.EmptyViewHolder;
 import com.SampleApp.row.sql.DirectoryDataModel;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by user on 13-02-2017.
@@ -153,8 +150,8 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         intent.putExtra("groupId", "" + groupId);
         intent.putExtra("fromMainDirectory", "no");
         try {
-            if ( PreferenceManager.getPreference(context, PreferenceManager.MY_CATEGORY).equals(Constant.GROUP_CATEGORY_DT)) {
-                intent.putExtra("fromDTDirectory", "no");
+            if ( PreferenceManager.getPreference(context, PreferenceManager.MY_CATEGORY).equals("2")) {
+                intent.putExtra("fromDTDirectory", "yes");
             }
         } catch(Exception e) {
             intent.putExtra("fromDTDirectory", "no");

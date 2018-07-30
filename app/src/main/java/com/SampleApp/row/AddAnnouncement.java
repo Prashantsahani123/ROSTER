@@ -3,17 +3,16 @@ package com.SampleApp.row;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -33,28 +32,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import com.SampleApp.row.Adapter.AddAnnouncementDateTimeListAdapter;
 import com.SampleApp.row.Data.AddAnnouncementDateTimeData;
@@ -66,9 +44,26 @@ import com.SampleApp.row.Utils.HttpConnection;
 import com.SampleApp.row.Utils.ImageCompression;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
-import com.SampleApp.row.Utils.MyTimePicker;
 import com.SampleApp.row.Utils.PreferenceManager;
 import com.SampleApp.row.Utils.Utils;
+import com.SampleApp.row.croputility.Crop;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by USER on 15-01-2016.
@@ -83,11 +78,11 @@ public class AddAnnouncement extends FragmentActivity {
     ImageView call_button, iv_event_photo,iv_toggle;
     public static int count_write_announcement = 0;
     String finalImagePath;
-
+//    CheckBox cb_display;
     DatePicker publish_date1;
     TextView tv_publishtime,smscount;
 
-    EditText et_announce_title, et_announce_desc, et_announce_venue;
+    EditText et_announce_title, et_announce_desc;
     ArrayList<DirectoryData> listaddmemberdata = new ArrayList<>();
     ArrayList<SubGoupData> listaddsubgrp = new ArrayList<>();
     //String selectedmemberidstr = "";
@@ -117,23 +112,27 @@ public class AddAnnouncement extends FragmentActivity {
     String repeat_date = "";
     String repeat_time = "";
     TextView tv_addSign;
-
+    private static Uri mCapturedImageURI;
     boolean isPublishdateDisabled = false;
+    private SingleDateAndTimePickerDialog datetimePicker,datetimeForReminder;
+    SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private String publishDate="",expiryDate="";
 
+    Context context;
     // Code for Reminder ends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_announcement);
-
+        context=this;
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         // iv_backbutton.setVisibility(View.GONE);
-        moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Announcement");
+        moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Announcements");
         moduleId = PreferenceManager.getPreference(this, PreferenceManager.MODULE_ID);
-        tv_title.setText(moduleName);
-
+        tv_title.setText("Announcements");
+//        cb_display=(CheckBox)findViewById(R.id.cb_display);
         et_announce_title = (EditText) findViewById(R.id.et_announce_title);
         et_announce_desc = (EditText) findViewById(R.id.et_announce_desc);
         tv_add = (TextView) findViewById(R.id.tv_add);
@@ -146,7 +145,7 @@ public class AddAnnouncement extends FragmentActivity {
         d_radio0 = (RadioButton) findViewById(R.id.d_radio0);
         d_radio1 = (RadioButton) findViewById(R.id.d_radio1);
         d_radio2 = (RadioButton) findViewById(R.id.d_radio2);
-
+       // et_link=(EditText)findViewById(R.id.et_eventLink);
         tv_getCount = (TextView) findViewById(R.id.getCount);
         smscount = (TextView) findViewById(R.id.smscount);
         iv_edit = (ImageView) findViewById(R.id.iv_edit);
@@ -154,7 +153,6 @@ public class AddAnnouncement extends FragmentActivity {
         cb_noti_all = (CheckBox) findViewById(R.id.cb_noti_all);
 
         d_radio0.setChecked(true);
-
 
         // Code for Reminder starts
         iv_toggle = (ImageView) findViewById(R.id.iv_toggle);
@@ -316,25 +314,30 @@ public class AddAnnouncement extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 //  showDatePicker(tv_publish_date);
+                Utils.hideKeyBoard(AddAnnouncement.this,tv_publish_date);
                 datepicker(tv_publish_date);
             }
         });
         tv_publishtime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_publishtime);
+                Utils.hideKeyBoard(AddAnnouncement.this,tv_publishtime);
+                ShowTimePicker(tv_publishtime,2);
             }
         });
         tv_expiry_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Utils.hideKeyBoard(AddAnnouncement.this,tv_expiry_date);
                 datepicker(tv_expiry_date);
             }
         });
         tv_expiretime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowTimePicker(tv_expiretime);
+                Utils.hideKeyBoard(AddAnnouncement.this,tv_expiretime);
+                ShowTimePicker(tv_expiretime,3);
             }
         });
 
@@ -370,10 +373,14 @@ public class AddAnnouncement extends FragmentActivity {
             @Override
             public void onClick(View v) {
 
-                //if (validation() == true)
-                    datepicker_repeate_notification();
+//                //if (validation() == true)
+//                    datepicker_repeate_notification();
 
+//                if(validationForReminder()){
+//                    ShowTimePicker_repeate_notification();
+//                }
 
+                ShowTimePicker_repeate_notification();
             }
         });
 
@@ -432,19 +439,68 @@ public class AddAnnouncement extends FragmentActivity {
         }
     }
 
-    public void ShowTimePicker(final TextView time_text) {
-        MyTimePicker myTimePicker = new MyTimePicker(this);
-        myTimePicker.show();
+    public void ShowTimePicker(final TextView time_text, final int module) {
+//        MyTimePicker myTimePicker = new MyTimePicker(this);
+//        myTimePicker.show();
+//
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//                //Toast.makeText(AddAnnouncement.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+//
+//                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//            }
+//        });
 
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
-
-            @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-                //Toast.makeText(AddAnnouncement.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
-
-                time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+        String title="";
+        Date date=new Date();
+        try {
+            if(module==2){
+                title="Publish Date & Time";
+                date = sdf1.parse(publishDate);
+            }else if(module==3){
+                title="Expiry Date & Time";
+                date = sdf1.parse(expiryDate);
+            }else if(module==4){
+                title="Notification Date & Time";
             }
-        });
+        }
+        catch (ParseException e){
+            date=new Date();
+        }
+
+//
+
+        datetimePicker= new SingleDateAndTimePickerDialog.Builder(AddAnnouncement.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimePicker.setDefaultDate(date);
+
+        //datetimePicker.setMinDateRange(new Date());
+        datetimePicker .setMinutesStep(1);
+        //.displayHours(false)
+        //.displayMinutes(false)
+
+        //.todayText("aujourd'hui")
+
+        datetimePicker.setTitle(title);
+        datetimePicker.setListener(new SingleDateAndTimePickerDialog.Listener() {
+            @Override
+            public void onDateSelected(Date date) {
+
+                time_text.setText(sdf1.format(date));
+                if(module==2){
+                    publishDate=sdf1.format(date);
+                }else if(module==3){
+                    expiryDate=sdf1.format(date);
+                }else if(module==4){
+//                            title="Notification Date & Time";
+                }
+            }
+        }).display();
+
+
     }
 
     private static String utilTime(int value) {
@@ -466,13 +522,23 @@ public class AddAnnouncement extends FragmentActivity {
 
         final CharSequence[] options;
 
-        if (hasimageflag.equals("0")) {
+        Drawable.ConstantState constantState;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            constantState = context.getResources()
+                    .getDrawable(R.drawable.edit_image, context.getTheme())
+                    .getConstantState();
+        } else {
+            constantState = context.getResources().getDrawable(R.drawable.edit_image)
+                    .getConstantState();
+        }
+
+        if (iv_event_photo.getDrawable().getConstantState() == constantState) {
             options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"};
             hasimageflag = "1";
-        } else {
+        }else {
             options = new CharSequence[]{"Take Photo", "Choose from Gallery", "Remove Photo", "Cancel"};
-
         }
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddAnnouncement.this);
         builder.setTitle("Add Photo!");
@@ -480,18 +546,23 @@ public class AddAnnouncement extends FragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
+                    String fileName = "temp.jpg";
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, fileName);
+                    mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
 
                     startActivityForResult(intent, 4);
                 } else if (options[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-
-                    startActivityForResult(intent, 2);
+//                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(intent, 2);
+                    Crop.pickImage(AddAnnouncement.this);
 
                 } else if (options[item].equals("Cancel")) {
+
                     dialog.dismiss();
                 } else if (options[item].equals("Remove Photo")) {
                     if(announID.equals("0")){
@@ -529,11 +600,21 @@ public class AddAnnouncement extends FragmentActivity {
         arrayList.add(new BasicNameValuePair("announImg", uploadedimgid));
         arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
         arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
-        arrayList.add(new BasicNameValuePair("publishDate", tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("publishDate", tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("publishDate", publishDate));
+
         // arrayList.add(new BasicNameValuePair("publishTime", "10:20:00"));
-        arrayList.add(new BasicNameValuePair("expiryDate", tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString()));
+//        arrayList.add(new BasicNameValuePair("expiryDate", tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString()));
+        arrayList.add(new BasicNameValuePair("expiryDate", expiryDate));
         arrayList.add(new BasicNameValuePair("moduleId", moduleId));
         arrayList.add(new BasicNameValuePair("AnnouncementRepeatDates", list_datetime.toString().replace("[", "").replace("]", "")));
+//        if(cb_display.isChecked()){
+//            arrayList.add(new BasicNameValuePair("displayonbanner","1"));
+//        }else {
+//            arrayList.add(new BasicNameValuePair("displayonbanner","0"));
+//
+//        }
+      //  arrayList.add(new BasicNameValuePair("link",et_link.getText().toString()));
         flag_callwebsercie = "0";
         Log.d("Response", "PARAMETERS " + Constant.AddAnnouncement + " :- " + arrayList.toString());
         new WebConnectionAsyncLogin(Constant.AddAnnouncement, arrayList, AddAnnouncement.this).execute();
@@ -662,9 +743,9 @@ public class AddAnnouncement extends FragmentActivity {
                 finish();//finishing activity
 
                 if(tv_add.getText().equals("Add"))
-                    Toast.makeText(AddAnnouncement.this, "Added successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddAnnouncement.this, "Announcement  Added successfully.", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(AddAnnouncement.this, "Updated successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddAnnouncement.this, "Announcement Updated successfully.", Toast.LENGTH_SHORT).show();
 
                 Log.d("Touchbase", "*************** " + status);
                 Log.d("Touchbase", "*************** " + msg);
@@ -705,16 +786,32 @@ public class AddAnnouncement extends FragmentActivity {
                     } else {
                         cb_noti_all.setChecked(true);
                     }
+
+//                    String link=objects.getString("link");
+//                    if(link!=null && !link.isEmpty()){
+//                        et_link.setText(link);
+//                    }
+
+//                    if(objects.getString("displayonbanner").equals("1")){
+//                        cb_display.setChecked(true);
+//                    }else {
+//                        cb_display.setChecked(false);
+//                    }
+
+
+
                     //----------------------SMS FLAG
 
-                    String[] separated_publish = objects.getString("publishDate").toString().split(" ");
-                    tv_publish_date.setText(separated_publish[0]);
-                    tv_publishtime.setText(separated_publish[1]);
+//                    String[] separated_publish = objects.getString("publishDate").toString().split(" ");
+//                    tv_publish_date.setText(separated_publish[0]);
+                    tv_publishtime.setText(objects.getString("publishDate").toString());
+                    publishDate=objects.getString("publishDate").toString();
                     String publishDateTime = objects.getString("publishDate").toString();
 
-                    String[] separated_expire = objects.getString("expiryDate").toString().split(" ");
-                    tv_expiry_date.setText(separated_expire[0]);
-                    tv_expiretime.setText(separated_expire[1]);
+//                    String[] separated_expire = objects.getString("expiryDate").toString().split(" ");
+//                    tv_expiry_date.setText(separated_expire[0]);
+                    tv_expiretime.setText(objects.getString("expiryDate").toString());
+                    expiryDate=objects.getString("expiryDate").toString();
 
                     uploadedimgid = "";
 
@@ -722,11 +819,11 @@ public class AddAnnouncement extends FragmentActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     String currentDate = sdf.format(cd);
 
-                    if(DateHelper.compareDate(publishDateTime,currentDate)<=0){
-                        tv_publish_date.setClickable(false);
-                        tv_publishtime.setClickable(false);
-                        isPublishdateDisabled = true;
-                    }
+//                    if(DateHelper.compareDate(publishDateTime,currentDate)<=0){
+//                        tv_publish_date.setClickable(false);
+//                        tv_publishtime.setClickable(false);
+//                        isPublishdateDisabled = true;
+//                    }
 
 
 
@@ -805,8 +902,8 @@ public class AddAnnouncement extends FragmentActivity {
                             hasimageflag = "1";
                             // progressbar.setVisibility(View.VISIBLE);
                             Picasso.with(AddAnnouncement.this).load(objects.getString("announImg").toString())
-                                    .placeholder(R.drawable.imageplaceholder)
-                                    .resize(400,400)
+                                    .placeholder(R.drawable.edit_image)
+//                                    .resize(400,400)
                                     .into(iv_event_photo, new Callback() {
                                         @Override
                                         public void onSuccess() {
@@ -995,123 +1092,84 @@ public class AddAnnouncement extends FragmentActivity {
 
         /***************Image Capture***********/
         if (requestCode == 4) {
-
-
             if (resultCode == Activity.RESULT_OK) {
 
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
+
+                Uri correctedUri = null;
                 try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mCapturedImageURI);
+                    //imageBitmap = imageOrientationValidator(imageBitmap, getRealPathFromURI(mCapturedImageURI));
+                    correctedUri = Utils.getImageUri(imageBitmap, getApplicationContext());
+                    Log.d("==== Uri ===", "======" + correctedUri);
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-                    Bitmap bt=Bitmap.createScaledBitmap(bitmap, 400, 400, false);
-                    iv_event_photo.setImageBitmap(bt);
-
-                    String path = Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    // f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                    Log.d("TOUCHBASE", "FILE PATH " + f.toString());
-                    ///-------------------------------------------------------------------
-                    pd = ProgressDialog.show(AddAnnouncement.this, "", "Loading...", false);
-                    final File finalF = f;
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            uploadedimgid = Utils.doFileUpload(new File(finalF.toString()), "event"); // Upload File to server
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    if (pd.isShowing())
-                                        pd.dismiss();
-                                    Log.d("TOUCHBASE", "FILE UPLOAD ID InnerThread  " + uploadedimgid);
-                                    if (uploadedimgid.equals("0")) {
-                                        Toast.makeText(AddAnnouncement.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
-                                        iv_event_photo.setImageResource(R.drawable.edit_image);
-                                    }
-                                    //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    });
-                    thread.start();
-                    ///-------------------------------------------------------------------
-                    //uploadedimgid = Utils.doFileUpload(new File(f.toString()), "announcement"); // Upload File to server
-
-
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                    }
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        } else if (requestCode == 2) {
+                beginCrop(correctedUri);
 
-            ImageCompression imageCompression = new ImageCompression();
-            String path = "";
+
+            }
+        } if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK)  {
+
 
             if (resultCode == Activity.RESULT_OK) {
 
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                final String picturePath = c.getString(columnIndex);
-                c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
 
-                //-----------Image with reduced size -------------------------------------
+                beginCrop(data.getData());
 
+            }
+        }else if(requestCode == Crop.REQUEST_CROP){
+            if(resultCode==RESULT_OK){
+                uploadPic(data);
+            }else {
+                Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
 
-                path = Utils.getRealPathFromURI(selectedImage, getApplicationContext());
+    }
+
+    private void beginCrop(Uri source) {
+
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void uploadPic(Intent result){
+        Uri croppedUri = Crop.getOutput(result);
+
+        if (croppedUri != null) {
+
+            Bitmap csBitmap = null;
+            ImageCompression imageCompression = new ImageCompression();
+            String path = "";
+            try {
+                csBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), croppedUri);
+                path = Utils.getRealPathFromURI(croppedUri, getApplicationContext());
                 Log.d("==== Path ===", "======" + path);
 
                 imageCompression = new ImageCompression();
                 finalImagePath = imageCompression.compressImage(path, getApplicationContext());
-                Log.d("==picturePath====","0000...."+finalImagePath);
+//                    picturePath = imageCompression.getImage(path, getApplicationContext());
 
+                Log.d("==picturePath====", "0000...." + finalImagePath);
+                final ProgressDialog pd = ProgressDialog.show(AddAnnouncement.this, "", "Uploading...", false);
 
-
-                ///-------------------------------------------------------------------
-                pd = ProgressDialog.show(AddAnnouncement.this, "", "Loading...", false);
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
+
                         uploadedimgid = Utils.doFileUpload(new File(finalImagePath), "event"); // Upload File to server
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (pd.isShowing())
                                     pd.dismiss();
+                                Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedimgid);
                                 if (uploadedimgid.equals("0")) {
                                     Toast.makeText(AddAnnouncement.this, "Image Upload failed, Please try Again!", Toast.LENGTH_SHORT).show();
                                     iv_event_photo.setImageResource(R.drawable.edit_image);
                                 } else {
-                                    //  iv_event_photo.setImageBitmap(thumbnail);
+                                    //iv_event_photo.setImageBitmap(thumbnail);
 
                                     iv_event_photo.setImageDrawable(Drawable.createFromPath(finalImagePath));
-
                                 }
                                 //Toast.makeText(Register.this, "Verify your account through the registered email id", Toast.LENGTH_LONG).show();
                             }
@@ -1119,14 +1177,25 @@ public class AddAnnouncement extends FragmentActivity {
                     }
                 });
                 thread.start();
-                ///-------------------------------------------------------------------
-                // uploadedimgid = Utils.doFileUpload(new File(picturePath), "announcement"); // Upload File to server
-                // Log.d("TOUCHBASE", "FILE UPLOAD ID  " + uploadedimgid);
 
 
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
 
+
+            //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            // csBitmap = Bitmap.createScaledBitmap(csBitmap, 500, 500, true);
+            //  csBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            //   iv_profileimage.setImageBitmap(csBitmap);
+
+            // picturePath = imageCompression.compressImage(path, getApplicationContext());
+            //ivNewProfileImage.setImageDrawable(Drawable.createFromPath(picturePath));
+            //Utils.log(picturePath);
+
+
+
+        }
     }
 
     public void datepicker(final TextView setdatetext) {
@@ -1165,33 +1234,84 @@ public class AddAnnouncement extends FragmentActivity {
             return false;
         }
 
-        if (tv_publish_date.getText().toString().trim().matches("") || tv_publish_date.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_publish_date.getText().toString().trim().matches("") || tv_publish_date.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 
         if (tv_publishtime.getText().toString().trim().matches("") || tv_publishtime.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (tv_expiry_date.getText().toString().trim().matches("") || tv_expiry_date.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (tv_expiretime.getText().toString().trim().matches("") || tv_expiretime.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        /*if (!(compare_date(tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString(),
+//        if (tv_expiry_date.getText().toString().trim().matches("") || tv_expiry_date.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_expiretime.getText().toString().trim().matches("") || tv_expiretime.getText().toString().trim() == null) {
+            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (!(compare_date(tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString(),
                 tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString())).equals("1")) {
             Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
-        }*/
+        }
 
 
-        String expiryDate = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
-        String publishDate = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
+//        String expiryDate = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
+//        String publishDate = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
+
+//        try {
+//            if ( DateHelper.compareDate(publishDate, expiryDate) >= 0 ) {
+//                Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//        }
+
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+//        try {
+//            if (DateHelper.compareDate(publishDate, currentDate) <= 0 ) {
+//                // Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                Toast.makeText(AddAnnouncement.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//        }
+        return true;
+    }
+
+    public boolean validationForReminder() {
+
+
+//        if (tv_publishDate.getText().toString().trim().matches("") || tv_publishDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_publishtime.getText().toString().trim().matches("") || tv_publishtime.getText().toString().trim() == null) {
+            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+//        if (tv_expiryDate.getText().toString().trim().matches("") || tv_expiryDate.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+        if (tv_expiretime.getText().toString().trim().matches("") || tv_expiretime.getText().toString().trim() == null) {
+            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+//        String expiryDate = tv_expiryDate.getText().toString() + " " + tv_expiryTime.getText().toString();
+//        String eventDate = tv_eventDate.getText().toString() + " " + tv_eventTime.getText().toString();
+//
+//        String publishDate = tv_publishDate.getText().toString() + " " + tv_publishTime.getText().toString();
+
         try {
             if ( DateHelper.compareDate(publishDate, expiryDate) >= 0 ) {
                 Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
@@ -1205,7 +1325,7 @@ public class AddAnnouncement extends FragmentActivity {
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
         try {
             if (DateHelper.compareDate(publishDate, currentDate) <= 0 ) {
-                // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+                // Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
                 Toast.makeText(AddAnnouncement.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -1213,6 +1333,7 @@ public class AddAnnouncement extends FragmentActivity {
             e.printStackTrace();
             Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
         }
+
         return true;
     }
 
@@ -1248,7 +1369,16 @@ public class AddAnnouncement extends FragmentActivity {
     }
     @Override
     public void onBackPressed() {
-        Utils.popupback(AddAnnouncement.this);
+
+        if(datetimePicker!=null && datetimePicker.isDisplaying()){
+            datetimePicker.dismiss();
+        }else if(datetimeForReminder!=null && datetimeForReminder.isDisplaying()){
+            datetimeForReminder.dismiss();
+        }else {
+            Utils.popupback(AddAnnouncement.this);
+
+        }
+
         //
         // super.onBackPressed();
     }
@@ -1266,6 +1396,15 @@ public class AddAnnouncement extends FragmentActivity {
         AddAnnouncementDateTimeData data = new AddAnnouncementDateTimeData();
         data.setDate(repeat_date);
         data.setTime(repeat_time);
+
+//        Toast.makeText(AddAnnouncement.this, "Reminder added Successfully!", Toast.LENGTH_LONG).show();
+//        list_datetime.add(data);
+        scrollview.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
 
         if (repeatenotification_validation()) {
             Toast.makeText(AddAnnouncement.this, "Reminder added SUCCESSFULLY!", Toast.LENGTH_LONG).show();
@@ -1309,29 +1448,38 @@ public class AddAnnouncement extends FragmentActivity {
     }
 
     public boolean repeatenotification_validation() {
-        String publishDateTime = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
+       // String publishDateTime = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
 
         try {
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDate) == 0) {
+                Toast.makeText(AddAnnouncement.this, "Repeat Notification Date & Time should not be same as Publish Date & Time", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
             // Checking if repeat date time is less than public date and time
-            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDateTime) <= 0) {
-                Toast.makeText(AddAnnouncement.this, "Reminder Date & Time should be greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time, publishDate) <= 0) {
+                Toast.makeText(AddAnnouncement.this, "Please make the Repeat notification Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddAnnouncement.this, "Reminder Date & Time should be greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
                 return false;
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
+            return false;
         }
 
-        String expiryDateTime = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
+      //  String expiryDateTime = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
         try {
             // Checking if repeat date time is greater than expiry date and time
-            if ( DateHelper.compareDate(repeat_date + " " + repeat_time , expiryDateTime) > 0 ) {
-                Toast.makeText(AddAnnouncement.this, "Reminder Date & Time should be less than Expiry Date & Time", Toast.LENGTH_LONG).show();
+            if ( DateHelper.compareDate(repeat_date + " " + repeat_time , expiryDate) > 0 ) {
+                Toast.makeText(AddAnnouncement.this, "Please make the Repeat notification Date & Time less than Expiry Date & Time", Toast.LENGTH_LONG).show();
+               // Toast.makeText(AddAnnouncement.this, "Reminder Date & Time should be less than Expiry Date & Time", Toast.LENGTH_LONG).show();
                 return false;
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
+            return false;
         }
         /*if (!(compare_date(tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString(),
                 repeat_date + " " + repeat_time)).equals("2")) {
@@ -1379,19 +1527,44 @@ public class AddAnnouncement extends FragmentActivity {
     }
 
     public void ShowTimePicker_repeate_notification() {
-        MyTimePicker myTimePicker = new MyTimePicker(this);
-        myTimePicker.show();
-        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//        MyTimePicker myTimePicker = new MyTimePicker(this);
+//        myTimePicker.show();
+//        myTimePicker.setTimeListener(new MyTimePicker.onTimeSet() {
+//
+//            @Override
+//            public void onTime(TimePicker view, int hourOfDay, int minute) {
+//                //Toast.makeText(AddAnnouncement.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+//
+//                // time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
+//                repeat_time = utilTime(hourOfDay) + ":" + utilTime(minute);
+//                repeate_notification_valueadd();
+//            }
+//        });
 
+        datetimeForReminder= new SingleDateAndTimePickerDialog.Builder(AddAnnouncement.this).build();
+//                .bottomSheet()
+//                .curved()
+        datetimeForReminder.setDefaultDate(new Date());
+
+        datetimeForReminder.setMinDateRange(new Date());
+        datetimeForReminder .setMinutesStep(1);
+        //.displayHours(false)
+        //.displayMinutes(false)
+
+        //.todayText("aujourd'hui")
+
+        datetimeForReminder.setTitle("Reminder Date & Time");
+        datetimeForReminder.setListener(new SingleDateAndTimePickerDialog.Listener() {
             @Override
-            public void onTime(TimePicker view, int hourOfDay, int minute) {
-                //Toast.makeText(AddEvent.this,"time is " + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+            public void onDateSelected(Date date) {
 
-                // time_text.setText(utilTime(hourOfDay) + ":" + utilTime(minute));
-                repeat_time = utilTime(hourOfDay) + ":" + utilTime(minute);
+                String s=sdf1.format(date);
+                String dateArray[]=s.split(" ");
+                repeat_date=dateArray[0];
+                repeat_time=dateArray[1];
                 repeate_notification_valueadd();
             }
-        });
+        }).display();
     }
 
     public boolean updateValidation(){
@@ -1405,39 +1578,41 @@ public class AddAnnouncement extends FragmentActivity {
             return false;
         }
 
-        if (tv_publish_date.getText().toString().trim().matches("") || tv_publish_date.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_publish_date.getText().toString().trim().matches("") || tv_publish_date.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 
         if (tv_publishtime.getText().toString().trim().matches("") || tv_publishtime.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddAnnouncement.this, "Please enter a Publish Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (tv_expiry_date.getText().toString().trim().matches("") || tv_expiry_date.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if (tv_expiry_date.getText().toString().trim().matches("") || tv_expiry_date.getText().toString().trim() == null) {
+//            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if (tv_expiretime.getText().toString().trim().matches("") || tv_expiretime.getText().toString().trim() == null) {
-            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Time", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddAnnouncement.this, "Please enter an Expiry Date & Time", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        String publishDate = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
-        String expiryDate = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
+//        String publishDate = tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString();
+//        String expiryDate = tv_expiry_date.getText().toString() + " " + tv_expiretime.getText().toString();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-        if(!isPublishdateDisabled) {
-            try {
-                if (DateHelper.compareDate(publishDate, currentDate) <= 0) {
-                    // Toast.makeText(AddEvent.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
-                    Toast.makeText(AddAnnouncement.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-                Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
-            }
-        }
+
+
+        //        if(!isPublishdateDisabled) {
+//            try {
+//                if (DateHelper.compareDate(publishDate, currentDate) <= 0) {
+//                    // Toast.makeText(AddAnnouncement.this, "Please make the Expiry Date & Time greater than the Publish Date & Time", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddAnnouncement.this, "Please make the publish date & time greater than the current date & time", Toast.LENGTH_LONG).show();
+//                    return false;
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
+//            }
+//        }
 
         try {
             if (DateHelper.compareDate(expiryDate, currentDate) <= 0) {
