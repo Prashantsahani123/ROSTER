@@ -163,9 +163,10 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
 
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
@@ -178,10 +179,10 @@
                         >
 
                         <ImageView
-                            android:visibility="gone"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/message_not_sent_blue" />
+                            android:src="@drawable/message_not_sent_blue"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -242,8 +243,48 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/seperator_color" />
+
+                    android:background="@color/view_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/registration_link"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_reglink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/blueonclickcolor"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/separator_height"
+
+                        android:layout_margin="0dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/seperator_color" />
+
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/rsvpResponsePanel"

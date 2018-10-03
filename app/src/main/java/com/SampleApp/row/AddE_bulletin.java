@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -148,16 +151,30 @@ public class AddE_bulletin extends Activity {
             @Override
             public void onClick(View v) {
                 if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "1";
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSAll = "1";
+                            sendSMSNonSmartPh = "0";
+                            cb_noti_nonsmart.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_all.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_all.setChecked(false);
+                    }
+
                 } else {
                     sendSMSAll = "0";
                 }
 
-                if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "0";
-                    cb_noti_nonsmart.setChecked(false);
-                    cb_noti_all.setChecked(true);
-                }
+//                if (cb_noti_nonsmart.isChecked()) {
+//                    sendSMSNonSmartPh = "0";
+//                    cb_noti_nonsmart.setChecked(false);
+//                    cb_noti_all.setChecked(true);
+//                }
             }
         });
         cb_noti_nonsmart.setOnClickListener(new View.OnClickListener() {
@@ -165,15 +182,28 @@ public class AddE_bulletin extends Activity {
             public void onClick(View v) {
 
                 if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "1";
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSNonSmartPh = "1";
+                            sendSMSAll = "0";
+                            cb_noti_all.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_nonsmart.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_nonsmart.setChecked(false);
+                    }
                 } else {
                     sendSMSNonSmartPh = "0";
                 }
-                if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "0";
-                    cb_noti_all.setChecked(false);
-                    cb_noti_nonsmart.setChecked(true);
-                }
+//                if (cb_noti_all.isChecked()) {
+//                    sendSMSAll = "0";
+//                    cb_noti_all.setChecked(false);
+//                    cb_noti_nonsmart.setChecked(true);
+//                }
             }
         });
 
@@ -379,8 +409,19 @@ public class AddE_bulletin extends Activity {
         arrayList.add(new BasicNameValuePair("publishDate", publishDate));
         arrayList.add(new BasicNameValuePair("expiryDate", expiryDate));
 
-        arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
-        arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
+        if(cb_noti_nonsmart.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "0"));
+        }
+
+        if(cb_noti_all.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "0"));
+        }
+//        arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
+//        arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
 
         Log.d("Response", "PARAMETERS " + Constant.AddEbulletin + " :- " + arrayList.toString());
         new WebConnectionAsyncLogin(Constant.AddEbulletin, arrayList, AddE_bulletin.this).execute();
@@ -1017,4 +1058,23 @@ public class AddE_bulletin extends Activity {
         //
         // super.onBackPressed();
     }
+
+    private void popup_sms(){
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(AddE_bulletin.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+
+        } else {
+            builder = new AlertDialog.Builder(AddE_bulletin.this);
+        }
+        builder.setMessage(getString(R.string.sms_warning))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+
+                .show();
+    }
+
 }

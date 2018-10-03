@@ -54,6 +54,8 @@ public class Constant {
 
     public final static String GetGroupModulesList = BaseURL_V3 + "Group/GetGroupModulesList";
 
+    public final static String GetAssistanceGov = BaseURL_V3 + "Group/GetAssistanceGov";
+
     public final static String GetAllGroupsList = BaseURL_V3 + "Group/GetAllGroupsList";
 
     public final static String UpdateMemberGroupCategory = BaseURL_V3 + "Group/UpdateMemberGroupCategory";
@@ -243,7 +245,12 @@ public final static String AddEvent = BaseURL_V3 + "Event/AddEvent_New";
         ROTARY_LIBRARY = "32",
         DISTRICT_COMMITTEE = "33",
         CLUBS = "35",
-        CLUB_MONTHLY_REPORT = "38";
+
+        CLUB_MONTHLY_REPORT = "38",
+        CLUB_MONTHLY_REPORT_New = "39",
+        TRF_CONTRIBUTION = "42",
+        CATEGORY = "40",
+        LEADERBOAD = "45";
     }
 
 
@@ -322,14 +329,11 @@ public final static String AddEvent = BaseURL_V3 + "Event/AddEvent_New";
     public static final String AUTHENTICATION = "https://apiuat.rotary.org:8443/v1.1/authentication";
     public static final String GETCOUNTRIES = "https://apiuat.rotary.org:8443/v1.1/countries";
 
-
     public final static String UPDATE_FILE_NAME = "TBUpdateFileName";
     public static final String DELETE_ZIP_FILE = BaseURL_V3 + "Member/DeleteFolder";
     public static final String GET_ADVANCED_SEARCH_FIELDS = BaseURL_V3 + "Member/GetAdvanceSearchFilters";
     public final static int NORMAL_TEXT_SIZE = 16;
     public final static String NewUpdateProfile = BaseURL_V3 + "Member/UpdateProfileDetails";
-
-
 
     public static final String THEME_COLOR = "#00AEEF";
     public static final String LOADING_MESSAGE = "Downloading updates from cloud\nPlease wait...";
@@ -367,7 +371,7 @@ public final static String AddEvent = BaseURL_V3 + "Event/AddEvent_New";
     public final static String GetMonthlyReportList = BaseURL_V3 + "ClubMonthlyReport/GetMonthlyReportList";
 
     //Leader board details
-    public final static String GetLeaderBoardDetail = BaseURL_V3 + "LeaderBoard/GetLeaderBoardDetail";
+    public final static String GetLeaderBoardDetail = BaseURL_V3 + "LeaderBoard/GetLeaderBoardDetails";
 
     //API for Attendance
 

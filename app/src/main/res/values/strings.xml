@@ -2,9 +2,7 @@
 <resources>
     <string name="app_name">ROW</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_language_select">LanguageSelect</string>
     <array name="directoryFilter">
         <item>Rotarian</item>
         <item>Classification</item>
@@ -15,10 +13,7 @@
         <item>Classification</item>
     </array>
     <!--Select Language-->
-    <string name="france">français</string>
-    <string name="china">歓迎</string>
     <string name="terms_conditions"><u>Terms and Conditions</u></string>
-    <string name="googleMapKey">AIzaSyC0QpMNH1RJITaaTNUneurkVG_J1N0BdHM</string>
     <string name="labelNoRecords">No new updates</string>
 
     <string name="kaizenContact">+91 22 41516999</string>
@@ -27,7 +22,6 @@
     <string name="kaizenWebsite">www.rosteronwheels.com</string>
     <string name="kaizenRecommend">Recommend TouchBase to your friends</string>
     <string name="messageSorry">We are sorry for inconvenience. Something went wrong.</string>
-    <string name="LoadMore">Load More</string>
     <string name="loadingMessage">Loading updates from Cloud.\n Please wait...</string>
     <string name="crop__saving">Saving picture…</string>
     <string name="crop__wait">Please wait…</string>
@@ -42,13 +36,13 @@
     <string name="accept_btn">Accept</string>
     <string name="login_screen_text">Every Member and their family will be able to use ROW once the club subscribes to Roster On Wheels.\n\nThe Registered Mobile Number in your club is the unique identifier in ROW.\n\nFamily Members can access ROW once their\nCredentials are Registered.</string>
     <string name="mobileno_confirm_popupmsg">One Time Password will be sent to this number.</string>
-    <string name="email"> row.techsupport@kaizeninfotech.com</string>
     <string name="label_submit">Submit</string>
     <string name="popupmsg_registration">Roster On Wheels Mobile Application is only\nfor Rotarians / IW Members / Rotaractors</string>
     <string name="terms_and_condition">Terms &amp; Conditions</string>
     <string name="find_a_rotarian_msg">This feature allows you to search any Rotarian\n from \'Roster On Wheels\' subscribed clubs.</string>
     <string name="msg_no_records_found">No Record Found</string>
     <string name="msg_hint_feedback">Please enter your feedback</string>
+    <string name="leader_board_no_record">This place is reserved for Clubs to show their citation points</string>
 
     <string name="msgRetry">Something went wrong. Please try again after sometime.</string>
 
@@ -91,11 +85,7 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="noCalendarData">No Birthday, Anniversary and Event</string>
-    <string name="navigation_drawer_open">open drawer</string>
-    <string name="navigation_drawer_close">close drawer</string>
-    <string name="title_activity_dash_board">DashBoardActivity</string>
 
 
     <!--Drawer String Items-->
@@ -103,7 +93,6 @@
     <string name="close">Close</string>
     <string name="lbl_aboutdeveloper">About Developer</string>
     <string name="lbl_privacySetting">Settings</string>
-    <string name="lbl_notificationSetting">Notification Settings</string>
     <string name="lbl_faq">FAQ\'s</string>
     <string name="lbl_rowHelpLine">ROW Helpline</string>
     <string name="noInternet">No internet connection</string>
@@ -113,5 +102,7 @@
     <string name="add_attendance">Add Attendance</string>
     <string name="select_event_from_list">Select Event from list</string>
     <string name="new_event">New Event</string>
+    <string name="registration_link">Link</string>
+    <string name="sms_warning">Your Balance SMS Count is zero. Please recharge.</string>
 
 </resources>

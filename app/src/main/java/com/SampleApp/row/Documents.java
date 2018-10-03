@@ -51,7 +51,6 @@ public class Documents extends Activity {
     DocumentRVAdapter rvAdapter;
     RecyclerView rvDocs;
     ArrayList<String> selectedsubgrp;
-
     ListView listview;
     ArrayAdapter<String> adapter;
     TextView tv_title;
@@ -59,14 +58,12 @@ public class Documents extends Activity {
     EditText et_search;
     String moduleName = "";
     EditText et_serach_document;
-
     private ArrayList<DocumentListData> list_documentData = new ArrayList<DocumentListData>();
     private DocumentAdapter adapter_document;
     private String grpID = "0";
     private String memberProfileID="0";
     private String isAdmin = "No";
     private String moduleId;
-
     Spinner spinner_filter_type;
     String type_filter_flag = "1";
     String filtertype[] = {"Published","All",  "UnPublished", "Expired"};

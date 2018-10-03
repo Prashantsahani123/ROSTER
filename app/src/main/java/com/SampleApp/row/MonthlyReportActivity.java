@@ -298,11 +298,19 @@ public class MonthlyReportActivity extends AppCompatActivity {
 
                         MonthlyReportData data = new MonthlyReportData();
 
-                        String clubId = attendanceResult.getString("ClubId");
+                        String clubId = attendanceResult.getString("ClubId1");
+
                         data.setId(clubId);
-                        data.setName(attendanceResult.getString("clubName")+" (RID "+clubId+")");
-                        data.setDate(attendanceResult.getString("ReportDate"));
-                        data.setTime(attendanceResult.getString("Reporttime"));
+
+                        data.setName(attendanceResult.getString("clubName")+" (Club "+clubId+")");
+
+                        if(attendanceResult.has("SendToDistrictDate")){
+                            data.setDate(attendanceResult.getString("SendToDistrictDate"));
+                        }
+
+                        if(attendanceResult.has("SendToDistrictTime")) {
+                            data.setTime(attendanceResult.getString("SendToDistrictTime"));
+                        }
 
                         if(attendanceResult.has("clubAG")){
                             data.setClubAG(attendanceResult.getString("clubAG"));

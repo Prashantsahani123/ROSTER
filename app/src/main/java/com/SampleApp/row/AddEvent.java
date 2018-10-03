@@ -133,7 +133,7 @@ public class AddEvent extends Activity {
     ArrayAdapter<String> adapter;
     String repeat_date = "";
     String repeat_time = "";
-    LinearLayout linear_repeatnotification;
+    LinearLayout linear_repeatnotification,ll_link;
 
 
     private ArrayList<AddEventDateTimeData> list_datetime = new ArrayList<AddEventDateTimeData>();
@@ -231,6 +231,7 @@ public class AddEvent extends Activity {
         et_eventDesc = (EditText) findViewById(R.id.et_evetDesc);
         et_eventVenue = (EditText) findViewById(R.id.et_eventVenue);
         et_link=(EditText)findViewById(R.id.et_eventLink);
+        ll_link = (LinearLayout) findViewById(R.id.ll_link);
         linear_repeatnotification = (LinearLayout) findViewById(R.id.linear_repeatnotification);
         scrollview = (ScrollView) findViewById(R.id.scrollview);
         cb_noti_nonsmart = (CheckBox) findViewById(R.id.cb_noti_nonsmart);
@@ -374,16 +375,32 @@ public class AddEvent extends Activity {
             @Override
             public void onClick(View v) {
                 if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "1";
+
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSAll = "1";
+                            sendSMSNonSmartPh = "0";
+                            cb_noti_nonsmart.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_all.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_all.setChecked(false);
+                    }
+
+
                 } else {
                     sendSMSAll = "0";
                 }
 
-                if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "0";
-                    cb_noti_nonsmart.setChecked(false);
-                    cb_noti_all.setChecked(true);
-                }
+//                if (cb_noti_nonsmart.isChecked()) {
+//                    sendSMSNonSmartPh = "0";
+//                    cb_noti_nonsmart.setChecked(false);
+//                    cb_noti_all.setChecked(true);
+//                }
             }
         });
 
@@ -392,15 +409,29 @@ public class AddEvent extends Activity {
             public void onClick(View v) {
 
                 if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "1";
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSNonSmartPh = "1";
+                            sendSMSAll = "0";
+                            cb_noti_all.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_nonsmart.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_nonsmart.setChecked(false);
+                    }
+
                 } else {
                     sendSMSNonSmartPh = "0";
                 }
-                if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "0";
-                    cb_noti_all.setChecked(false);
-                    cb_noti_nonsmart.setChecked(true);
-                }
+//                if (cb_noti_all.isChecked()) {
+//                    sendSMSAll = "0";
+//                    cb_noti_all.setChecked(false);
+//                    cb_noti_nonsmart.setChecked(true);
+//                }
             }
         });
      /*   cb_noti_nonsmart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1381,8 +1412,20 @@ public class AddEvent extends Activity {
 
         arrayList.add(new BasicNameValuePair("grpID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
         arrayList.add(new BasicNameValuePair("RepeatDateTime", list_datetime.toString().replace("[", "").replace("]", "")));
-        arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
-        arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
+
+        if(cb_noti_nonsmart.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "0"));
+        }
+
+        if(cb_noti_all.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "0"));
+        }
+
+    //    arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
         arrayList.add(new BasicNameValuePair("questionType", questionType));
 
         arrayList.add(new BasicNameValuePair("questionText", tv_question.getText().toString()));
@@ -1398,7 +1441,7 @@ public class AddEvent extends Activity {
             arrayList.add(new BasicNameValuePair("displayonbanner","0"));
 
         }
-        //arrayList.add(new BasicNameValuePair("link",et_link.getText().toString()));
+        arrayList.add(new BasicNameValuePair("reglink",et_link.getText().toString()));
         //Log.d("@@@@@@@@@@@@@@@@@@@@@@@","################### :- "+list_datetime.toString().replace("[","").replace("]",""));
         flag_callwebsercie = "0";
         Log.d("Response", "PARAMETERS " + Constant.AddEvent + " :- " + arrayList.toString());
@@ -1566,10 +1609,13 @@ public class AddEvent extends Activity {
                     eventID = objects.getString("eventID").toString();
                     et_eventVenue.setText(objects.getString("venue").toString());
 
-//                    String link=objects.getString("link");
-//                    if(link!=null && !link.isEmpty()){
-//                        et_link.setText(link);
-//                    }
+                    String link=objects.getString("reglink");
+                    if(link!=null && !link.isEmpty()){
+                        et_link.setText(link);
+                    }else {
+                        et_link.setText("");
+
+                    }
 
                     if(objects.getString("displayonbanner").equals("1")){
                         cb_display.setChecked(true);
@@ -1981,7 +2027,7 @@ public class AddEvent extends Activity {
             if(resultCode==RESULT_OK){
                 uploadPic(data);
             }else {
-                Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 5) {
@@ -2934,6 +2980,23 @@ public class AddEvent extends Activity {
         dialog.setCancelable(false);
         dialog.show();
 
+    }
+
+    private void popup_sms(){
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setMessage(getString(R.string.sms_warning))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+
+                .show();
     }
 }
 

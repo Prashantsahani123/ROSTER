@@ -44,6 +44,7 @@
                         android:layout_height="wrap_content"
                         android:text="Recipient Type"
 
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
@@ -160,6 +161,7 @@
                             android:layout_height="wrap_content"
                             android:text="Photo"
 
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -198,6 +200,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Title"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
 
@@ -235,6 +238,7 @@
                             android:layout_height="wrap_content"
 
                             android:text="Description"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                         <RelativeLayout
@@ -283,6 +287,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Venue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
 
@@ -311,18 +316,19 @@
                     android:background="@color/seperator_color" />
 
                 <LinearLayout
+                    android:id="@+id/ll_link"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="Link"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:text="@string/registration_link"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
 
                     <EditText
                         android:id="@+id/et_eventLink"

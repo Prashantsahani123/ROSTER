@@ -52,7 +52,9 @@ public class SubGroupList extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.subgroup_list);
+
         context  = this;
 
         listview = (ListView) findViewById(R.id.listView);
@@ -108,6 +110,7 @@ public class SubGroupList extends Activity {
                         webservices();
                     }
                 }
+
             } else {
                 Utils.log("two");
                 webservices();

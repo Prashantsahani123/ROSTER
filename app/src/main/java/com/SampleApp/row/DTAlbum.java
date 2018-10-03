@@ -40,7 +40,7 @@ public class DTAlbum extends Activity implements AdapterView.OnItemClickListener
 
     private View descriptionWrapper;
 
-    private AppBarLayout layout;
+//    private AppBarLayout layout;
     private TextView tv_title, tv_minititle, tv_description;
 
     private static Bitmap bitmap;
@@ -83,7 +83,7 @@ public class DTAlbum extends Activity implements AdapterView.OnItemClickListener
         tv_minititle.setText(title);
         Log.e("Description", description);
         tv_description.setText(description);
-        layout = (AppBarLayout) findViewById(R.id.app_bar);
+//        layout = (AppBarLayout) findViewById(R.id.app_bar);
         ivUpDown = (ImageView) findViewById(R.id.iv_up_down);
         init();
     }

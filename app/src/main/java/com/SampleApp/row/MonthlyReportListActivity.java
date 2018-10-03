@@ -54,7 +54,6 @@ public class MonthlyReportListActivity extends AppCompatActivity {
     }
 
 /*    private void makeMonthList() {
-
         Calendar mCalendar = Calendar.getInstance();
         int currentMonth =  mCalendar.get(Calendar.MONTH);
         int currentYear =  mCalendar.get(Calendar.YEAR);
@@ -170,7 +169,6 @@ public class MonthlyReportListActivity extends AppCompatActivity {
                     montStringArrayList.add("January "+currentYear);
                     montStringArrayList.add("February "+currentYear);
                     montStringArrayList.add("March "+currentYear);
-
                     break;
                 case 4:
                     montStringArrayList.add("May "+previousYear);
@@ -199,7 +197,6 @@ public class MonthlyReportListActivity extends AppCompatActivity {
                     montStringArrayList.add("March "+currentYear);
                     montStringArrayList.add("April "+currentYear);
                     montStringArrayList.add("May "+currentYear);
-
                     break;
 
                 case 6:
@@ -304,7 +301,7 @@ public class MonthlyReportListActivity extends AppCompatActivity {
            int currentYear =  mCalendar.get(Calendar.YEAR);
            int previousYear = currentYear-1;
 
-           if(currentMonth<6){
+           if(currentMonth<6) {
 
                montStringArrayList.add("July "+previousYear);
                montStringArrayList.add("August "+previousYear);
@@ -313,7 +310,7 @@ public class MonthlyReportListActivity extends AppCompatActivity {
                montStringArrayList.add("November "+previousYear);
                montStringArrayList.add("December "+previousYear);
 
-               switch (currentMonth){
+               switch (currentMonth) {
 
                    case 0:
                        montStringArrayList.add("January "+currentYear);
@@ -391,7 +388,6 @@ public class MonthlyReportListActivity extends AppCompatActivity {
                }
 
            }
-
 
 //           Collections.reverse(montStringArrayList);
            adapter = new MonthlyReportListAdapter(ctx,montStringArrayList);

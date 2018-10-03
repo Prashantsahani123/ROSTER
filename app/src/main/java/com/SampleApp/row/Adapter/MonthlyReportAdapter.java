@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +51,11 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
 
         public final View mView;
         public final ImageView iv_view,iv_download;
-        public final TextView tv_ClubTitle;
+        public final TextView tv_ClubTitle,tv_title;
         public final TextView tv_submittedDate;
         public final TextView tv_submittedTime;
         public final TextView tv_divider,tv_ClubAG;
+        public final LinearLayout layout_not_submitted,layout_submitted;
 
         public ViewHolder(View view) {
             super(view);
@@ -61,12 +63,15 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
             this.mView = view;
 
             this.tv_ClubTitle = (TextView) view.findViewById(R.id.tv_ClubTitle);
+            this.tv_title = (TextView) view.findViewById(R.id.tv_title);
             this.tv_submittedDate = (TextView) view.findViewById(R.id.tv_submittedDate);
             this.tv_submittedTime = (TextView) view.findViewById(R.id.tv_submittedTime);
             this.tv_divider = (TextView) view.findViewById(R.id.tv_divider);
             this.tv_ClubAG = (TextView) view.findViewById(R.id.tv_ClubAG);
             this.iv_download = (ImageView) view.findViewById(R.id.iv_download);
             this.iv_view = (ImageView) view.findViewById(R.id.iv_view);
+            layout_submitted = (LinearLayout) view.findViewById(R.id.layout_submitted);
+            layout_not_submitted = (LinearLayout) view.findViewById(R.id.layout_not_submitted);
 
             /*this.itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -79,6 +84,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
     }
 
     public MonthlyReportAdapter(Context context, List<MonthlyReportData> items, String flag, MonthlyReportActivity activity) {
+
         allItems = items;
         this.context = context;
         filterList = new ArrayList<>();
@@ -104,20 +110,26 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
         final MonthlyReportData item = allItems.get(position);
 
         String title = item.getName();
+
         final String date = item.getDate();
+
         String time = item.getTime();
 
         holder.tv_ClubTitle.setText(title);
         holder.tv_submittedDate.setText(date);
+        holder.tv_title.setText(title);
+
         holder.tv_submittedTime.setText(time);
 
         String ag = item.getClubAG();
 
         if(ag.equalsIgnoreCase("")){
-            holder.tv_ClubAG.setText("AG : N/A");
-        }else {
+            holder.tv_ClubAG.setText("");
+        } else {
             holder.tv_ClubAG.setText("AG : " + item.getClubAG());
         }
+
+//        holder.tv_ClubAG.setText("AG : " + item.getClubAG());
 
         if(date.equalsIgnoreCase("") || time.equalsIgnoreCase("")){
             holder.tv_divider.setVisibility(View.GONE);
@@ -128,6 +140,11 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
         if(flag.equalsIgnoreCase("1")){
             holder.iv_view.setVisibility(View.VISIBLE);
             holder.iv_download.setVisibility(View.VISIBLE);
+            holder.layout_submitted.setVisibility(View.VISIBLE);
+            holder.layout_not_submitted.setVisibility(View.GONE);
+        }else{
+            holder.layout_submitted.setVisibility(View.GONE);
+            holder.layout_not_submitted.setVisibility(View.VISIBLE);
         }
 
         holder.iv_view.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +158,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
 
                 viewDocument(item);
 
-              /*  String link = item.getReportURL();
+                /*String link = item.getReportURL();
 
                 if (link.equalsIgnoreCase("")) {
                     Toast.makeText(context, "Link not found.", Toast.LENGTH_SHORT).show();
@@ -235,6 +252,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
         progress = ProgressDialog.show(context, "Loading", "Loading file", true);
 
         final String link = data.getReportURL();
+
         Uri u = Uri.parse(link);
 
         File f = new File("" + u);
@@ -266,7 +284,8 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                         //.setDestinationUri(Uri.fromFile(downloadFile)));
                         .setDestinationInExternalPublicDir("/Touchbase", fileName));
 
-        Log.e("TouchBase", "♦♦♦♦Enque ID : " + enqueId);
+//        Log.e("TouchBase", "♦♦♦♦Enque ID : " + enqueId);
+
     }
 
     private void downloadDocument(MonthlyReportData data) {
@@ -276,6 +295,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
         title = data.getName();
 
         MarshMallowPermission marshMallowPermission = new MarshMallowPermission((Activity) context);
+
         if (!marshMallowPermission.checkPermissionForExternalStorage()) {
             marshMallowPermission.requestPermissionForExternalStorage();
             return;
@@ -294,13 +314,17 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
         final String link = data.getReportURL();
         Uri u = Uri.parse(link);
         File f = new File("" + u);
+
         String fileName = f.getName();
+
+        Log.e("monthly","satish url "+data.getReportURL()+" filename=> "+fileName);
 
         if (fileExists(fileName)) {
 
             Toast.makeText(context, "File is already downloaded", Toast.LENGTH_LONG).show();
 
-            File sdcard = Environment.getExternalStorageDirectory();
+
+           /* File sdcard = Environment.getExternalStorageDirectory();
             File myfile = new File(sdcard.getPath() + "/Touchbase", fileName);
 
             String pdf = "pdf";
@@ -322,7 +346,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                 imageIntent.putExtra("mode", mode);
                 imageIntent.putExtra("title", title);
                 context.startActivity(imageIntent);
-            }
+            }*/
 
         } else {
             String filePath = f.getPath();
@@ -346,7 +370,7 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                             .setDescription("File Downloading")
                             .setDestinationInExternalPublicDir("/Touchbase", fileName));
 
-            Log.e("TouchBase", "♦♦♦♦Enque ID : " + enqueId);
+//            Log.e("TouchBase", "♦♦♦♦Enque ID : " + enqueId);
         }
     }
 
@@ -374,9 +398,10 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
 
             try {
                 Log.e("Touchbase", "♦♦♦♦Mode : " + mode);
+
                 if (mode.equals(Constant.MODE_DOWNLOAD)) {
                     Toast.makeText(context, "File downloaded successfully", Toast.LENGTH_LONG).show();
-
+                    return;
                 }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
@@ -401,7 +426,13 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                    // String fileName = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME)); //COLUMN_LOCAL_FILENAME is deprecated; use ContentResolver.openFileDescriptor() instead on 7.0
                    // Log.e("Touchbase", "♦♦♦♦satish filename : "+cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME)));
 
-                    String fileName = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)).replace("file://","");
+                    String str = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                    String fileName = "";//str.replace("file://","");
+
+                    if(str!=null && !str.equalsIgnoreCase("")){
+                        fileName = str.replace("file://","");
+                    }
+
                     String mediaType = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
 
                     /*int colCount = cur.getColumnCount();
@@ -425,7 +456,9 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                             i.putExtra("fileName", fileName);
                             i.putExtra("mode", mode);
                             i.putExtra("title", title);
-                            Log.e("TouchBase", "♦♦♦♦File Path : " + fileName + " Mode : " + mode);
+
+                            Log.e("TouchBase", "pdf File Path : " + fileName + " Mode : " + mode);
+
                             context.startActivity(i);
 
                         } else if (mediaType.startsWith("image")) {
@@ -445,12 +478,17 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
                         }
 
                     } else {
-                        Toast.makeText(context, "Failed to download file", Toast.LENGTH_SHORT).show();
+
+                        if (mode.equals(Constant.MODE_DOWNLOAD)) {
+                            Toast.makeText(context, "Failed to download file", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "Failed to open file", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 } else {
                     Log.e("Touchbase", "♦♦♦♦No records found for download");
-                    Toast.makeText(context, "Failed to download", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "Failed to download", Toast.LENGTH_LONG).show();
                 }
                 //DownloadManager.COLUMN_LOCAL_FILENAME
             } else {

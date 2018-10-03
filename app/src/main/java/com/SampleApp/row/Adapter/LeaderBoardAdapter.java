@@ -34,7 +34,6 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
                 @Override
                 public void onClick(View view) {
-
                    /* Intent intent = new Intent(context, MonthlyReportActivity.class);
                     intent.putExtra("month name",allItems.get(getAdapterPosition()));
                     context.startActivity(intent);*/
@@ -57,8 +56,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         LeaderBoardData leaderBoardData = allItems.get(position);
         holder.tv_name.setText(leaderBoardData.getName());
         holder.tv_score.setText(leaderBoardData.getScore());
-        holder.tv_count.setText(""+(position+1));
-
+        holder.tv_count.setText(leaderBoardData.getSrNo());
     }
 
     public int getItemCount() {

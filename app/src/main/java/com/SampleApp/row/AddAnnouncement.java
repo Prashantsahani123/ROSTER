@@ -81,8 +81,7 @@ public class AddAnnouncement extends FragmentActivity {
 //    CheckBox cb_display;
     DatePicker publish_date1;
     TextView tv_publishtime,smscount;
-
-    EditText et_announce_title, et_announce_desc;
+    EditText et_announce_title, et_announce_desc,et_link;
     ArrayList<DirectoryData> listaddmemberdata = new ArrayList<>();
     ArrayList<SubGoupData> listaddsubgrp = new ArrayList<>();
     //String selectedmemberidstr = "";
@@ -101,7 +100,6 @@ public class AddAnnouncement extends FragmentActivity {
     String sendSMSAll = "0"; // 0- Off 1- On
     String sendSMSNonSmartPh = "0"; // 0- Off 1- On
     String moduleName = "", moduleId = "";
-
     // Code for Reminder starts
     String toggle_flag_onoff = "0";
     LinearLayout linear_repeatnotification;
@@ -125,7 +123,7 @@ public class AddAnnouncement extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_announcement);
-        context=this;
+        context = this;
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         // iv_backbutton.setVisibility(View.GONE);
@@ -135,6 +133,7 @@ public class AddAnnouncement extends FragmentActivity {
 //        cb_display=(CheckBox)findViewById(R.id.cb_display);
         et_announce_title = (EditText) findViewById(R.id.et_announce_title);
         et_announce_desc = (EditText) findViewById(R.id.et_announce_desc);
+        et_link = (EditText) findViewById(R.id.et_eventLink);
         tv_add = (TextView) findViewById(R.id.tv_add);
         tv_publish_date = (TextView) findViewById(R.id.publish_date);
         tv_publishtime = (TextView) findViewById(R.id.tv_publishtime);
@@ -165,10 +164,11 @@ public class AddAnnouncement extends FragmentActivity {
         // Code for Reminder starts
 
         clearselectedtext();
+
         init();
 
-
         Bundle intent = getIntent().getExtras();
+
         if (intent != null) {
             announcemet_id = intent.getString("announcemet_id"); // Created Group ID
             if (InternetConnection.checkConnection(getApplicationContext())) {
@@ -204,16 +204,30 @@ public class AddAnnouncement extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "1";
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSAll = "1";
+                            sendSMSNonSmartPh = "0";
+                            cb_noti_nonsmart.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_all.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_all.setChecked(false);
+                    }
+
                 } else {
                     sendSMSAll = "0";
                 }
 
-                if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "0";
-                    cb_noti_nonsmart.setChecked(false);
-                    cb_noti_all.setChecked(true);
-                }
+//                if (cb_noti_nonsmart.isChecked()) {
+//                    sendSMSNonSmartPh = "0";
+//                    cb_noti_nonsmart.setChecked(false);
+//                    cb_noti_all.setChecked(true);
+//                }
             }
         });
         cb_noti_nonsmart.setOnClickListener(new View.OnClickListener() {
@@ -221,15 +235,28 @@ public class AddAnnouncement extends FragmentActivity {
             public void onClick(View v) {
 
                 if (cb_noti_nonsmart.isChecked()) {
-                    sendSMSNonSmartPh = "1";
+                    String smsCount=smscount.getText().toString();
+                    if(smsCount!=null && !smsCount.trim().isEmpty()){
+                        if(Integer.parseInt(smsCount)!=0 ){
+                            sendSMSNonSmartPh = "1";
+                            sendSMSAll = "0";
+                            cb_noti_all.setChecked(false);
+                        }else {
+                            popup_sms();
+                            cb_noti_nonsmart.setChecked(false);
+                        }
+                    }else {
+                        popup_sms();
+                        cb_noti_nonsmart.setChecked(false);
+                    }
                 } else {
                     sendSMSNonSmartPh = "0";
                 }
-                if (cb_noti_all.isChecked()) {
-                    sendSMSAll = "0";
-                    cb_noti_all.setChecked(false);
-                    cb_noti_nonsmart.setChecked(true);
-                }
+//                if (cb_noti_all.isChecked()) {
+//                    sendSMSAll = "0";
+//                    cb_noti_all.setChecked(false);
+//                    cb_noti_nonsmart.setChecked(true);
+//                }
             }
         });
         tv_no.setOnClickListener(new View.OnClickListener() {
@@ -598,8 +625,21 @@ public class AddAnnouncement extends FragmentActivity {
         arrayList.add(new BasicNameValuePair("grpID", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
         arrayList.add(new BasicNameValuePair("inputIDs", inputids));
         arrayList.add(new BasicNameValuePair("announImg", uploadedimgid));
-        arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
-        arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
+
+        if(cb_noti_nonsmart.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", "0"));
+        }
+
+        if(cb_noti_all.isChecked()){
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "1"));
+        }else {
+            arrayList.add(new BasicNameValuePair("sendSMSAll", "0"));
+        }
+
+//        arrayList.add(new BasicNameValuePair("sendSMSNonSmartPh", sendSMSNonSmartPh));
+//        arrayList.add(new BasicNameValuePair("sendSMSAll", sendSMSAll));
 //        arrayList.add(new BasicNameValuePair("publishDate", tv_publish_date.getText().toString() + " " + tv_publishtime.getText().toString()));
         arrayList.add(new BasicNameValuePair("publishDate", publishDate));
 
@@ -614,7 +654,7 @@ public class AddAnnouncement extends FragmentActivity {
 //            arrayList.add(new BasicNameValuePair("displayonbanner","0"));
 //
 //        }
-      //  arrayList.add(new BasicNameValuePair("link",et_link.getText().toString()));
+        arrayList.add(new BasicNameValuePair("reglink",et_link.getText().toString()));
         flag_callwebsercie = "0";
         Log.d("Response", "PARAMETERS " + Constant.AddAnnouncement + " :- " + arrayList.toString());
         new WebConnectionAsyncLogin(Constant.AddAnnouncement, arrayList, AddAnnouncement.this).execute();
@@ -787,10 +827,13 @@ public class AddAnnouncement extends FragmentActivity {
                         cb_noti_all.setChecked(true);
                     }
 
-//                    String link=objects.getString("link");
-//                    if(link!=null && !link.isEmpty()){
-//                        et_link.setText(link);
-//                    }
+                    String link=objects.getString("reglink");
+                    if(link!=null && !link.isEmpty()){
+                        et_link.setText(link);
+                    }else {
+                        et_link.setText("");
+
+                    }
 
 //                    if(objects.getString("displayonbanner").equals("1")){
 //                        cb_display.setChecked(true);
@@ -1122,7 +1165,7 @@ public class AddAnnouncement extends FragmentActivity {
             if(resultCode==RESULT_OK){
                 uploadPic(data);
             }else {
-                Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, Crop.getError(data).getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -1634,6 +1677,23 @@ public class AddAnnouncement extends FragmentActivity {
             Toast.makeText(AddAnnouncement.this, "Dates are not in proper format", Toast.LENGTH_LONG).show();
         }
         return true;
+    }
+
+    private void popup_sms(){
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context,android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setMessage(getString(R.string.sms_warning))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+
+                .show();
     }
 
 }

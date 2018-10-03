@@ -14,6 +14,7 @@ import android.widget.ImageView;
  */
 
 public class ActionBarFragmentDocument extends Fragment {
+
     ImageView iv_backbutton;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

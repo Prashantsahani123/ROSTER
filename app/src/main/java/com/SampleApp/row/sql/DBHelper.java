@@ -17,20 +17,26 @@ import java.util.Iterator;
  * Created by USER on 01-07-2016.
  */
 public class DBHelper extends SQLiteOpenHelper {
+
     static final String DB_NAME = "NewTouchbaseDB";
+
     public DBHelper(Context context) {
         super(context, DB_NAME, null, 5);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.beginTransaction();
+
         try {
             /*
             * Creating all the tables one by one
             * */
             Utils.log("Inside onCreate function");
+
             Iterator<String> iterator = Tables.createTableList.iterator();
+
             while(iterator.hasNext()) {
                 String createTable = iterator.next();
                 db.execSQL(createTable);

@@ -23,29 +23,6 @@
                 android:padding="15dp"
                 android:src="@drawable/back_btn_blue" />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:padding="15dp"
-                android:text="text"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:textColor="@color/white"
-                android:text="mini text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/tv_title"
-                android:visibility="gone"
-                android:layout_marginBottom="4dp"
-                android:id="@+id/tv_minititle"/>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +50,37 @@
                     android:padding="15dp"
                     android:src="@drawable/overflow_btn_blue"
                     android:visibility="gone" />
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_backbutton"
+                android:layout_toLeftOf="@id/buttonWrapper"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="15dp"
+                android:text=""
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:textColor="@color/white"
+                android:text="mini text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_title"
+                android:visibility="gone"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/tv_minititle"/>
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </LinearLayout>

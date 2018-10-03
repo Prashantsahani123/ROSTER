@@ -46,7 +46,7 @@ import java.util.List;
 public class EventDetails extends Activity {
     String moduleName = "";
     TextView tv_title;
-    TextView tv_yes, tv_maybe;
+    TextView tv_yes, tv_maybe,txt_reglink;
     TextView tv_no;
     TextView event_title;
     TextView event_desc;
@@ -62,7 +62,7 @@ public class EventDetails extends Activity {
 
     TextView tv_question_attending,tv_members_with_you;
 
-    LinearLayout tv_green, tv_red, tv_gray,ll_main,ll_eventDateTime,ll_eventTime,ll_eventLoc;
+    LinearLayout tv_green, tv_red, tv_gray,ll_main,ll_eventDateTime,ll_eventTime,ll_eventLoc,ll_link;
 
     String flag_callwebsercie = "0";
     String getIsQuesEnable = "";
@@ -132,6 +132,7 @@ public class EventDetails extends Activity {
         tv_maybe = (TextView) findViewById(R.id.tv_maybe);
         event_date = (TextView) findViewById(R.id.event_date);
         event_time = (TextView) findViewById(R.id.event_time);
+        txt_reglink = (TextView) findViewById(R.id.txt_reglink);
 
         tv_question_attending = (TextView) findViewById(R.id.tv_question_attending);
         tv_green = (LinearLayout) findViewById(R.id.tv_green);
@@ -143,6 +144,8 @@ public class EventDetails extends Activity {
         ll_eventDateTime = (LinearLayout) findViewById(R.id.ll_evntDateTime);
         ll_eventTime = (LinearLayout) findViewById(R.id.ll_evntTime);
         ll_eventLoc = (LinearLayout) findViewById(R.id.ll_eventLoc);
+        ll_link = (LinearLayout) findViewById(R.id.ll_link);
+
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
 
         grpID = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID);
@@ -337,6 +340,20 @@ public class EventDetails extends Activity {
                 }
             }
         });
+
+        ll_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String link=txt_reglink.getText().toString();
+
+                if(link!=null && !link.trim().isEmpty()){
+                    Intent intent=new Intent(EventDetails.this,OpenLinkActivity.class);
+                    intent.putExtra("link",link);
+                    startActivity(intent);
+                }
+            }
+        });
+
         tv_yes.setOnClickListener(new View.OnClickListener() {
 
 
@@ -651,6 +668,15 @@ public class EventDetails extends Activity {
                     getIsQuesEnable = objects.getString("isQuesEnable").toString();
                     grpId = objects.getString("grpID").toString();
                     eventId = objects.getString("eventID").toString();
+                    String link=objects.getString("reglink");
+                    if(link!=null && !link.isEmpty()){
+                        ll_link.setVisibility(View.VISIBLE);
+                        txt_reglink.setText(link);
+                    }else {
+                        txt_reglink.setText("");
+                        ll_link.setVisibility(View.GONE);
+                    }
+
                     String rsvpEnabled = objects.getString("rsvpEnable").toString();
                     Log.e("rsvpEnabled", "Value of rsvpEnabled : "+rsvpEnabled);
                     if ( rsvpEnabled.equals("1")) {

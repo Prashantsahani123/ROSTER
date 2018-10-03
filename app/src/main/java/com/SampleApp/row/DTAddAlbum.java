@@ -40,6 +40,7 @@ import com.SampleApp.row.Data.UploadPhotoData;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.ImageCompression;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
@@ -1234,16 +1235,19 @@ public class DTAddAlbum extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 final String picturePath = c.getString(columnIndex);
                 c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
+                ImageCompression imageCompression = new ImageCompression();
+                final String finalImagePath = imageCompression.compressImage(picturePath, getApplicationContext());
+
+                final Bitmap thumbnail = (BitmapFactory.decodeFile(finalImagePath));
+                Log.d("TOUCHBASE", "FILE PATH " + finalImagePath.toString());
                 imageList.remove(0);
-                imageList.add(0,picturePath.toString());
+                imageList.add(0,finalImagePath.toString());
                 imgFlag = 1;
                 ///-------------------------------------------------------------------
                 pd = ProgressDialog.show(DTAddAlbum.this, "", "Loading...", false);
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        uploadedimgid = Utils.doFileUpload(new File(picturePath), "gallery"); // Upload File to server
+                        uploadedimgid = Utils.doFileUpload(new File(finalImagePath), "gallery"); // Upload File to server
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (pd.isShowing())
@@ -1276,34 +1280,40 @@ public class DTAddAlbum extends Activity {
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
+
+
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 final String picturePath = c.getString(columnIndex);
                 c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
+
+                ImageCompression imageCompression = new ImageCompression();
+                final String finalImagePath = imageCompression.compressImage(picturePath, getApplicationContext());
+
+                final Bitmap thumbnail = (BitmapFactory.decodeFile(finalImagePath));
+                Log.d("TOUCHBASE", "FILE PATH " + finalImagePath.toString());
                 //imageList.add(picturePath.toString());
 
                 if (flag == 2) {
                     imageList.remove(1);
-                    imageList.add(1, picturePath.toString());
+                    imageList.add(1, finalImagePath.toString());
                     iv_album_photo.setImageBitmap(thumbnail);
                     iv_album_photo.setBackground(null);
                     close2.setVisibility(View.VISIBLE);
                 } else if (flag == 3) {
                     imageList.remove(2);
-                    imageList.add(2, picturePath.toString());
+                    imageList.add(2, finalImagePath.toString());
                     iv_album_photo2.setImageBitmap(thumbnail);
                     iv_album_photo2.setBackground(null);
                     close3.setVisibility(View.VISIBLE);
                 } else if (flag == 4) {
                     imageList.remove(3);
-                    imageList.add(3, picturePath.toString());
+                    imageList.add(3, finalImagePath.toString());
                     iv_album_photo3.setImageBitmap(thumbnail);
                     iv_album_photo3.setBackground(null);
                     close4.setVisibility(View.VISIBLE);
                 } else if (flag == 5) {
                     imageList.remove(4);
-                    imageList.add(4, picturePath.toString());
+                    imageList.add(4, finalImagePath.toString());
                     iv_album_photo4.setImageBitmap(thumbnail);
                     iv_album_photo4.setBackground(null);
                     close5.setVisibility(View.VISIBLE);

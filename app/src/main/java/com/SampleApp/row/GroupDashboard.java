@@ -29,10 +29,15 @@ import com.SampleApp.row.sql.ModuleDataModel;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.SampleApp.row.Utils.PreferenceManager.IS_AG;
+import static com.SampleApp.row.Utils.PreferenceManager.IS_GRP_ADMIN;
+import static com.SampleApp.row.Utils.PreferenceManager.savePreference;
 
 /**
  * Created by user on 31-12-2015.
@@ -64,9 +69,12 @@ public class GroupDashboard extends Activity {
         Log.d("moduleExists", "Module with id 11 exists : "+present);
 
         Intent intent = getIntent();
+
         position= intent.getIntExtra("position",0);
         group_Id = intent.getStringExtra("groupId");
+
         myCategory = Integer.parseInt(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MY_CATEGORY));
+
         gv = (GridView) findViewById(R.id.gridView1);
         tv_title = (TextView) findViewById(R.id.tv_title);
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
@@ -74,14 +82,12 @@ public class GroupDashboard extends Activity {
         iv_actionbtn.setVisibility(View.VISIBLE);
         iv_actionbtn.setImageResource(R.drawable.overflow_btn_blue);
 
-        if ( myCategory > Constant.GROUP_CATEGORY_CLUB) {
-            iv_actionbtn.setVisibility(View.GONE);
-        }
-
         //  iv_backbutton.setVisibility(View.GONE);
+
         tv_title.setText(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_NAME));
 
         moduleDataModel = new ModuleDataModel(this);
+
         moduleDataModel.printTable();
 
         Log.d("TouchBase", "*************** GRP ID PREF " + PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
@@ -89,25 +95,68 @@ public class GroupDashboard extends Activity {
        // webservices();
 
         masteruid = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MASTER_USER_ID));
+
         groupId = Long.parseLong(PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID));
 
-        Log.e("ModuleList", listmodules.toString());
+        String isAdmin = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_GRP_ADMIN);
 
         listmodules = moduleDataModel.getModuleData(masteruid, groupId);
 
-        groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
-        gv.setAdapter(groupDashboadAdapter_new);
+        if ( myCategory > Constant.GROUP_CATEGORY_CLUB) {
+            iv_actionbtn.setVisibility(View.GONE);
+        }
 
-        /*gv.setAdapter(new GroupDashboadAdapter_new(this, listmodules,group_Id));*/
+        if (isAdmin.equalsIgnoreCase("Yes")) {
 
- 		groupDashboadAdapter_new.notifyDataSetChanged();
+//            Log.e("ModuleList", listmodules.toString());
+
+                groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+
+                gv.setAdapter(groupDashboadAdapter_new);
+
+                groupDashboadAdapter_new.notifyDataSetChanged();
+
+            } else {
+
+                webServicesCheckAG();
+
+
+            /*  String AG = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_AG,"");
+
+             if(AG!=null && AG.equalsIgnoreCase("No")) {
+
+                    for (ModuleData moduleData : listmodules) {
+
+                        String moduleId = moduleData.getModuleId();
+
+                        if (moduleId.equalsIgnoreCase(Constant.Module.CLUB_MONTHLY_REPORT_New)) {
+                            listmodules.remove(listmodules.indexOf(moduleData));
+                            break;
+                        }
+
+                    }
+
+                groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+                gv.setAdapter(groupDashboadAdapter_new);
+
+            } else  if(AG!=null && AG.equalsIgnoreCase("Yes")){
+                groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+                gv.setAdapter(groupDashboadAdapter_new);
+            }else {
+                webServicesCheckAG();
+              }*/
+
+            }
+
 
         init();
 
         final SharedPreferences prefs = getGCMPreferences(GroupDashboard.this);
+
         String registrationId = prefs.getString(GCMClientManager.PROPERTY_REG_ID, "");
 
         Utils.log("GCM ID : "+registrationId);
+
         //loadRSS();
     }
     private SharedPreferences getGCMPreferences(Context context) {
@@ -124,7 +173,6 @@ public class GroupDashboard extends Activity {
         finish();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -137,6 +185,7 @@ public class GroupDashboard extends Activity {
 
             @Override
             public void onClick(View v) {
+
             PopupMenu popup = new PopupMenu(GroupDashboard.this, iv_actionbtn);
             //Inflating the Popup using xml file
             //popup.getMenuInflater().inflate(R.menu.dashboard_menu, popup.getMenu());
@@ -182,7 +231,7 @@ public class GroupDashboard extends Activity {
                         startActivity(intent);
                         return true;
 
-                    case R.id.deleteentity:
+          //          case R.id.deleteentity:
                         /*Intent ii = new Intent(getApplicationContext(), GroupSettings.class);
                         startActivity(ii);*/
 
@@ -217,7 +266,7 @@ public class GroupDashboard extends Activity {
 //
 //                        // read the listItemPosition here
 //                        return true;
-                    case R.id.selfremove:
+                 //   case R.id.selfremove:
                             /*Intent ia = new Intent(getApplicationContext(),GroupSettings.class);
                             startActivity(ia);*/
 
@@ -271,6 +320,142 @@ public class GroupDashboard extends Activity {
 
 
      }
+
+
+    private void webServicesCheckAG() {
+
+        List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+
+       // arrayList.add(new BasicNameValuePair("groupId", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID)));
+
+        arrayList.add(new BasicNameValuePair("mobileNo", PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.MOBILE_NUMBER)));
+
+        Log.d("Response", "PARAMETERS " + Constant.GetAssistanceGov + " :- " + arrayList.toString());
+
+        if ( InternetConnection.checkConnection(getApplicationContext())) {
+
+            new WebConnectionAsyncCheckAG(Constant.GetAssistanceGov, arrayList, GroupDashboard.this).execute();
+
+        } else {
+           // Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+
+            String isAG = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.IS_AG,"");
+
+            if(isAG!=null && (isAG.equalsIgnoreCase("No") || isAG.equalsIgnoreCase(""))){
+
+                for(ModuleData moduleData:listmodules){
+
+                    String moduleId =  moduleData.getModuleId();
+
+                    if(moduleId.equalsIgnoreCase(Constant.Module.CLUB_MONTHLY_REPORT_New)) {
+                        listmodules.remove(listmodules.indexOf(moduleData));
+                        break;
+                    }
+
+                }
+            }
+
+            groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+            gv.setAdapter(groupDashboadAdapter_new);
+
+        }
+
+    }
+
+    private class WebConnectionAsyncCheckAG extends AsyncTask<String, Object, Object> {
+        String val = null;
+        ProgressDialog dialog;
+        Context context = null;
+        String url = null;
+        List<NameValuePair> argList = null;
+        final ProgressDialog progressDialog = new ProgressDialog(GroupDashboard.this, R.style.TBProgressBar);
+
+        public WebConnectionAsyncCheckAG(String url, List<NameValuePair> argList, Context ctx) {
+            this.url = url;
+            this.argList = argList;
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            //	dialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Object doInBackground(String... params) {
+            try {
+                val = HttpConnection.postData(url, argList);
+                val = val.toString();
+                Log.d("Response", "we" + val);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return val;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+
+            if (result != "") {
+
+                try {
+
+                    JSONObject mainObject = new JSONObject(result.toString());
+
+                    JSONObject jsonObject = mainObject.getJSONObject("TBClubHistoryResult");
+
+                    String status = jsonObject.getString("status");
+
+                    if(status.equalsIgnoreCase("1")){
+
+                        for(ModuleData moduleData:listmodules){
+
+                            String moduleId =  moduleData.getModuleId();
+
+                            if(moduleId.equalsIgnoreCase(Constant.Module.CLUB_MONTHLY_REPORT_New))
+                            {
+                               listmodules.remove(listmodules.indexOf(moduleData));
+                               savePreference(context, IS_AG, "No");
+                               break;
+                           }
+
+                        }
+
+                        groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+
+                        gv.setAdapter(groupDashboadAdapter_new);
+
+                    } else {
+
+//                        Log.e("ModuleList", listmodules.toString());
+
+                        savePreference(context, IS_AG, "Yes");
+
+                        groupDashboadAdapter_new = new GroupDashboadAdapter_new(GroupDashboard.this, listmodules, group_Id);
+
+                        gv.setAdapter(groupDashboadAdapter_new);
+
+//                        groupDashboadAdapter_new.notifyDataSetChanged();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Response", "Null Resposnse");
+            }
+        }
+    }
+
+
 
     private void webservices() {
         List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
@@ -382,11 +567,15 @@ public class GroupDashboard extends Activity {
     private void getresult(String val) {
         try {
             JSONObject jsonObj = new JSONObject(val);
+
             JSONObject ActivityResult = jsonObj.getJSONObject("TBGetGroupModuleResult");
+
             final String status = ActivityResult.getString("status");
+
             if (status.equals("0")) {
 
                 JSONArray grpsarray = ActivityResult.getJSONArray("GroupListResult");
+
                 for (int i = 0; i < grpsarray.length(); i++) {
                     JSONObject object = grpsarray.getJSONObject(i);
                     JSONObject objects = object.getJSONObject("GroupList");
@@ -405,12 +594,16 @@ public class GroupDashboard extends Activity {
                     } else {
                         md.setImage("");
                     }
+
                     listmodules.add(md);
                 }
                 groupDashboadAdapter_new = new GroupDashboadAdapter_new(this,listmodules,group_Id);
                 gv.setAdapter(groupDashboadAdapter_new);
+
 				groupDashboadAdapter_new.notifyDataSetChanged();
+
             } else if ( status.equals("2")) {
+
                 Utils.simpleMessage(GroupDashboard.this, ActivityResult.getString("message"), "Ok", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -418,6 +611,7 @@ public class GroupDashboard extends Activity {
                     }
                 });
             }
+
         } catch (Exception e) {
             Log.d("exec", "Exception :- " + e.toString());
         }
@@ -580,8 +774,8 @@ public class GroupDashboard extends Activity {
 
     }
     private void refreshDashbord(String groupID) {
-        groupDashboadAdapter_new.notifyDataSetChanged();
 
+        groupDashboadAdapter_new.notifyDataSetChanged();
 
         /*for(int i =0;i<notificationCountDatas.size();i++)
         {
@@ -596,8 +790,6 @@ public class GroupDashboard extends Activity {
             }
         }*/
     }
-
-
 
     //http://www.rotary.org/rss.xml
 }

@@ -58,12 +58,14 @@ public class GalleryDescription extends AppCompatActivity implements AdapterView
     View descriptionWrapper;
 
     String fabOpen = "close";
-    AppBarLayout layout;
+/*    AppBarLayout layout;
+    CollapsingToolbarLayout toolbarLayout;*/
+
     TextView tv_title, tv_minititle, tv_description, tv_dop, tv_cop, tv_beneficiary, tv_manPower, tv_noOfRotarians;
     FloatingActionMenu materialDesignFAM;
     com.github.clans.fab.FloatingActionButton addPhoto, deletePhoto, editAlbum;
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
-    CollapsingToolbarLayout toolbarLayout;
+
     ArrayList<String> selectedImageList;
 
     public static final int SELECT_PICTURE = 2;
@@ -205,8 +207,10 @@ public class GalleryDescription extends AppCompatActivity implements AdapterView
 
 
         tv_description.setText(description);
-        layout = (AppBarLayout) findViewById(R.id.app_bar);
-        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        /*layout = (AppBarLayout) findViewById(R.id.app_bar);
+        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);*/
+
         ivUpDown = (FloatingActionButton) findViewById(R.id.fab1);
 
         albumModel = new GalleryMasterModel(this);

@@ -2,7 +2,7 @@ package com.SampleApp.row.Data;
 
 public class LeaderBoardData {
 
-    String id="",name="",score="";
+    String SrNo="",id="",name="",score="";
 
     public String getId() {
         return id;
@@ -26,5 +26,13 @@ public class LeaderBoardData {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getSrNo() {
+        return SrNo;
+    }
+
+    public void setSrNo(String srNo) {
+        SrNo = srNo;
     }
 }

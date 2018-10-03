@@ -41,6 +41,7 @@ import com.SampleApp.row.Data.UploadPhotoData;
 import com.SampleApp.row.Utils.AppController;
 import com.SampleApp.row.Utils.Constant;
 import com.SampleApp.row.Utils.HttpConnection;
+import com.SampleApp.row.Utils.ImageCompression;
 import com.SampleApp.row.Utils.InternetConnection;
 import com.SampleApp.row.Utils.MarshMallowPermission;
 import com.SampleApp.row.Utils.PreferenceManager;
@@ -104,7 +105,6 @@ public class DTEditAlbumActivity extends Activity {
     //private RadioButton rbInClub, rbPublic;
     SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
     LinearLayout ll_rotaryServicecontent,ll_category;
     int imgFlag = 0, deletePhotoflag = 0;
     EditText et_coverPhoto, et_album_photo3, et_album_photo2, et_album_photo1, et_album_photo4;
@@ -123,27 +123,24 @@ public class DTEditAlbumActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.dt_edit_album);
 
         addPhotoModel = new UploadedPhotoModel(this);
+
         groupId = PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID);
         createdBy = PreferenceManager.getPreference(this, PreferenceManager.GRP_PROFILE_ID);
-
 
         iv_backbutton = (ImageView) findViewById(R.id.iv_backbutton);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("Edit Album");
         edt_title = (EditText) findViewById(R.id.et_galleryTitle);
-
         edt_description = (EditText) findViewById(R.id.et_evetDesc);
-
-
         iv_image = (ImageView) findViewById(R.id.iv_event_photo);
         tv_add = (TextView) findViewById(R.id.tv_done);
         iv_edit = (ImageView) findViewById(R.id.iv_edit);
         tv_getCount = (TextView) findViewById(R.id.getCount);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
-
 
         iv_album_photo = (ImageView) findViewById(R.id.iv_album_photo);
         iv_album_photo2 = (ImageView) findViewById(R.id.iv_album_photo2);
@@ -161,7 +158,6 @@ public class DTEditAlbumActivity extends Activity {
         close3 = (ImageView) findViewById(R.id.close3);
         close4 = (ImageView) findViewById(R.id.close4);
         close5 = (ImageView) findViewById(R.id.close5);
-
 
         d_radio0 = (RadioButton) findViewById(R.id.d_radio0);
         d_radio1 = (RadioButton) findViewById(R.id.d_radio1);
@@ -196,7 +192,9 @@ public class DTEditAlbumActivity extends Activity {
         ll_category= (LinearLayout) findViewById(R.id.ll_category);
         ll_photos = (LinearLayout)findViewById(R.id.ll_photos);
         sp_category = (Spinner) findViewById(R.id.sp_category);
+
         sp_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 AlbumData data = categoryList.get(position);
@@ -222,12 +220,14 @@ public class DTEditAlbumActivity extends Activity {
         }
 
         rbInClub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ll_rotaryServicecontent.setVisibility(View.VISIBLE);
                 ll_category.setVisibility(View.VISIBLE);
                 tv_clubServiceInfo.setVisibility(View.GONE);
             }
+
         });
 
         rbPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1456,14 +1456,17 @@ public class DTEditAlbumActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 final String picturePath = c.getString(columnIndex);
                 c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
-                imageList.add(0, picturePath.toString());
+                ImageCompression imageCompression = new ImageCompression();
+                final String finalImagePath = imageCompression.compressImage(picturePath, getApplicationContext());
+
+                final Bitmap thumbnail = (BitmapFactory.decodeFile(finalImagePath));
+                Log.d("TOUCHBASE", "FILE PATH " + finalImagePath.toString());
+                imageList.add(0, finalImagePath.toString());
                 ///-------------------------------------------------------------------
                 pd = ProgressDialog.show(DTEditAlbumActivity.this, "", "Loading...", false);
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        uploadedimgid = Utils.doFileUpload(new File(picturePath), "gallery"); // Upload File to server
+                        uploadedimgid = Utils.doFileUpload(new File(finalImagePath), "gallery"); // Upload File to server
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (pd.isShowing())
@@ -1498,24 +1501,29 @@ public class DTEditAlbumActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 final String picturePath = c.getString(columnIndex);
                 c.close();
-                final Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.d("TOUCHBASE", "FILE PATH " + picturePath.toString());
+                ImageCompression imageCompression = new ImageCompression();
+                final String finalImagePath = imageCompression.compressImage(picturePath, getApplicationContext());
+
+                final Bitmap thumbnail = (BitmapFactory.decodeFile(finalImagePath));
+                Log.d("TOUCHBASE", "FILE PATH " + finalImagePath.toString());
                 //imageList.add(picturePath.toString());
+
                 Utils.log("Images " + imageList.toString());
+
                 if (flag == 2) {
-                    imageList.add(flag - 1, picturePath.toString());
+                    imageList.add(flag - 1, finalImagePath.toString());
                     iv_album_photo.setImageBitmap(thumbnail);
                     iv_album_photo.setBackground(null);
                 } else if (flag == 3) {
-                    imageList.add(flag - 1, picturePath.toString());
+                    imageList.add(flag - 1, finalImagePath.toString());
                     iv_album_photo2.setImageBitmap(thumbnail);
                     iv_album_photo2.setBackground(null);
                 } else if (flag == 4) {
-                    imageList.add(flag - 1, picturePath.toString());
+                    imageList.add(flag - 1, finalImagePath.toString());
                     iv_album_photo3.setImageBitmap(thumbnail);
                     iv_album_photo3.setBackground(null);
                 } else if (flag == 5) {
-                    imageList.add(flag - 1, picturePath.toString());
+                    imageList.add(flag - 1, finalImagePath.toString());
                     iv_album_photo4.setImageBitmap(thumbnail);
                     iv_album_photo4.setBackground(null);
                 }

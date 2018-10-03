@@ -20,6 +20,7 @@ public class PreferenceManager {
     public static final String GROUP_ID = "grpid";
     public static final String GRP_PROFILE_ID = "grpprofileid";
     public static final String IS_GRP_ADMIN = "isgrpadmin";
+    public static final String IS_AG = "isAG"; // add by satish
     public static final String GROUP_NAME = "grpname";
     public static final String UDID = "udid";
     public static final String MODULE_ID = "moduleId";
@@ -69,6 +70,7 @@ public class PreferenceManager {
     }
 
     public static boolean savePreference(Context context, String key, String value) {
+
         try {
             SharedPreferences sharedPref = context.getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();

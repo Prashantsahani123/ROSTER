@@ -11,17 +11,18 @@
         android:layout_height="wrap_content" />
 
     <View
-        android:layout_below="@id/fragment"
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
-        android:background="@color/view_color"/>
+        android:layout_below="@id/fragment"
+        android:background="@color/view_color" />
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_close"
-        android:layout_below="@+id/fragment"></WebView>
+        android:layout_below="@+id/view"></WebView>
 
 
     <RelativeLayout

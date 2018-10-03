@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionBarFragmentDocument"
+        class="com.SampleApp.row.ActionBarFragmentPDFView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

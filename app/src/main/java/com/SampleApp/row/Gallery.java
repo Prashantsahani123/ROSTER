@@ -100,6 +100,7 @@ public class Gallery extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.layout_gallery);
 
         if(PreferenceManager.getPreference(this, PreferenceManager.GROUP_ID)!=null) {
@@ -107,12 +108,15 @@ public class Gallery extends Activity {
         }
 
         moduleId = PreferenceManager.getPreference(this,PreferenceManager.MODULE_ID);
+
         gv = (GridView)findViewById(R.id.gridview);
 
         Intent intent = getIntent();
+
         this.moduleName = PreferenceManager.getPreference(this, PreferenceManager.MODUEL_NAME, "Gallery");
 
         String modulename = intent.getExtras().getString("moduleName", "Gallery");
+
         district_id = intent.getExtras().getString("districtId","0");
         club_id = intent.getExtras().getString("clubId","0");
         year = intent.getExtras().getString("year","");
@@ -130,8 +134,6 @@ public class Gallery extends Activity {
         iv_actionbtn.setVisibility(View.GONE);
         iv_actionbtn2.setVisibility(View.GONE);
 
-
-
         ll_details = (LinearLayout)findViewById(R.id.ll_details);
         tv_cop = (TextView)findViewById(R.id.tv_cop);
         tv_beneficiary = (TextView)findViewById(R.id.tv_beneficiary);
@@ -140,12 +142,11 @@ public class Gallery extends Activity {
 
         sp_year = (Spinner) findViewById(R.id.sp_year);
 
-
-
         ll_search = (RelativeLayout) findViewById(R.id.ll_search);
         edt_search = (EditText)findViewById(R.id.edt_search);
         btn_close = (Button)findViewById(R.id.btn_close);
         fab = (FloatingActionButton)findViewById(R.id.fab);
+
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         addAlbum = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         deleteAlbum = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
@@ -158,18 +159,22 @@ public class Gallery extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
-
         if(fromShowcase.equalsIgnoreCase("0")){
+
             tv_title.setText("Showcase");
             ll_details.setVisibility(View.GONE);
             sp_year.setVisibility(View.GONE);
+
             getAlbumList();
-        }else {
+
+        } else {
+
             tv_title.setText(modulename);
             ll_details.setVisibility(View.GONE);
             sp_year.setVisibility(View.VISIBLE);
+
             sp_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String selectedYear = sp_year.getSelectedItem().toString();
@@ -189,8 +194,10 @@ public class Gallery extends Activity {
         }
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if (mode != 1) {
                     Intent i = new Intent(Gallery.this, GalleryDescription.class);
                     i.putExtra("albumname", albumlist.get(position).getTitle());
@@ -199,7 +206,6 @@ public class Gallery extends Activity {
                     i.putExtra("albumImage", albumlist.get(position).getImage());
                     i.putExtra("fromShowcase",fromShowcase);
                     startActivityForResult(i, UPDATE_ALBUM_REQEUST);
-                } else {
                 }
             }
 
@@ -207,16 +213,18 @@ public class Gallery extends Activity {
 
         init();
         checkadminrights();
+
         //loadFromDB();
         if(InternetConnection.checkConnection(this)) {
             //getAlbumList();
-        }else{
+        } else {
             Toast.makeText(Gallery.this,"No Internet Connection.",Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void getAlbumList() {
+
         try {
             progressDialog=new ProgressDialog(Gallery.this,R.style.TBProgressBar);
             progressDialog.setCancelable(false);
@@ -261,6 +269,7 @@ public class Gallery extends Activity {
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
             AppController.getInstance().addToRequestQueue(Gallery.this, request);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -490,6 +499,7 @@ public class Gallery extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
 //                albumlist = albumModel.getAlbumByName(albumname,String.valueOf(grpId),moduleId);
 //                if(albumlist!= null && albumlist.size() > 0) {
 //                    if(isInGridviewMode) {
@@ -522,8 +532,10 @@ public class Gallery extends Activity {
         });
 
         btn_close.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 ll_search.setVisibility(View.GONE);
                 isSearchVisible = false;
                 edt_search.setText("");

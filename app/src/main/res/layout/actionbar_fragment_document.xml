@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:padding="15dp"
-                android:text="text"
+                android:text="Club Collabofrrator (RID 31232)"
                 android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="22sp"
@@ -76,6 +76,8 @@
                     android:src="@drawable/overflow_btn"
                     android:visibility="gone" />
             </LinearLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

@@ -39,10 +39,10 @@ public class Announcement_details extends Activity {
     TextView tv_title;
     ImageView iv_backbutton, iv_announcementimg, iv_actionbtn, iv_actionbtn2;
     EditText et_serach_announcement;
-    TextView announce_title, tv_announDAte, tv_announTime, announce_desc;
+    TextView announce_title, tv_announDAte, tv_announTime, announce_desc,txt_link;
     String announcment_id;
     private ProgressBar progressbar;
-    LinearLayout linear_image;
+    LinearLayout linear_image,ll_link;
     private String grpID = "0";
     private String memberProfileID = "0";
     private String flag_webservice = "1";
@@ -73,6 +73,8 @@ public class Announcement_details extends Activity {
         tv_title.setText(moduleName);
 
         announce_title = (TextView) findViewById(R.id.announce_title);
+        txt_link = (TextView) findViewById(R.id.txt_reglink);
+        ll_link=findViewById(R.id.ll_link);
         tv_announDAte = (TextView) findViewById(R.id.tv_announDAte);
         tv_announTime = (TextView) findViewById(R.id.tv_announTime);
         announce_desc = (TextView) findViewById(R.id.announce_desc);
@@ -195,6 +197,19 @@ public class Announcement_details extends Activity {
             }
         });
 
+        ll_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String link=txt_link.getText().toString();
+
+                if(link!=null && !link.trim().isEmpty()){
+                    Intent intent=new Intent(Announcement_details.this,OpenLinkActivity.class);
+                    intent.putExtra("link",link);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     public void finishActivity(View v) {
@@ -306,6 +321,16 @@ public class Announcement_details extends Activity {
                     announce_title.setText(objects.getString("announTitle").toString());
                     announce_desc.setText(objects.getString("announceDEsc").toString());
                     tv_announDAte.setText(objects.getString("publishDateTime").toString());
+
+                    String link=objects.getString("reglink");
+                    if(link!=null && !link.isEmpty()){
+                        ll_link.setVisibility(View.VISIBLE);
+                        txt_link.setText(link);
+                    }else {
+                        txt_link.setText("");
+                        ll_link.setVisibility(View.GONE);
+                    }
+
 
                     if(objects.getString("filterType").toString().equals("3")){
                         iv_actionbtn.setVisibility(View.GONE);

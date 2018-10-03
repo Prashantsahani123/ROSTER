@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by admin on 02-05-2017.
@@ -247,7 +248,7 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
         } else {
             if (InternetConnection.checkConnection(getApplicationContext())) {
 
-                final ProgressDialog dialog=new ProgressDialog(FindAClubActivity.this);
+                final ProgressDialog dialog = new ProgressDialog(FindAClubActivity.this);
                 dialog.setMessage("Please wait, checking your current location...");
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(true);
@@ -445,10 +446,25 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
 
     protected void startLocationUpdates() {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                        GPSTracker.LOCATION_PERMISSION_REQUEST_CODE);
-            } else {
+
+//            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        GPSTracker.LOCATION_PERMISSION_REQUEST_CODE);
+//            } else {
+//                PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//            }
+
+            if (checkAndRequestPermissions()) {
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         } else {
@@ -536,5 +552,34 @@ public class FindAClubActivity extends Activity implements LocationListener, Goo
             startLocationUpdates();
             Log.d(TAG, "Location update resumed .....................");
         }
+    }
+
+
+    private boolean checkAndRequestPermissions() {
+        int permissionCOARSE = ContextCompat.checkSelfPermission(this,
+               android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
+
+        int permissionFINE = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (permissionCOARSE != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (permissionFINE != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+
+
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GPSTracker.LOCATION_PERMISSION_REQUEST_CODE);
+            return false;
+        }
+
+        return true;
     }
 }

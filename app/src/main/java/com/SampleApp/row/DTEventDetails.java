@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class DTEventDetails extends Activity {
     String moduleName = "";
-    TextView tv_title;
+    TextView tv_title,txt_reglink;
 
     TextView event_title;
     TextView event_desc;
@@ -47,7 +47,7 @@ public class DTEventDetails extends Activity {
     ImageView iv_backbutton;
 
     ImageView iv_eventimg;
-    LinearLayout linear_image,ll_eventLoc;
+    LinearLayout linear_image,ll_eventLoc,ll_link;
     String imageurl;
     ProgressBar progressBar;
 
@@ -70,10 +70,11 @@ public class DTEventDetails extends Activity {
         event_desc = (TextView) findViewById(R.id.event_desc);
         event_venue = (TextView) findViewById(R.id.event_venue);
         event_datetime = (TextView) findViewById(R.id.event_datetime);
+        txt_reglink=(TextView)findViewById(R.id.txt_reglink);
         iv_eventimg = (ImageView) findViewById(R.id.iv_eventimg);
         linear_image = (LinearLayout) findViewById(R.id.linear_image);
         ll_eventLoc = (LinearLayout) findViewById(R.id.ll_eventLoc);
-        
+        ll_link = (LinearLayout) findViewById(R.id.ll_link);
         grpID = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GROUP_ID);
         memberProfileID = PreferenceManager.getPreference(getApplicationContext(), PreferenceManager.GRP_PROFILE_ID);
         Bundle bundle=getIntent().getExtras();
@@ -259,6 +260,16 @@ public class DTEventDetails extends Activity {
                     event_venue.setText(objects.getString("venue").toString());
 
                     eventId = objects.getString("eventID").toString();
+
+                    String link=objects.getString("reglink");
+                    if(link!=null && !link.isEmpty()){
+                        ll_link.setVisibility(View.VISIBLE);
+                        txt_reglink.setText(link);
+                    }else {
+                        ll_link.setVisibility(View.GONE);
+                        txt_reglink.setText("");
+
+                    }
 
                     if (objects.has("eventImg")) {
 

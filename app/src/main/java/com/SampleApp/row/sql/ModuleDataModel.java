@@ -99,15 +99,23 @@ public class ModuleDataModel
         }
     }
 
+  /*  // add by satish bcz hide club monthly module for normal user( exclude AG, admin)
+    public boolean deleteClubMonthlyModule(long masterUid,long grpId,String moduleId){
+        return  db.delete("module_data_master","masterUID="+masterUid+" and groupId="+grpId+" and "+Tables.ModuleDataMaster.Columns.MODULE_ID+"="+moduleId,null)>0;
+    }*/
+
     public ArrayList<ModuleData> getModuleData(long masterUid,long grpId) {
+
         try {
 
             ArrayList<ModuleData> list = new ArrayList<ModuleData>();
             //Cursor cursor = db.rawQuery("select  _id, masterUID, groupModuleId, groupId, moduleId,  moduleName, moduleStaticRef,image from module_data_master where masterUID="+masterUid+" and grpId="+grpId, null);
-            Cursor cursor = db.rawQuery("select * from module_data_master where masterUID="+masterUid+" and groupId="+grpId+ " order by "+Tables.ModuleDataMaster.Columns.MODULE_ORDER_NO, null);
-            //Cursor cursor = db.query(true, Tables.ModuleDataMaster.TABLE_NAME, null,"masterUID="+masterUid+" and groupId="+grpId,null, null, null,  "groupModuleId",null);
-            while ( cursor.moveToNext() ) {
 
+            Cursor cursor = db.rawQuery("select * from module_data_master where masterUID="+masterUid+" and groupId="+grpId+ " order by "+Tables.ModuleDataMaster.Columns.MODULE_ORDER_NO, null);
+
+            //Cursor cursor = db.query(true, Tables.ModuleDataMaster.TABLE_NAME, null,"masterUID="+masterUid+" and groupId="+grpId,null, null, null,  "groupModuleId",null);
+
+            while ( cursor.moveToNext() ) {
                 String groupModuleId = cursor.getString(cursor.getColumnIndex(Tables.ModuleDataMaster.Columns.GROUP_MODULE_ID));
                 String groupId = cursor.getString(cursor.getColumnIndex(Tables.ModuleDataMaster.Columns.GROUP_ID));
                 String moduleId= cursor.getString(cursor.getColumnIndex(Tables.ModuleDataMaster.Columns.MODULE_ID));
@@ -116,16 +124,20 @@ public class ModuleDataModel
                 String image= cursor.getString(cursor.getColumnIndex(Tables.ModuleDataMaster.Columns.IMAGE));
 
                 int moduleOrderNo = cursor.getInt(cursor.getColumnIndex(Tables.ModuleDataMaster.Columns.MODULE_ORDER_NO));
+
                 boolean box = false;
+
                 ModuleData md = new ModuleData(""+groupModuleId, groupId, moduleId, moduleName, moduleStaticRef, image, moduleOrderNo);
 
                 if ( list.indexOf(md) == -1) {
                     if(moduleId.equalsIgnoreCase(Constant.Module.SUB_GROUPS)){
+
                         String is_grp_admin = PreferenceManager.getPreference(context,PreferenceManager.IS_GRP_ADMIN);
+
                         if(!is_grp_admin.equalsIgnoreCase("No")){
                             list.add(md);
                         }else{
-
+                            Log.d("Touchbase", "");
                         }
 
                     }else {
@@ -134,8 +146,23 @@ public class ModuleDataModel
                 }
 
                 if(moduleId.equalsIgnoreCase(Constant.Module.ATTENDANCE)){
+
                     String is_grp_admin = PreferenceManager.getPreference(context,PreferenceManager.IS_GRP_ADMIN);
+
                     if(is_grp_admin.equalsIgnoreCase("No")){
+                        list.remove(md);
+                    }
+
+                }
+
+                if(moduleId.equalsIgnoreCase(Constant.Module.CATEGORY) || moduleId.equalsIgnoreCase(Constant.Module.TRF_CONTRIBUTION)){
+
+                    list.remove(md);
+                }
+
+                if (Integer.parseInt(PreferenceManager.getPreference(context, PreferenceManager.MY_CATEGORY)) == Constant.GROUP_CATEGORY_CLUB){
+
+                    if(moduleId.equalsIgnoreCase(Constant.Module.CLUB_MONTHLY_REPORT) || moduleId.equalsIgnoreCase(Constant.Module.CLUB_MONTHLY_REPORT_New)){
                         list.remove(md);
                     }
 

@@ -468,7 +468,14 @@ public class DocumentRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (cur.moveToNext()) {
                     int status = cur.getInt(cur.getColumnIndex(DownloadManager.COLUMN_STATUS));
                     //Log.e("Touchbase", "♦♦♦♦URI : "+cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
-                    String fileName = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+//                    String fileName = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+                    int fileUriIdx = cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                    String fileUri = cur.getString(fileUriIdx);
+                    String fileName = null;
+                    if (fileUri != null) {
+                        File mFile = new File(Uri.parse(fileUri).getPath());
+                        fileName = mFile.getAbsolutePath();
+                    }
                     String mediaType = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
                     /*int colCount = cur.getColumnCount();
                     for(int i=0;i<colCount;i++) {

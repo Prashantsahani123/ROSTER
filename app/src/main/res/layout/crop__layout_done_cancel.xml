@@ -4,6 +4,7 @@
     <FrameLayout
         android:id="@+id/btn_cancel"
         style="@style/Crop.ActionButton">
+
         <TextView style="@style/Crop.ActionButtonText.Cancel" />
     </FrameLayout>
 

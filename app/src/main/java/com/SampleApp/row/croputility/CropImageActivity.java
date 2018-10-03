@@ -187,6 +187,19 @@ public class CropImageActivity extends MonitoredActivity {
                 onSaveClicked();
             }
         });
+
+        findViewById(R.id.img_cancel).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+
+        findViewById(R.id.img_add).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onSaveClicked();
+            }
+        });
     }
 
     private void loadInput() {
@@ -369,7 +382,8 @@ public class CropImageActivity extends MonitoredActivity {
         }
 
         if (croppedImage != null) {
-            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
+            imageView.setImageBitmap(croppedImage);
+//            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
             imageView.center();
             imageView.highlightViews.clear();
         }

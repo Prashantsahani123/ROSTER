@@ -264,8 +264,38 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
 
+                <LinearLayout
+                    android:id="@+id/ll_link"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/registration_link"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_eventLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:hint="Enter Link Here"
+                        android:inputType="textCapSentences"
+                        android:padding="10dp"
+                        android:singleLine="true" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
 
                 <LinearLayout

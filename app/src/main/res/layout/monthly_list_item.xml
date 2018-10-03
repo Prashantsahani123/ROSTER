@@ -5,36 +5,70 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layout_not_submitted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_ag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:text=""
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_submitted"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:visibility="visible">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7.5"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_ClubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Lorem ipsum doller"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/tv_ClubAG"
+                android:layout_below="@id/tv_ClubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="AG : Deoram Gagare"
                 android:textColor="@color/black" />
 
             <LinearLayout
+                android:layout_below="@id/tv_ClubAG"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -46,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="03 July 2018" />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/tv_divider"
@@ -63,12 +97,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
-                    android:text="3:40 PM" />
-
+                    android:text="" />
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layout_view_download"

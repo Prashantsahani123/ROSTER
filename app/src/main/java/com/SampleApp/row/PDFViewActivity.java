@@ -36,26 +36,34 @@ public class PDFViewActivity extends Activity implements OnPageChangeListener, O
     String filePath = "";
     TextView tvTitle;
     String mode = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         try {
+
             setContentView(R.layout.pdf_view_activity);
+
             pdfView = (PDFView) findViewById(R.id.pdfView);
+
             Intent i = getIntent();
             fileName = i.getStringExtra("fileName");
+
             Log.e("Touchbase", "♦♦♦♦File name : "+fileName);
+
             mode = i.getStringExtra("mode");
+
             //filePath = i.getStringExtra("filePath");
-
-
             //actualFile = new File(Environment.getExternalStorageDirectory() + "/Touchbase/"+fileName);
-            actualFile = new File(fileName);
 
+            actualFile = new File(fileName);
 
             //Log.e("-----FILE NAME---------", "@@@@@@@@@@@@@" + fileName);
             afterViews();
+
             tvTitle = (TextView) findViewById(R.id.tv_title);
+
             if ( i.getExtras().containsKey("title")) {
                 String title = i.getStringExtra("title");
                 tvTitle.setText(title);
@@ -72,9 +80,6 @@ public class PDFViewActivity extends Activity implements OnPageChangeListener, O
         intent.setType("application/pdf");
         startActivityForResult(intent, REQUEST_CODE);
     }
-
-
-
 
     void afterViews() {
 
@@ -107,6 +112,7 @@ public class PDFViewActivity extends Activity implements OnPageChangeListener, O
     }
 
     private void displayFromAsset(String assetFileName) {
+
         pdfFileName = assetFileName;
 
         pdfView.fromAsset(SAMPLE_FILE)
@@ -120,7 +126,9 @@ public class PDFViewActivity extends Activity implements OnPageChangeListener, O
 
 
     private void displayFromFile(String path) {
+
         File file = new File(path);
+
         pdfFileName = file.getName();
 
 
@@ -158,9 +166,6 @@ public class PDFViewActivity extends Activity implements OnPageChangeListener, O
         pageNumber = page;
         setTitle(String.format("%s %s / %s", pdfFileName, page + 1, pageCount));
     }
-
-
-
 
     public String getFileName(Uri uri) {
         String result = null;

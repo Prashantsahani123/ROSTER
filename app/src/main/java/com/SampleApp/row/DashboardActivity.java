@@ -87,6 +87,7 @@ import me.relex.circleindicator.CircleIndicator;
 import static com.SampleApp.row.Utils.PreferenceManager.GROUP_ID;
 import static com.SampleApp.row.Utils.PreferenceManager.GROUP_NAME;
 import static com.SampleApp.row.Utils.PreferenceManager.GRP_PROFILE_ID;
+import static com.SampleApp.row.Utils.PreferenceManager.IS_AG;
 import static com.SampleApp.row.Utils.PreferenceManager.IS_GRP_ADMIN;
 import static com.SampleApp.row.Utils.PreferenceManager.MASTER_USER_ID;
 import static com.SampleApp.row.Utils.PreferenceManager.MY_CATEGORY;
@@ -143,14 +144,18 @@ public class DashboardActivity extends AppCompatActivity {
 //        if(!permission.checkPermissionForExternalStorage()){
 //            permission.requestPermissionForExternalStorage();
 //        }
+
         init();
+
         loadFromDB();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         showEvents();
+
         if (InternetConnection.checkConnection(context)){
             eventServices();
             checkForUpdate();
@@ -162,7 +167,6 @@ public class DashboardActivity extends AppCompatActivity {
 //            viewPager.setVisibility(View.GONE);
 //        }
 
-
     }
 
     @Override
@@ -171,24 +175,26 @@ public class DashboardActivity extends AppCompatActivity {
 
         //isGroupUpdated is added because we want to call checkForUpdate();
         //only when groups is Updated otherwise no need to call this method
+
         String isGroupUpdated = PreferenceManager.getPreference(context, "isGroupEdited");
+
         if (isGroupUpdated != null && isGroupUpdated.equalsIgnoreCase("Yes")) {
             if (InternetConnection.checkConnection(context))
                 checkForUpdate();
             Log.d("TouchBase", "Call to checkForUpdate() in onStart");
         }
 
-
     }
 
     private void init() {
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.home);
+
         title = (TextView) findViewById(getResources().getIdentifier("action_bar_title", "id", getPackageName()));
+
         title.setText("Roster On Wheels");
 
         initDrawer();
@@ -200,14 +206,16 @@ public class DashboardActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.pager);
         circleIndicator = (CircleIndicator) findViewById(R.id.indicator);
         masterUid = Long.parseLong(PreferenceManager.getPreference(context, PreferenceManager.MASTER_USER_ID));
+
         groupModel = new GroupMasterModel(context);
         moduleDataModel = new ModuleDataModel(context);
         blogsModel = new RotaryBlogsModel(context);
         feedModel = new RSSFeedsModel(context);
+
         blogList=new ArrayList<>();
         feedList=new ArrayList<>();
 
-        for (int i = 0; i < Images.length; i++) {
+        for(int i = 0; i < Images.length; i++) {
             ImagesArray.add(Images[i]);
         }
 
@@ -276,6 +284,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         ll_showcase.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 //                ShowPopUp();
@@ -285,6 +294,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         ll_GlobalRewards.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashboardActivity.this,OpenLinkActivity.class);
@@ -297,8 +307,8 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initDrawer() {
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
         prepareListData();
@@ -331,8 +341,10 @@ public class DashboardActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 switch(position){
                     case 1:
                         Intent i = new Intent(DashboardActivity.this,FAQActivity.class);
@@ -549,6 +561,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         }
         timer=new Timer();
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -587,10 +600,11 @@ public class DashboardActivity extends AppCompatActivity {
         Log.e("DataAvailable", "Data available : " + isDataAvailable);
 
         if (!isDataAvailable) {
+
             Log.d("Touchbase---@@@@@@@@", "Loading from server");
+
             if (InternetConnection.checkConnection(context.getApplicationContext()))
                 webservices();
-
             else
                 //showEvents();
                 Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
@@ -600,10 +614,12 @@ public class DashboardActivity extends AppCompatActivity {
 //            mRecyclerView.setAdapter(rv_adapter);
 //            rv_adapter.setOnGroupSelectedListener(onGroupSelectedListener);
             setDashboardAdapter(grplist);
+
             if (InternetConnection.checkConnection(context)) {
                 checkForUpdate();
                 Log.d("---------------", "Check for update gets called------");
             }
+
             //new LoadRssTask().execute();
             //new LoadBlogTask().execute();
             // If data is loaded from local database then check for update
@@ -619,7 +635,9 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void webservices() {
+
         List<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+
         arrayList.add(new BasicNameValuePair("masterUID", PreferenceManager.getPreference(context, PreferenceManager.MASTER_USER_ID)));
         arrayList.add(new BasicNameValuePair("imeiNo", PreferenceManager.getPreference(context, PreferenceManager.UDID)));
         String updatedOn = PreferenceManager.getPreference(context, TBPrefixes.ENTITY_PREFIX + masterUid, "1970/01/01 00:00:00");
@@ -633,15 +651,15 @@ public class DashboardActivity extends AppCompatActivity {
         arrayList.add(new BasicNameValuePair("mobileNo", mobileNo));
         arrayList.add(new BasicNameValuePair("countryCode", countryCode));
 
-        Log.d("Response", "PARAMETERS " + Constant.GetAllGroupsList + " :- " + arrayList.toString());
+        Log.d("Response", "satish PARAMETERS " + Constant.GetAllGroupsList + " :- " + arrayList.toString());
 
         new WebConnectionAsync(Constant.GetAllGroupsList, arrayList, context).execute();
     }
 
     public class WebConnectionAsync extends AsyncTask<String, Object, Object> {
+
         String val = null;
         ProgressDialog dialog;
-
         String url = null;
         List<NameValuePair> argList = null;
         final ProgressDialog progressDialog = new ProgressDialog(context, R.style.TBProgressBar);
@@ -664,6 +682,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(String... params) {
+
             try {
                 val = HttpConnection.postData(url, argList);
                 val = val.toString();
@@ -671,6 +690,7 @@ public class DashboardActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return val;
         }
 
@@ -678,6 +698,7 @@ public class DashboardActivity extends AppCompatActivity {
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
+
             if (result != "") {
                 getresult(result.toString());
             } else {
@@ -687,13 +708,18 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void getresult(String val) {
+
         try {
+
             //grplist.clear();
             JSONObject jsonObj = new JSONObject(val);
+
             JSONObject ActivityResult = jsonObj.getJSONObject("TBGroupResult");
+
             final String status = ActivityResult.getString("status");
 
             if (status.equals("0")) {
+
                 //version
                 /*if(!Constant.versionNo.equals(ActivityResult.getString("version"))){
                     popup_of_update_app();
@@ -710,9 +736,10 @@ public class DashboardActivity extends AppCompatActivity {
                     popup_of_update_app();
                 }
 
-                // grplist.clear();
+                //grplist.clear();
 
                 grplist = new ArrayList<>();
+
                 JSONArray grpsarray = ActivityResult.getJSONArray("AllGroupListResults");
 
                 for (int i = 0; i < grpsarray.length(); i++) {
@@ -722,17 +749,21 @@ public class DashboardActivity extends AppCompatActivity {
 
                     //listGroup.add(objects.getString("grpName").toString());
                     // gv.setAdapter(new FragmentALLAdapter(getActivity(), listGroup));
+
                     GroupData gd = new GroupData();
+
                     gd.setGrpId(objects.getString("grpId").toString());
                     gd.setGrpName(objects.getString("grpName").toString());
                     gd.setGrpProfileId(objects.getString("grpProfileId").toString());
                     String myCategory = objects.getString("myCategory").toString();
+
                     try {
                         //String expiryDate = objects.getString("expiryDate");
                         //gd.setExpiryDate(expiryDate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                     Utils.log("MyCategory : " + myCategory);
                     gd.setMyCategory(myCategory);
                     gd.setIsGrpAdmin(objects.getString("isGrpAdmin").toString());
@@ -763,11 +794,13 @@ public class DashboardActivity extends AppCompatActivity {
                         moduleList.add(moduleData);
                         //Log.e("ModuleData", "################ " + moduleData);
                     }
+
                     //-----------------------------------------------------------------
 
                 }
                 // displaydata();
                 Log.d("ARRAYLIST---@@@@@@@@", "ALL :- " + grplist.toString());
+
                 groupDataHandler.sendEmptyMessageDelayed(0, 1000);
 //                grplist.add(new LoadingMessageData());
 //                rv_adapter = new FragmentALLAdapter_new(this.getContext(), grplist, "1");
@@ -784,6 +817,7 @@ public class DashboardActivity extends AppCompatActivity {
 //                rv_adapter = new FragmentALLAdapter_new(this.getContext(), grplist, "1");
 //                mRecyclerView.setAdapter(rv_adapter);
 //                rv_adapter.setOnGroupSelectedListener(onGroupSelectedListener);
+
                 setDashboardAdapter(grplist);
                 final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -793,15 +827,18 @@ public class DashboardActivity extends AppCompatActivity {
                 TextView tv_line1 = (TextView) dialog.findViewById(R.id.tv_line1);
 
                 tv_line1.setText(ActivityResult.getString("message"));
+
                 tv_yes.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
+
                         savePreference(context, GROUP_ID, null);
                         savePreference(context, GRP_PROFILE_ID, null);
                         savePreference(context, IS_GRP_ADMIN, null);
                         savePreference(context, GROUP_NAME, null);
                         savePreference(context, MASTER_USER_ID, null);
+                        savePreference(context, IS_AG , null);
 
                         Intent i = new Intent(context, Splash.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -816,12 +853,14 @@ public class DashboardActivity extends AppCompatActivity {
 
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+
                         if (keyCode == KeyEvent.KEYCODE_BACK) {
                             savePreference(context, GROUP_ID, null);
                             savePreference(context, GRP_PROFILE_ID, null);
                             savePreference(context, IS_GRP_ADMIN, null);
                             savePreference(context, GROUP_NAME, null);
                             savePreference(context, MASTER_USER_ID, null);
+                            savePreference(context, IS_AG , null);
 
                             Intent i = new Intent(context, Splash.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -856,6 +895,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void popup_of_update_app() {
+
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.popup_session_expired);
@@ -868,6 +908,7 @@ public class DashboardActivity extends AppCompatActivity {
         tv_line1.setText("There is a newer version available for download! Please update the app by visiting the Play Store.");
 
         tv_yes.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -884,6 +925,7 @@ public class DashboardActivity extends AppCompatActivity {
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
+
                     Intent i = new Intent(context, Splash.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -898,7 +940,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public void setDashboardAdapter(final ArrayList<GroupData> groupDataArrayList){
+    public void setDashboardAdapter(final ArrayList<GroupData> groupDataArrayList) {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 12);
 
@@ -910,6 +952,7 @@ public class DashboardActivity extends AppCompatActivity {
                 if (groupDataArrayList.size() % 2 == 0) {
                     return 6;
                 } else {
+
                     if (position == groupDataArrayList.size() - 1) {
                         return 12;
                     }
@@ -925,9 +968,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     Handler groupDataHandler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
             Log.e("DBError", "Handler is called");
             boolean saved = groupModel.insert(masterUid, grplist);
             if (!saved) {
@@ -946,9 +991,11 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     Handler moduleDataHandler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
             boolean saved = moduleDataModel.insert(masterUid, moduleList);
             if (!saved) {
                 Log.d("Touchbase---@@@@@@@@", "Failed to save offlline. Retrying in 2 seconds");
@@ -972,14 +1019,20 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void checkForUpdate() {
+
         if (InternetConnection.checkConnection(context)) {
+
             Log.e("Touchbase", "------ Checking for update");
+
             String url = Constant.GetGetAllGroupListSync;
             ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
             arrayList.add(new BasicNameValuePair("masterUID", PreferenceManager.getPreference(context, PreferenceManager.MASTER_USER_ID)));
             arrayList.add(new BasicNameValuePair("imeiNo", PreferenceManager.getPreference(context, PreferenceManager.UDID)));
+
             updatedOn = PreferenceManager.getPreference(context, TBPrefixes.ENTITY_PREFIX + masterUid);
+
             Log.e("UpdatedOn", "Last updated date is : " + updatedOn);
+
             Log.e("MasterUID", PreferenceManager.getPreference(context, PreferenceManager.MASTER_USER_ID));
 
             arrayList.add(new BasicNameValuePair("updatedOn", updatedOn));//updatedOn 1970-1-1 0:0:0
@@ -991,7 +1044,7 @@ public class DashboardActivity extends AppCompatActivity {
             arrayList.add(new BasicNameValuePair("loginType", loginType));
             arrayList.add(new BasicNameValuePair("mobileNo", mobileNo));
             arrayList.add(new BasicNameValuePair("countryCode", countryCode));
-            Log.e("UpdatedOn", "Last updated date is : " + updatedOn);
+
             Log.e("MasterUID", PreferenceManager.getPreference(context, PreferenceManager.MASTER_USER_ID));
             //arrayList.add(new BasicNameValuePair("updatedOn", "2016/1/18 17:8:34"));
 
@@ -1014,7 +1067,6 @@ public class DashboardActivity extends AppCompatActivity {
         String url = null;
         List<NameValuePair> argList = null;
 
-
         public UpdateGroupDataAsyncTask(String url, List<NameValuePair> argList, Context ctx) {
             this.url = url;
             this.argList = argList;
@@ -1034,6 +1086,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(String... params) {
+
             try {
                 val = HttpConnection.postData(url, argList);
                 val = val.toString();
@@ -1059,7 +1112,9 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void getUpdatedGroupdata(String result) {
+
         try {
+
             JSONObject jsonObj = new JSONObject(result);
             final String status = jsonObj.getString("status");
 
@@ -1265,14 +1320,19 @@ public class DashboardActivity extends AppCompatActivity {
                         }
                     }
                 };
+
                 int overAllCount = newGroupListCount + updateGroupListCount + deleteGroupListCount + newModuleListcount + DeletedModuleListcount;
+
                 System.out.println("Number of records for update are : " + overAllCount);
+
                 if (newGroupListCount + updateGroupListCount + deleteGroupListCount + newModuleListcount + updatedModuleListcount + DeletedModuleListcount != 0) {
 
                     UpdateGroupdatahandler.sendEmptyMessageDelayed(0, 1000);
+
                 } else {
                     Log.e("NoUpdate", "No updates found");
                 }
+
             } else if (status.equals("2")) {
                 //addhere
 
@@ -1296,6 +1356,7 @@ public class DashboardActivity extends AppCompatActivity {
                         savePreference(context, IS_GRP_ADMIN, null);
                         savePreference(context, GROUP_NAME, null);
                         savePreference(context, MASTER_USER_ID, null);
+                        savePreference(context, IS_AG , null);
 
                         Intent i = new Intent(context, Splash.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1310,12 +1371,14 @@ public class DashboardActivity extends AppCompatActivity {
 
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+
                         if (keyCode == KeyEvent.KEYCODE_BACK) {
                             savePreference(context, GROUP_ID, null);
                             savePreference(context, GRP_PROFILE_ID, null);
                             savePreference(context, IS_GRP_ADMIN, null);
                             savePreference(context, GROUP_NAME, null);
                             savePreference(context, MASTER_USER_ID, null);
+                            savePreference(context, IS_AG , null);
 
                             Intent i = new Intent(context, Splash.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
