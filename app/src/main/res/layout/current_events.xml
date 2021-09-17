@@ -3,12 +3,12 @@
     android:id="@+id/rl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/slider">
+    android:background="#e2f5ff">
 
     <ImageView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
-        android:background="@color/slider"
+        android:background="#e2f5ff"
         android:layout_height="300dp" />
 
     <TextView

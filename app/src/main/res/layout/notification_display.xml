@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#F5F3F3"
+    android:gravity="left"
+   >
+
+
+    <!--<RelativeLayout
+        android:id="@+id/heading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/datelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="01/10/2020"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="  "
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:id="@+id/timelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/datelist"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="10:25AM"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_modulename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/t1"
+            android:gravity="right"
+            android:text=""
+            android:textColor="@color/green"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>-->
+
+    <TextView
+        android:id="@+id/tv_modulename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rotary India"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!--
+        <View
+            android:layout_above="@+id/tv_modulename"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+    -->
+
+
+    <RelativeLayout
+        android:elevation="2dp"
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_modulename"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/roundd"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/notifimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/app_icon_new"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="visible"
+            android:id="@+id/iv_notification"
+            android:layout_marginLeft="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/picround"
+            android:foregroundGravity="center"
+            android:padding="14dp"
+            android:src="@drawable/defaultlogo" />
+
+        <LinearLayout
+            android:id="@+id/t"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_notification"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <TextView
+                android:id="@+id/notification_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/notifimage"
+                android:layout_weight="0.8"
+                android:text="hii"
+                android:textColor="@color/bell_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                />
+            <View
+                android:layout_weight="0.2"
+                android:layout_width="0dp"
+                android:layout_height="1dp">
+
+            </View>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/notification_message"
+            android:layout_width="260dp"
+            android:layout_height="17dp"
+            android:layout_below="@id/t"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@id/iv_notification"
+            android:text="Description txt"
+            android:textColor="#706F6F"
+            android:textSize="13sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/notification_message_date"
+            android:layout_width="260dp"
+            android:layout_height="17dp"
+            android:layout_below="@id/notification_message"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@id/iv_notification"
+            android:text="Date with time Display txt"
+            android:textColor="#706F6F"
+            android:textSize="13sp"
+            android:textStyle="normal" />
+
+        <ImageView
+            android:id="@+id/right_arrow_imgview"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="0.1"
+
+            android:src="@drawable/right_arrow_latest" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/card"
+        android:background="#F5F3F3" />
+
+
+    <RelativeLayout
+        android:id="@+id/heading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/card">
+
+        <LinearLayout
+            android:id="@+id/t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/datelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="01/10/2020"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="  "
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:id="@+id/timelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/datelist"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="10:25AM"
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <!--  <TextView
+              android:id="@+id/tv_modulename"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/t1"
+              android:gravity="right"
+              android:text=""
+              android:textColor="@color/green"
+              android:textSize="15dp"
+              android:textStyle="bold" />-->
+
+
+    </RelativeLayout>
+
+    <!--<RelativeLayout
+
+        android:id="@+id/bottom_layout"
+        android:layout_below="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_modulename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+           &lt;!&ndash; <TextView
+                android:id="@+id/spacer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="  "
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:id="@+id/timelist1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/datelist"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="10:25AM"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textStyle="bold" />&ndash;&gt;
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>-->
+</RelativeLayout>

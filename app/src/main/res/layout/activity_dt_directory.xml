@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/seperator_color" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,7 +73,7 @@
             android:layout_weight="1">
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDirectory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -110,10 +111,11 @@
                     android:text="Retry"
                     android:textColor="@color/clickableBlueColor"
                     android:textSize="20sp" />
+
             </LinearLayout>
 
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

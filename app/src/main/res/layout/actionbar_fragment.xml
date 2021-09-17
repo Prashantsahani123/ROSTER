@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -51,22 +52,60 @@
                     android:src="@drawable/overflow_btn_blue"
                     android:visibility="gone" />
 
+                <ImageView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/iv_savee"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="9dp"
+                    android:src="@drawable/saveee"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/saveee"
+
+
+                    />
+                <ImageView
+                    android:id="@+id/iv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="15dp"
+                    android:src="@drawable/share"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/share" />
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_backbutton"
-                android:layout_toLeftOf="@id/buttonWrapper"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/buttonWrapper"
+                android:layout_toRightOf="@id/iv_backbutton"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
                 android:padding="15dp"
                 android:text=""
-                android:maxLines="2"
                 android:textColor="@color/black"
-                android:textSize="22sp"
-                android:gravity="center_horizontal"/>
+                android:textSize="22sp" />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_title_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="15dp"
+                android:text="Select Country"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
 
             <TextView
                 android:textColor="@color/white"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -19,7 +19,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center"
         android:orientation="vertical">
 
@@ -30,12 +29,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                >
+                android:layout_height="match_parent">
 
 
                 <ImageView
+
                     android:id="@+id/ivNewProfileImage"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
@@ -43,8 +41,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/profile_pic" />
-                <!--android:background="@drawable/blue_border_circle"-->
 
+                <!--android:background="@drawable/blue_border_circle"-->
 
                 <ImageView
                     android:id="@+id/iv_imageedit"
@@ -64,6 +62,7 @@
                     android:layout_centerVertical="true" />
 
             </RelativeLayout>
+
         </LinearLayout>
 
         <TextView
@@ -75,7 +74,7 @@
             android:textSize="22sp" />
 
         <TextView
-            android:id="@+id/tvClubDesignation"
+            android:id="@+id/tvClubName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -100,33 +99,32 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:gravity="right">
+                    android:layout_weight="2.5"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/ivNewCallButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:padding="7dp"
                         android:src="@drawable/blue_call" />
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2.5"
                     android:gravity="center">
 
                     <ImageView
@@ -136,13 +134,32 @@
                         android:layout_alignParentRight="true"
                         android:padding="7dp"
                         android:src="@drawable/blue_message" />
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:id="@+id/ll_whatsapp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:gravity="center"
+                    android:visibility="visible">
 
-                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/ivWhatsApp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="7dp"
+                        android:src="@drawable/blue_whatsapp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/ivNewMail"
@@ -163,8 +180,187 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProfileDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+        <View
+            android:background="#C5BFBF"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp">
+
+        </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/RD"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/smallLabelColor"
+            android:text="Admission Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/RI"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="RIAdmissionDate"
+            android:textSize="15sp">
+
+        </TextView>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="#C5BFBF"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp">
+
+            </View>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/SpM"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="SponsorMemberId"
+            android:textColor="@color/smallLabelColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:paddingLeft="10dp"
+            android:id="@+id/sp_mid"
+            android:layout_marginTop="3dp"
+            android:hint="SponsorMemberId"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="#C5BFBF"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp">
+
+            </View>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/spon_n"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/smallLabelColor"
+            android:text="Sponsor By"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:id="@+id/sp_fuln"
+            android:layout_marginTop="3dp"
+            android:hint="SponsorFullName"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="#C5BFBF"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp">
+
+            </View>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/spon_star"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+        <TextView
+            android:id="@+id/sp"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/smallLabelColor"
+            android:text="Sponsored member in home club since July 1st 2021"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:id="@+id/sp_str"
+            android:layout_marginTop="10dp"
+            android:hint=""
+            android:textColor="@color/smallLabelColor"
+            android:layout_width="wrap_content"
+            android:textSize="15sp"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:paddingLeft="10dp"
+            android:id="@+id/ref_str"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/smallLabelColor"
+            android:hint=""
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

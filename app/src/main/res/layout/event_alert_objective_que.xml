@@ -54,8 +54,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="0.5"
- >
+                    android:layout_weight="0.5">
 
                     <ImageView
                         android:id="@+id/iv_close"
@@ -64,9 +63,10 @@
                         android:layout_centerInParent="true"
                         android:padding="7dp"
                         android:src="@drawable/close" />
-                </LinearLayout>
-            </LinearLayout>
 
+                </LinearLayout>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="fill_parent"

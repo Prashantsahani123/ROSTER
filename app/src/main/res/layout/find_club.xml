@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -539,7 +539,8 @@
             android:padding="15dp"
             android:text="Search"
             android:textColor="@color/view_color_blue"
-            android:textSize="19sp"></TextView>
+            android:textSize="19sp"/>
+
     </LinearLayout>
 
 

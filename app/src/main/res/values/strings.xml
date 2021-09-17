@@ -12,13 +12,37 @@
         <item>Rotarian</item>
         <item>Classification</item>
     </array>
+
+    <array name="serviceFilter">
+        <item>Club Service</item>
+        <item>Rotary Service</item>
+
+    </array>
+
+    <array name="dtserviceFilter">
+        <item>District Events</item>
+        <item>District Projects</item>
+
+    </array>
+
+    <array name="meetingType">
+        <item>Regular</item>
+        <item>BOD</item>
+        <item>Assembly</item>
+        <item>Fellowship</item>
+    </array>
+
     <!--Select Language-->
     <string name="terms_conditions"><u>Terms and Conditions</u></string>
-    <string name="labelNoRecords">No new updates</string>
+    <string name="labelNoRecords">No record found</string>
 
     <string name="kaizenContact">+91 22 41516999</string>
     <string name="kaizenAbout">Roster on Wheels(ROW) is a Rotary International® Official Licensee mobile app.\nROW provides one stop solution for connectivity between Rotarians of the club and across the Globe.\nIt is conceptualized and developed by Kaizen Infotech Solutions Pvt. Ltd., Mumbai, India.</string>
-    <string name="kaizenEmail">row.techsupport@kaizeninfotech.com</string>
+    <!--<string name="kaizenEmail">row.techsupport@kaizeninfotech.com</string>-->
+    <string name="kaizenEmail">row@kaizeninfotech.com</string>
+    <string name="rotaryindiaEmail">support@rotaryindia.org</string>
+    <string name="are_u_rotarian_yes">Please ensure the mobile number entered is as per RI records.\n\nIf entered number is correct,Please contact your club admin or mail us at support@rotaryindia.org.</string>
+    <string name="are_u_rotarian_no">This Application is only for Rotarians in India.</string>
     <string name="kaizenWebsite">www.rosteronwheels.com</string>
     <string name="kaizenRecommend">Recommend TouchBase to your friends</string>
     <string name="messageSorry">We are sorry for inconvenience. Something went wrong.</string>
@@ -32,19 +56,24 @@
 
     <!--String for row-->
 
-    <string name="exit_btn">Exit</string>
-    <string name="accept_btn">Accept</string>
+    <string name="exit_btn">EXIT</string>
+    <string name="accept_btn">ACCEPT</string>
     <string name="login_screen_text">Every Member and their family will be able to use ROW once the club subscribes to Roster On Wheels.\n\nThe Registered Mobile Number in your club is the unique identifier in ROW.\n\nFamily Members can access ROW once their\nCredentials are Registered.</string>
+    <string name="login_screen_text_new">Please use your mobile number that is registered with Rotary International to log in.\n\nEvery Rotarian and their family members will be able to use ROW.\nFamily members can access ROW once their credentials are registered.</string>
     <string name="mobileno_confirm_popupmsg">One Time Password will be sent to this number.</string>
     <string name="label_submit">Submit</string>
-    <string name="popupmsg_registration">Roster On Wheels Mobile Application is only\nfor Rotarians / IW Members / Rotaractors</string>
+    <!--<string name="popupmsg_registration">Roster On Wheels Mobile Application is only\nfor Rotarians / IW Members / Rotaractors</string>-->
+    <string name="popupmsg_registration">Rotary India Mobile Application is only\nfor Rotarians </string>
     <string name="terms_and_condition">Terms &amp; Conditions</string>
-    <string name="find_a_rotarian_msg">This feature allows you to search any Rotarian\n from \'Roster On Wheels\' subscribed clubs.</string>
+    <string name="find_a_rotarian_msg">This feature allows you to search any Rotarian\n from \'Roster on Wheels\' subscribed clubs.</string>
     <string name="msg_no_records_found">No Record Found</string>
-    <string name="msg_hint_feedback">Please enter your feedback</string>
+    <string name="msg_hint_feedback">Please enter your feedback here.\nThis feedback will be sent to the \nRotary India Team.\nYour
+suggestions are really appreciated!"</string>
     <string name="leader_board_no_record">This place is reserved for Clubs to show their citation points</string>
 
     <string name="msgRetry">Something went wrong. Please try again after sometime.</string>
+    <string name="maxbenificiary_title">Rotary India service project beneficiaries(500+)</string>
+    <string name="maxbenificiary_description">A limit of 500 beneficiaries has been set for each project. As this project has more than 500 beneficiaries,it will be sent to the Zonal Head of Rotary India for approval. Your project will be added with 500 beneficiaries at the moment. Once the zonal head approves your project, the beneficiaries will be updated as per your request. Click on confirm to continue or cancel to edit the number of beneficiaries</string>
 
     <string name="No_Results">No Record Found</string>
     <string name="noDoc">Unable to load Document</string>
@@ -81,7 +110,9 @@
 
     <string-array name="clubMembersFilter">
         <item>Rotarian</item>
-        <item>District\nCommittee</item>
+        <item>Classification</item>
+        <!--   <item>District\nCommittee</item>-->
+
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -104,5 +135,59 @@
     <string name="new_event">New Event</string>
     <string name="registration_link">Link</string>
     <string name="sms_warning">Your Balance SMS Count is zero. Please recharge.</string>
+    <string name="clubServiceText">In Club Service, post your Club\'s internal events.</string>
+    <string name="clubServiceText_new">Please post all the Club Meetings executed by your club. The content posted here will be displayed in the Club monthly report , District Website and ROW integrated Club website</string>
+    <string name="rotaryServiceText">In Rotary Service post all Rotary Service projects. The content posted in Rotary Service will be displayed to all ROW users globally.</string>
+    <string name="rotaryServiceText_new">Please post all the Service Projects executed by your club. The content posted here will be displayed in District website , Club Monthly Report and ROW integrated Club website.</string>
+    <string name="distEventInfo">In District Event, post your District\'s internal events.</string>
+    <string name="distEventInfo_new">Please post all the Events executed by your District. The content posted here will be displayed on the District website.</string>
+    <string name="distProjectInfo">In District Project post all district projects. The content posted in District Project will be displayed to all ROW users globally.</string>
+    <string name="distProjectInfo_new">Please post all the Projects executed by your District. The content posted here will be displayed on the District website.</string>
+    <string name="title_activity_group_dashboard_admin">GroupDashboardAdmin</string>
+
+
+    <string name="public_image">Showcase the good deeds done by you to the world. Rotary Clubs across the globe conduct amazing Social Welfare Projects. Don’t let your Presidential year be forgotten by the people around you. Let us help you in keeping a lifelong data bank of all your accomplishments as President.</string>
+    <string name="communication">Communication within a club is really important to ensure smooth functioning, Increasing Engagement and Participation of members and in making your club a successful one. ROW helps you in staying in touch with all your members on the go. Send out Announcements and Notifications regarding upcoming and completed events and Monthly Bulletins. Stay in touch with your members with our Offline Club Directory.</string>
+    <string name="e_governance">Manage your club more efficiently and in an organised manner with our E-Governance Features. Let it be the RSVP for your Club Events, Collection of Dues, Monthly Reports that you submit to the district or the OCV of your club. We have a solution for all your problems. Save huge amounts of money and time by switching from physical documentation and manual processes to our Digital Platform.</string>
+    <string name="Direct_link">One of the biggest advantages of using ROW is that we are exclusively linked with the Rotary India website. Every time you upload a project on ROW, it gets uploaded on the RI website immediately. This helps in highlighting your Club’s Projects all across the country.</string>
+
+
+    <string name="row_web">ARE YOU A VIBRANT ROTARY CLUB … OR JUST ANOTHER ROTARY CLUB? THE KEY IS COMMUNICATION … Help Rotarians stay in touch with what’s happening in the club and beyond. In this digital age, you cannot do without your own club website. An effective website must showcase the good that you do and present a live profile to the world outside. Here comes ROWeb a -integrated service that builds your club website, automatically updates your profiles, programs and projects, and helps your club stay in tune with the times.</string>
+    <string name="fightagainstcovid">Fight Against\n&#160;&#160;&#160;&#160;&#160;Covid-19</string>
+    <string name="please_fill_the_details_below">Please fill the details below.You will be contacted by a Rotary club near you soon.</string>
+    <string name="helpline">Helpline</string>
+    <string name="todo">TODO</string>
+    <string name="rotary_org">Rotary.org</string>
+    <string name="find_a_rotarian">Find a Rotarian</string>
+    <string name="user_name">User Name</string>
+    <string name="loading_please_wait">Loading...Please Wait...</string>
+    <string name="showcase">Showcase</string>
+    <string name="find_club">Find Club</string>
+    <string name="rotary_india">Rotary India</string>
+    <string name="projects">Projects</string>
+    <string name="phone">Phone</string>
+
+
+    <string name="t1">If your club has a hospital, Dialysis Center, Education Institute etc. and your club keeps adding beneficiaries to the existing project, It is an on going project.
+    It is life time project and not a project for the particular year.</string>
+
+
+    <string name="t2">Any Project that you have conducted before in the same Rotary year under the same or  any other area of focus falls under the category. E.G. : You have conducted
+    mask distribution today at railway station and tomorrow the same activity is conducted in another place or you have done one tree plantation in one village last month and you are conducted one more in another village this month,it is a repeat project.</string>
+
+
+    <string name="t3">  These are just examples. Please upload similar projects conducted in this criteria.</string>
+
+    <string name="t4"> The data I will enter is for a sevice project conducted by my club that has benefitted the community. It is not a club meeting, Fellowship meeting. club
+celebration or any other miscellaneous event. Eg. Doctor day celebration, Birthday and Anniversary
+celebration of members, etc or NOT considered to be service projects.</string>
+<!--    The content posted here will be displayed on the Rotary India Website, District Website, Club Monthly Report & Rotary India Integrated Club Website.-->
+<!--    &lt;!&ndash;    <string name="t5">Please Note : The content posted here will be displayed on the Rotary India website,&ndash;&gt;-->
+    <!--District website, Club Monthly Report and  Rotary India interated club website.</string>-->
+
+
+        <string name="t5">Please Note : The content posted here will be displayed on District Website, Club Monthly Report and ROW Integrated Club Website.
+    </string>
+
 
 </resources>

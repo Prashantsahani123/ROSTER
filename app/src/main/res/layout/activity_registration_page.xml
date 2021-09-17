@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegistrationPage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/topMargin"
+            android:text="@string/please_fill_the_details_below"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginTop="5dp"
+        android:background="@color/black" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_fiels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text=" First Name"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_fname"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter First Name"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+
+                <!-- Added New value By Gaurav-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Last Name"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_lname"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter Last Name"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+
+                //Add mobile number
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="10dp"
+                     android:text="Mobile Number"
+                     android:textColor="@color/label_color_gray"
+                     android:textSize="15sp" />
+
+                 <EditText
+                     android:id="@+id/et_mobileno"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="5dp"
+                     android:background="@drawable/border_bg_white"
+                     android:hint="Enter Mobile Number"
+                     android:maxLines="10"
+                     android:inputType="number"
+                     android:padding="8dp" />
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="10dp">
+
+                     <View
+                         android:layout_width="fill_parent"
+                         android:layout_height="@dimen/separator_height"
+                         android:background="@color/view_color" />
+                 </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Email ID"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter Email ID"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+
+                //city
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="City"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_city"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter city "
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+
+                //state
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="State"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_state"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter State"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+                //Occupation
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Occupation"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_occupation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:hint="Enter Occupation"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/view_color" />
+                </LinearLayout>
+                <!-- <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="10dp"
+                     android:text="Club"
+                     android:textColor="@color/label_color_gray"
+                     android:textSize="15sp" />
+
+                 <EditText
+                     android:id="@+id/et_club"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="5dp"
+                     android:background="@drawable/border_bg_white"
+                     android:hint="Enter Club"
+                     android:padding="8dp" />
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="10dp">
+
+                     <View
+                         android:layout_width="fill_parent"
+                         android:layout_height="@dimen/separator_height"
+                         android:background="@color/view_color" />
+                 </LinearLayout>-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Feedback"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_feedback"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bg_white"
+                    android:gravity="top"
+                    android:hint="Enter Feedback"
+                    android:padding="8dp" />
+
+
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="FOR MORE DETAILS PLEASE VISIT "
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/rotaryindialink"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="www.rotaryindia.org"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    android:textStyle="normal" />
+
+
+                <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Website :"
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvWebsite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:tag="http://www.rosteronwheels.com"
+                        android:text=" www.rotaryindia.com"
+                        android:textColor="@color/view_color_blue"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Email ID : "
+                        android:textColor="@color/label_color_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:tag="@string/rotaryindiaEmail"
+                        android:text="@string/rotaryindiaEmail"
+                        android:textColor="@color/view_color_blue"
+                        android:textSize="15sp" />
+                </LinearLayout>-->
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Submit"
+        android:textColor="@color/view_color_blue"
+        android:textSize="19sp"
+        android:visibility="visible" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/view_color"
+
+        />
+
+
+</LinearLayout>

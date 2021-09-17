@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <paths>
+
     <files-path path="ROW/" name="ROW"/>
+    <cache-path name="shared_pdf" path="images/"/>
+    <cache-path name="shared_images" path="images/"/>
+    <external-path name="external_files" path="."/>
+    <external-path name="external_files" path="Download/"/>
+
 </paths>

@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color" />
-
 
     <LinearLayout
             android:layout_width="fill_parent"
@@ -32,7 +31,6 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -59,7 +57,6 @@
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
-
                                 <RadioButton
                                     android:id="@+id/d_radio0"
                                     android:layout_width="wrap_content"
@@ -67,6 +64,7 @@
                                     android:buttonTint="@color/view_color_blue"
                                     android:onClick="onRadioButtonClicked"
                                     android:text="All" />
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -83,6 +81,7 @@
                                     android:buttonTint="@color/view_color_blue"
                                     android:onClick="onRadioButtonClicked"
                                     android:text="Sub Groups" />
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -99,7 +98,9 @@
                                     android:buttonTint="@color/view_color_blue"
                                     android:onClick="onRadioButtonClicked"
                                     android:text="Members" />
+
                             </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -124,8 +125,8 @@
                                 android:padding="5dp"
                                 android:src="@drawable/edit_black" />
 
-
                         </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -286,14 +287,14 @@
                                         android:layout_gravity="center"
                                         android:padding="7dp"
                                         android:src="@drawable/delete_gray" />
+
                                 </LinearLayout>
+
                             </LinearLayout>
 
                         </LinearLayout>
 
-
                     </LinearLayout>
-
 
                     <View
                         android:layout_width="fill_parent"
@@ -309,7 +310,7 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="Publish date and time"
+                            android:text="Publish Date and Time"
                             android:textSize="16sp" />
 
                         <LinearLayout
@@ -356,12 +357,14 @@
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/separator_height"
+                        android:visibility="gone"
                         android:background="@color/seperator_color" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -406,9 +409,11 @@
                                     android:hint="Enter Date &amp; Time"
                                     android:textColor="@color/black"
                                     android:textSize="17sp" />
+
                             </LinearLayout>
 
                         </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -416,7 +421,7 @@
                         android:layout_height="@dimen/separator_height"
                         android:background="@color/seperator_color" />
 
-                    <LinearLayout
+<!--                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -427,21 +432,25 @@
                             android:layout_height="wrap_content"
                             android:text="Send SMS To "
                             android:textSize="16sp" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Balance SMS Count : "
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/smscount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="20"
                                 android:textSize="14sp" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -482,10 +491,190 @@
                                     android:textColor="@color/grey_dark_shade" />
                             </LinearLayout>
                         </LinearLayout>
+                    </LinearLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="Send SMS"/>
+
+                        <CheckBox
+                            android:id="@+id/cb_send_sms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_marginLeft="8dp"
+                            android:button="@drawable/image_checkbox"
+                            android:textColor="@color/grey_dark_shade" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:visibility="gone"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Send SMS To "
+                            android:visibility="gone"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Balance SMS : "
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/smscount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:layout_marginTop="5dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/cb_noti_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentTop="true"
+                                    android:text="All Members"
+                                    android:textColor="@color/grey_dark_shade" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/cb_noti_nonsmart"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentTop="true"
+                                    android:text="Non-Smart Phone Users"
+                                    android:textColor="@color/grey_dark_shade" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:visibility="gone"
+                        android:background="@color/seperator_color" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="Send Email"/>
+
+                        <CheckBox
+                            android:id="@+id/cb_send_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_marginLeft="8dp"
+                            android:button="@drawable/image_checkbox"
+                            android:textColor="@color/grey_dark_shade" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:visibility="gone"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Balance Email : "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/emailcount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:visibility="gone"
+                        android:background="@color/seperator_color" />
+
+
                 </LinearLayout>
 
             </ScrollView>
+
         </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -515,7 +704,9 @@
                 android:text="Add"
                 android:textColor="@color/view_color_blue"
                 android:textSize="19sp" />
+
         </LinearLayout>
+
         <View
             android:layout_width="@dimen/separator_height"
             android:layout_height="match_parent"

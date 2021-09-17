@@ -36,6 +36,7 @@
                     android:layout_marginLeft="@dimen/leftMargin"
                     android:layout_marginRight="@dimen/rightMargin"
                     android:src="@drawable/down_arrow_01" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -181,12 +182,14 @@
         <View
             style="@style/TBSeperator"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp" />
+            android:layout_height="0.5dp"
+            android:visibility="gone"/>
 
         <TextView
             style="@style/TBSmallLebel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="Blood Group" />
 
         <Spinner
@@ -196,6 +199,7 @@
             android:layout_marginLeft="@dimen/leftMargin"
             android:layout_marginRight="@dimen/rightMargin"
             android:layout_marginTop="@dimen/gap"
+            android:visibility="gone"
             android:entries="@array/bloodGroup" />
 
         <View

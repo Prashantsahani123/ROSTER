@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment1"
-        class="com.SampleApp.row.PopupFragment"
+        class="com.NEWROW.row.PopupFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -100,7 +100,7 @@
                 style="@style/TBLabelBigValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="8989909034" />
+                android:text="" />
 
             <View
                 style="@style/TBSeperator"
@@ -281,7 +281,9 @@
                 android:gravity="top|left"
                 android:hint="Enter business address"
                 android:inputType="textCapSentences|textMultiLine"
-                android:maxLines="3" />
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -499,10 +501,136 @@
                 android:inputType="number"
                 android:maxLines="1" />
 
+
+
+
             <View
                 style="@style/TBSeperator"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp" />
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/RDD"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Admission Date" />
+
+            <EditText
+                android:id="@+id/RII"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="RIAdmission Date"
+                android:inputType="number"
+                android:maxLines="1" />
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+            </LinearLayout>
+<!--            <TextView-->
+<!--                style="@style/TBSmallLebel"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Sponsor MemberId" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/Rdd"-->
+<!--                style="@style/TBEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Sponsor MemberID"-->
+<!--                android:inputType="number"-->
+<!--                android:maxLines="1" />-->
+
+<!--            <View-->
+<!--                style="@style/TBSeperator"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.5dp" />-->
+
+            <LinearLayout
+                android:visibility="gone"
+
+                android:id="@+id/spon_nn"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TBSmallLebel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sponsor by" />
+
+            <EditText
+                android:id="@+id/sp_fulnn"
+                style="@style/TBEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sponsor FullName"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <View
+                style="@style/TBSeperator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/spon_starr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/smallLabelColor"
+                    android:text="Sponsored member in home club since July 1st 2021"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <TextView
+                    android:paddingLeft="10dp"
+                    android:id="@+id/sp_strr"
+                    android:layout_marginTop="10dp"
+                    android:hint=""
+                    android:textColor="@color/smallLabelColor"
+                    android:layout_width="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+                <TextView
+                    android:paddingLeft="10dp"
+                    android:id="@+id/ref_strr"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/smallLabelColor"
+                    android:hint=""
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+                <View
+                    style="@style/TBSeperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+            </LinearLayout>
+
 
             <TextView
                 style="@style/TBSmallLebel"
@@ -685,6 +813,10 @@
                 android:layout_height="0.5dp" />
             <!--End of anniversary panel-->
 
+
+            <!-- visible blood gr by satish because tester give issue on 27-05-2019
+               'Blood Group is missing in edit screen of Club Directory -> Unable to add blood group from device' -->
+
             <TextView
                 style="@style/TBSmallLebel"
                 android:layout_width="match_parent"
@@ -722,7 +854,9 @@
                 android:gravity="top|left"
                 android:hint="Enter address"
                 android:inputType="textCapSentences|textMultiLine"
-                android:maxLines="3" />
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

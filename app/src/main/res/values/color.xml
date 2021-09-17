@@ -9,6 +9,7 @@
     <color name="dark_gray">#727272</color>
     <color name="slider">#E6E6E6</color>
     <color name="white">#ffffff</color>
+    <color name="row_web">#0370af</color>
     <color name="black">#000000</color>
     <color name="pale_gray">#D9D9D9</color>
     <color name="peach_color">#FF4C4D</color>
@@ -34,9 +35,11 @@
     <color name="crop__button_text">#666666</color>
     <color name="crop__selector_pressed">#1a000000</color>
     <color name="crop__selector_focused">#77000000</color>
+    <color name="notification_color">#717ec3</color>
 
     <!--color code for row-->
     <color name="view_color_blue">#00AEEF</color>
+    <color name="bell_color">#87CEEB</color>
     <color name="view_color">#cccccc</color>
     <color name="label_color_gray">#666666</color>
     <color name="screen_background">#90000000</color>
@@ -59,6 +62,9 @@
     <color name="lb_rotarians">#0089AE</color>
     <color name="lb_members">#00B49B</color>
     <color name="lb_trf">#D3A885</color>
-
+    <color name="gold">#F7A81B</color>
+    <color name="blue">#019FCB</color>
+    <color name="navyblue">#1d3741</color>
+    <color name="orange">#FF8C00</color>
 </resources>
 

@@ -1,33 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <View
-        android:layout_marginTop="@dimen/topMargin"
-        android:background="@color/seperator_color"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/separator_height" />
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/seperator_color" />
 
-    <EditText
+    <!-- <EditText
         style="@style/TBEditText"
         android:id="@+id/etSearch"
         android:hint="Search"
-        android:layout_marginTop="@dimen/topMargin"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>-->
 
-    <View
-        android:layout_marginTop="@dimen/topMargin"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/ll_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Spinner
+                android:id="@+id/sp_service"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="6"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/serviceFilter"
+                android:gravity="center"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <!--
+                <Spinner
+                    android:id="@+id/sp_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="6"
+                    android:drawSelectorOnTop="true"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+        -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="3"
+            android:background="@drawable/border"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="#00000000"
+                android:hint="Search"
+                android:paddingLeft="15dp" />
+
+            <Button
+                android:id="@+id/btn_close"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"
+                android:background="@drawable/close_blue"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <Spinner
+            android:id="@+id/sp_year"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="6"
+            android:drawSelectorOnTop="true"
+            android:gravity="center"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+    <!--    <View
         android:background="@color/seperator_color"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/separator_height" />
+        android:layout_height="@dimen/separator_height" />-->
 
-    <android.support.v7.widget.RecyclerView
-        android:padding="@dimen/padding"
+    <TextView
+        android:id="@+id/tv_no_records_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="No Record Found"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding" />
+
 </LinearLayout>

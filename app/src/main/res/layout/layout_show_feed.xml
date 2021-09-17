@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:layout_above="@+id/rl_close"></WebView>
+        android:layout_above="@+id/rl_close"/>
 
 
     <RelativeLayout

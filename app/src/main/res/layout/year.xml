@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionBarFragmentCalendar"
+        class="com.NEWROW.row.ActionBarFragmentCalendar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment_calendar" />

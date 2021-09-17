@@ -4,8 +4,9 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/leftMargin"
     android:layout_marginRight="@dimen/rightMargin"
-    android:layout_marginTop="@dimen/topMargin"
-    >
+    android:layout_marginTop="@dimen/topMargin">
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,16 +17,17 @@
 
         <TextView
             android:id="@+id/tvDynamicFieldValue"
-            android:text="Some text goes here"
+            android:text="Some text goes here "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/gap"
             android:textColor="@color/black"
             android:textSize="@dimen/textSize"
             />
+
         <!--<View
             android:layout_width="fill_parent"
             android:layout_height="@dimen/separator_height"
-
             android:background="@color/seperator_color" />-->
+
 </LinearLayout>

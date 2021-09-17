@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
@@ -20,6 +20,8 @@
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color"
         />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,7 +74,7 @@
             android:layout_weight="1">
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDirectory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -113,7 +115,7 @@
             </LinearLayout>
 
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,6 +130,7 @@
                 app:pressedTranslationZ="12dp" />
 
             <com.github.clans.fab.FloatingActionMenu
+                android:visibility="gone"
                 android:id="@+id/material_design_android_floating_action_menu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

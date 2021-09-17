@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -7,9 +8,10 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/actionbar_fragment" />
 
     <View
         android:id="@+id/view"
@@ -37,23 +39,22 @@
         android:background="@color/view_color" />
 
     <ScrollView
-        android:layout_below="@id/view"
-        android:layout_above="@id/bottomSeparator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomSeparator"
+        android:layout_below="@id/view">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="Name"
                 android:textColor="@color/label_color_gray"
                 android:textSize="15sp" />
@@ -67,8 +68,7 @@
                 android:hint="Enter Name"
                 android:inputType="text"
                 android:maxLines="1"
-                android:padding="8dp"
-                />
+                android:padding="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,8 +100,7 @@
                 android:hint="Search"
                 android:inputType="text"
                 android:maxLines="1"
-                android:padding="8dp"
-                 />
+                android:padding="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,8 +132,7 @@
                 android:hint="Search"
                 android:inputType="text"
                 android:maxLines="1"
-                android:padding="8dp"
-                />
+                android:padding="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,8 +163,7 @@
                 android:hint="Search District Number"
                 android:inputType="number"
                 android:maxLines="1"
-                android:padding="8dp"
-                />
+                android:padding="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -179,6 +176,41 @@
                     android:background="@color/view_color" />
             </LinearLayout>
 
+            <!-- Add mobile number field by Gaurav-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Mobile Number"
+                android:textColor="@color/label_color_gray"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/edt_mobileno"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border_bg_white"
+                android:hint="Enter Mobile Number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:padding="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/view_color" />
+            </LinearLayout>
+
+            <!-- close mobile number module-->
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,7 +218,6 @@
                 android:text="@string/find_a_rotarian_msg" />
         </LinearLayout>
     </ScrollView>
-
 
 
 </RelativeLayout>

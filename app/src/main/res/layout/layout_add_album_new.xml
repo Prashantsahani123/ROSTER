@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,9 +11,10 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/actionbar_fragment" />
 
     <View
         android:layout_width="match_parent"
@@ -77,6 +80,7 @@
                                 android:checked="true"
                                 android:onClick="onRadioButtonClicked"
                                 android:text="All" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -147,6 +151,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/llShareWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -160,10 +165,12 @@
 
                         <TextView
                             android:layout_width="fill_parent"
+
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/leftMargin"
                             android:text="Share"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:visibility="gone" />
 
 
                         <RadioGroup
@@ -172,7 +179,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <RadioButton
                                 android:id="@+id/rbInClub"
@@ -196,6 +204,7 @@
                 </LinearLayout>
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
@@ -205,10 +214,480 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="In Club Service, post your Club's internal events. In Rotary Service post all Rotary Service projects. The content posted in Rotary Service will be displayed to all ROW users globally."
+                    android:justificationMode="inter_word"
+                    android:text="@string/clubServiceText_new"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                    android:textSize="14sp" />
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+            <LinearLayout
+                android:id="@+id/ont_ong_selct"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/radioGroup">
+
+                    <RadioButton
+                        android:id="@+id/radioMale"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" One Time Project"
+
+                        android:checked="false"
+                        android:textSize="16dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioFemale"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" Ongoing/Repeat Project "
+                        android:checked="false"
+                        android:textSize="16dp" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+           <LinearLayout
+
+             android:id="@+id/onetime"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+               android:visibility="gone"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Is This project a Joint project with any other rotary Club"
+                        >
+
+                    </TextView>
+
+                    <RadioGroup
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioGroup1">
+
+                        <RadioButton
+                            android:id="@+id/radioMale1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text=" Yes"
+                            android:layout_marginTop="5dp"
+                            android:checked="false"
+                            android:textSize="16dp" />
+
+                        <RadioButton
+                            android:layout_marginLeft="2dp"
+                            android:id="@+id/radioFemale1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text=" No "
+                            android:layout_marginTop="5dp"
+                            android:checked="false"
+                            android:textSize="16dp" />
+                    </RadioGroup>
+
+
+
+
+                </LinearLayout>
+               <View
+                   android:layout_width="fill_parent"
+                   android:layout_height="@dimen/separator_height"
+                   android:background="@color/seperator_color" />
+           </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/onetime2"
+                android:visibility="gone"
+                             >
+
+
+                <LinearLayout
+
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Club Role"
+                        >
+
+                    </TextView>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/radioGroup2">
+
+                        <RadioButton
+                            android:id="@+id/radioMale2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="  Lead Club"
+                            android:layout_marginTop="5dp"
+                            android:checked="false"
+                            android:textSize="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioFemale2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="  Co-Host "
+                            android:layout_marginTop="5dp"
+                            android:checked="false"
+                            android:textSize="16dp" />
+                    </RadioGroup>
+
+
+
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/cohost"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Project Uploaded By co-host Club will be displayed in the club website(Id subcribed through Rotary India) and club monthly report only"
+                    >
+
+                </TextView>
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+            </LinearLayout>
+
+
+                <LinearLayout
+
+                    android:id="@+id/ongoing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+
+                    >
+
+                    <LinearLayout
+
+
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radioGroupong">
+
+                            <RadioButton
+                                android:id="@+id/radioMaleong"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Create new Ongoing/Repeat Project "
+                                android:layout_marginTop="5dp"
+                                android:paddingLeft="5dp"
+                                android:checked="false"
+                                android:textSize="16dp" />
+
+                            <RadioButton
+                                android:id="@+id/radioFemaleong"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:paddingLeft="5dp"
+                                android:checked="false"
+                                android:text="Select from existing Ongoing/Repeat Project "
+                                android:textSize="16dp" />
+                        </RadioGroup>
+
+
+
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ong_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    android:visibility="gone"
+
+                    >
+
+
+                    <LinearLayout
+                        android:visibility="visible"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                    <LinearLayout
+                       android:id="@+id/ong_ntlt"
+                       android:orientation="vertical"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+                        <TextView
+
+                            android:textSize="16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/black"
+                            android:text=" Title Of New OnGoing/Repeat Project">
+                        </TextView>
+                        <EditText
+                            android:id="@+id/et_COPf"
+                            style="@style/TBEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_weight="3"
+
+                            android:padding="6dp"
+                            android:singleLine="false" />
+
+
+</LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/selectp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Select Project"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="@dimen/rightMargin"
+
+
+                            android:background="@drawable/border_bg_white_dropdown">
+
+                            <Spinner
+                                android:id="@+id/ong_p"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences"
+                                android:singleLine="true" />
+                        </LinearLayout>
+
+                        </LinearLayout>
+
+
+
+
+                        <TextView
+                            android:textSize="16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_marginLeft="10dp"
+                            android:text="Is This project a Joint project with any other rotary Club">
+
+                        </TextView>
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="10dp"
+
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radioGroupongnew">
+
+                            <RadioButton
+                                android:id="@+id/radioMaleongnew"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="  Yes"
+                                android:layout_marginTop="5dp"
+                                android:checked="false"
+                                android:textSize="16dp" />
+
+                            <RadioButton
+                                android:layout_marginLeft="2sp"
+                                android:id="@+id/radioFemaleongnew"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:checked="false"
+                                android:text=" No "
+                                android:textSize="16dp" />
+                        </RadioGroup>
+
+
+
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ong_jnt"
+                    android:visibility="gone"
+                    >
+
+
+                    <LinearLayout
+
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:textSize="16sp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Club Role"
+                            >
+
+                        </TextView>
+
+                        <RadioGroup
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radioGroupong2">
+
+                            <RadioButton
+                                android:id="@+id/radioMaleong2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="  Lead Club"
+                                android:layout_marginTop="5dp"
+                                android:checked="false"
+                                android:textSize="16dp" />
+
+                            <RadioButton
+                                android:layout_marginLeft="2dp"
+                                android:id="@+id/radioFemaleong2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="  Co-Host "
+                                android:layout_marginTop="5dp"
+                                android:checked="false"
+                                android:textSize="16dp" />
+                        </RadioGroup>
+
+
+
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/cohost2"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Project Uploaded By co-host Club will be displayed in the club website(Id subcribed through Rotary India) and club monthly report only"
+                        >
+
+                    </TextView>
+
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+                </LinearLayout>
+
+
+
+
+
 
 
                 <LinearLayout
@@ -223,15 +702,15 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/leftMargin"
-                        android:text="Category"
+                        android:text="Area of focus"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/leftMargin"
-                        android:layout_marginRight="@dimen/rightMargin"
                         android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
                         android:background="@drawable/border_bg_white_dropdown">
 
                         <Spinner
@@ -248,7 +727,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:hint="Enter the category name"
+                        android:hint="Enter the Area of focus"
                         android:inputType="textCapSentences"
                         android:padding="5dp"
                         android:singleLine="true"
@@ -267,6 +746,182 @@
                     <!--/>-->
 
                 </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_subcategory"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Category"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_subcategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_subcategoryName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the Category name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_subtosubcategory"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Sub Category"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_subtosubcategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_subtosubcategoryName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the Sub Category name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+
+<!--                funding layout added by Gaurav-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_funding"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Funding"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_funding"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_fundingName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the funding name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+
+<!--                closed funding layout-->
+
 
                 <View
                     android:layout_width="fill_parent"
@@ -305,6 +960,294 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_clubService"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/attendance_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/leftMargin"
+                                android:text="Attendance"
+                                android:textSize="16sp" />
+
+                            <EditText
+
+                                android:id="@+id/et_attendance"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Enter Here"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/leftMargin"
+                                android:text="Attendance (%)"
+                                android:textSize="16sp" />
+
+                            <EditText
+                                android:id="@+id/et_attendance_per"
+                                style="@style/TBEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Enter Here"
+                                android:inputType="number|numberDecimal"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/meeting_layout"
+                        android:visibility="gone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Meeting Type"
+                            android:textSize="16sp" />
+
+                        <Spinner
+                            android:id="@+id/sp_meet_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:entries="@array/meetingType"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+
+                        <!--<Spinner-->
+                        <!--android:id="@+id/et_category"-->
+                        <!--style="@style/TBEditText"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:inputType="textCapSentences"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:singleLine="true"-->
+
+                        <!--/>-->
+
+                    </LinearLayout>
+
+                    <View
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_attach"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Agenda"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_attach_agenda"
+                                android:layout_width="80dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/blue_rounded"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+
+
+                                <TextView
+                                    android:id="@+id/textView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Attach File"
+                                    android:textColor="@color/bluecolor" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_agenda_file"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:layout_weight="2"
+                                android:gravity="right|center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:id="@+id/txt_fileName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="2dp"
+                                    android:layout_weight="9"
+                                    android:maxLines="1"
+                                    android:textColor="@color/bluecolor" />
+
+                                <ImageView
+                                    android:id="@+id/iv_delete_agenda"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/blue_close"
+                                    app:srcCompat="@drawable/blue_close" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/seperator_color" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Minutes of Meeting"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_attach_mom"
+                                android:layout_width="80dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/blue_rounded"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+
+
+                                <TextView
+                                    android:id="@+id/textView33"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Attach File"
+                                    android:textColor="@color/bluecolor" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_mom_file"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:layout_weight="5"
+                                android:gravity="right|center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:id="@+id/txt_fileName_mom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="9"
+                                    android:maxLines="1"
+                                    android:textColor="@color/bluecolor" />
+
+                                <ImageView
+                                    android:id="@+id/iv_delete_mom"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/blue_close"
+                                    app:srcCompat="@drawable/blue_close" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/separator_height"
+                            android:background="@color/seperator_color" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_rotaryServicecontent"
@@ -390,7 +1333,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/leftMargin"
-                            android:text="Beneficiaries"
+                            android:text="Direct Beneficiaries"
                             android:textSize="16sp" />
 
 
@@ -401,7 +1344,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:digits="0123456789"
-                            android:hint="Enter Beneficiary"
+                            android:hint="Enter Direct Beneficiaries"
                             android:inputType="number"
                             android:padding="5dp"
                             android:singleLine="true" />
@@ -431,9 +1374,9 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="@dimen/leftMargin"
                             android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
                             android:text="(No. of Rotarians x No. of hours)"
                             android:textSize="12sp" />
 
@@ -492,7 +1435,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/leftMargin"
-                            android:text="Rotarians"
+                            android:text="Rotarians Involved"
                             android:textSize="16sp" />
 
                         <EditText
@@ -511,6 +1454,44 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/separator_height"
                         android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/rotarctors_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Rotaractors Involved"
+                            android:textSize="16sp" />
+
+
+                        <EditText
+                            android:id="@+id/et_rotractors"
+                            style="@style/TBEditText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:digits="0123456789"
+                            android:inputType="number"
+                            android:hint="Enter Rotaractors Involved"
+                            android:padding="5dp"
+                            android:singleLine="true" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+
                 </LinearLayout>
 
 
@@ -583,15 +1564,13 @@
                     <EditText
                         android:id="@+id/et_evetDesc"
                         style="@style/TBEditText"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="top|left"
                         android:inputType="textMultiLine"
-                        android:maxLines="6"
-                        android:minLines="3"
-                        android:padding="5dp"
-                        android:scrollHorizontally="false" />
+                        android:minLines="5"
+                        android:padding="5dp" />
 
                 </LinearLayout>
 
@@ -599,6 +1578,142 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
+
+                <!--this field added By Gaurav for service project in club-->
+
+
+                <LinearLayout
+                    android:id="@+id/media_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Has the Project been covered by any Print Media?"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:text="Has the project been covered by any Print Media ?"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/mediaradiolayot"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <RadioButton
+                                android:id="@+id/radio_mediaprint_yes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="Yes" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <RadioButton
+                                android:id="@+id/radio_mediaprint_No"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:textSize="16sp"
+                                android:text="No" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:visibility="gone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/authlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Please upload the picture of the article for Authentication"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/iv_album_photo_auth"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:background="@drawable/asset" />
+
+                            <ImageView
+                                android:id="@+id/close2_auth"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/close"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/et_album_photo1_auth"
+                            style="@style/TBEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="0dp"
+                            android:gravity="start"
+                            android:hint="Enter image description here (Optional)" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+     <!--field added clossed-->
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -631,21 +1746,20 @@
                             android:layout_height="wrap_content">
 
 
-
-                                <ImageView
-                                    android:id="@+id/iv_event_photo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="150dp"
-                                    android:layout_margin="5dp"
-                                    android:background="@drawable/asset" />
+                            <ImageView
+                                android:id="@+id/iv_event_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/asset" />
 
 
                             <ImageView
                                 android:id="@+id/close1"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_alignParentRight="true"
                                 android:layout_alignParentTop="true"
+                                android:layout_alignParentRight="true"
                                 android:layout_margin="5dp"
                                 android:src="@drawable/close"
                                 android:visibility="gone" />
@@ -658,8 +1772,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
                             android:layout_marginLeft="0dp"
-                            android:layout_marginRight="0dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginRight="0dp"
                             android:gravity="start"
                             android:hint="Enter image description here (Optional)" />
                     </LinearLayout>
@@ -674,8 +1788,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        >
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -698,11 +1811,12 @@
                                     android:id="@+id/close2"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:layout_alignParentRight="true"
                                     android:layout_alignParentTop="true"
+                                    android:layout_alignParentRight="true"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/close"
                                     android:visibility="gone" />
+
                             </RelativeLayout>
 
                             <EditText
@@ -711,10 +1825,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="150dp"
                                 android:layout_marginLeft="0dp"
-                                android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
+                                android:layout_marginRight="0dp"
                                 android:gravity="start"
                                 android:hint="Enter image description here (Optional)" />
+
                         </LinearLayout>
 
                         <View
@@ -744,8 +1859,8 @@
                                     android:id="@+id/close3"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:layout_alignParentRight="true"
                                     android:layout_alignParentTop="true"
+                                    android:layout_alignParentRight="true"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/close"
                                     android:visibility="gone" />
@@ -756,10 +1871,9 @@
                                 style="@style/TBEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="150dp"
-
                                 android:layout_marginLeft="0dp"
-                                android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
+                                android:layout_marginRight="0dp"
                                 android:gravity="start"
                                 android:hint="Enter image description here (Optional)" />
                         </LinearLayout>
@@ -792,8 +1906,8 @@
                                     android:id="@+id/close4"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:layout_alignParentRight="true"
                                     android:layout_alignParentTop="true"
+                                    android:layout_alignParentRight="true"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/close"
                                     android:visibility="gone" />
@@ -805,8 +1919,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="150dp"
                                 android:layout_marginLeft="0dp"
-                                android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
+                                android:layout_marginRight="0dp"
                                 android:gravity="start"
                                 android:hint="Enter image description here (Optional)" />
                         </LinearLayout>
@@ -838,8 +1952,8 @@
                                     android:id="@+id/close5"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:layout_alignParentRight="true"
                                     android:layout_alignParentTop="true"
+                                    android:layout_alignParentRight="true"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/close"
                                     android:visibility="gone" />
@@ -852,8 +1966,8 @@
                                 android:layout_height="150dp"
                                 android:layout_margin="10dp"
                                 android:layout_marginLeft="0dp"
-                                android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
+                                android:layout_marginRight="0dp"
                                 android:gravity="start"
                                 android:hint="Enter image description here (Optional)" />
                         </LinearLayout>
@@ -895,9 +2009,11 @@
                 android:background="@color/bottom_button"
                 android:gravity="center"
                 android:padding="15dp"
+                android:saveEnabled="false"
                 android:text="Add"
                 android:textColor="@color/view_color_blue"
                 android:textSize="19sp" />
+
         </LinearLayout>
 
         <View
@@ -920,6 +2036,9 @@
                 android:text="Cancel"
                 android:textColor="@color/view_color_blue"
                 android:textSize="19sp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

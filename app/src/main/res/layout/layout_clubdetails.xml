@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -40,42 +41,49 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/rl_label"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_weight="2"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/iv_mail"
-                android:layout_width="wrap_content"
+                android:id="@+id/iv_call"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/leftMarginlarge"
-                android:layout_marginRight="@dimen/rightMarginMedium"
-                android:src="@drawable/mail_gray"
-                />
+                android:layout_toLeftOf="@+id/iv_message"
+                android:layout_weight="2.5"
+                android:src="@drawable/call_gray" />
 
             <ImageView
                 android:id="@+id/iv_message"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/leftMarginlarge"
                 android:layout_toLeftOf="@+id/iv_mail"
-                android:src="@drawable/message_gray"
-                />
+                android:layout_weight="2.5"
+                android:src="@drawable/message_gray" />
+
+            <ImageView
+                android:id="@+id/iv_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:src="@drawable/mail_gray" />
 
 
             <ImageView
-                android:id="@+id/iv_call"
-                android:layout_width="wrap_content"
+                android:id="@+id/iv_whatsapp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/iv_message"
-                android:src="@drawable/call_gray"
-               />
-        </RelativeLayout>
+                android:layout_alignLeft="@+id/iv_mail"
+                android:layout_alignParentRight="true"
+                android:layout_weight="2.5"
+                android:src="@drawable/whatsapp" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

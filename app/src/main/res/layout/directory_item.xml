@@ -15,7 +15,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-
             android:layout_weight="2"
             android:gravity="center">
 
@@ -24,20 +23,17 @@
                 android:layout_width="@dimen/image_width"
                 android:layout_height="@dimen/image_height"
                 android:layout_centerInParent="true"
-
                 android:src="@drawable/profile_pic" />
-        </LinearLayout>
 
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-
             android:orientation="vertical">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -70,8 +66,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="1dp"
-                        android:text="999999"
+                        android:text=""
                         android:textColor="@color/label_color_gray" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -89,10 +86,10 @@
                         android:text=""
                         android:visibility="gone" />
 
-
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
         <RelativeLayout
@@ -105,11 +102,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/right_arrow" />
+
         </RelativeLayout>
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color" />
+
 </LinearLayout>

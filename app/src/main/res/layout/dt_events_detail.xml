@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -66,8 +66,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true" />
-                    </RelativeLayout>
 
+                    </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -239,7 +239,6 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
-
                     android:background="@color/seperator_color" />
 
                 <LinearLayout
@@ -250,6 +249,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <TextView

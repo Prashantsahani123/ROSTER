@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text=" www.rosteronwheels.com"
+                    android:text=" www.rotaryindia.com"
                     android:textColor="@color/view_color_blue"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text=" row.techsupport@kaizeninfotech.com"
+                    android:text=" support@rotaryindia.org"
                     android:textColor="@color/view_color_blue"
                     android:textSize="15sp" />
             </LinearLayout>

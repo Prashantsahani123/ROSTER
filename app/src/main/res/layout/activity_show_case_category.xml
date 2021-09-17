@@ -15,7 +15,7 @@
 
         <fragment
             android:id="@+id/fragment"
-            class="com.SampleApp.row.ActionbarFragment"
+            class="com.NEWROW.row.ActionbarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout="@layout/actionbar_fragment" />
@@ -23,9 +23,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,6 +56,7 @@
                         android:layout_marginTop="5dp"
                         android:drawSelectorOnTop="true"
                         android:textSize="15sp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -74,7 +79,9 @@
                         android:layout_marginTop="5dp"
                         android:drawSelectorOnTop="true"
                         android:textSize="15sp" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -103,9 +110,40 @@
                     android:completionThreshold="4"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
-                    android:maxLines="1"
-                    />
+                    android:maxLines="1" />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search By Project"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/et_search_by_project"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:drawSelectorOnTop="true"
+                    android:textSize="15sp"
+                    style="@style/TBEditText"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:completionThreshold="4"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <View
@@ -114,20 +152,51 @@
             android:layout_marginBottom="5dp"
             android:background="#DFDFDF" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
             android:text="Select Category"
             android:textSize="16dp" />
 
-        <android.support.v7.widget.RecyclerView
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:text="All" />
+
+            <CheckBox
+                android:id="@+id/cb_select_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/circle_checkbox_unchecked" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_cat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginBottom="50dp"
-            />
+            android:layout_marginBottom="50dp" />
 
         <RelativeLayout
             android:id="@+id/rl_NoData"
@@ -172,8 +241,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
@@ -192,4 +260,5 @@
                 android:textSize="19sp" />
 
     </LinearLayout>
+
 </RelativeLayout>

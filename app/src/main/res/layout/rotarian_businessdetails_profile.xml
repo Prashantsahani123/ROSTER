@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -73,8 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textColor="@color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,13 +89,11 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:gravity="right">
+                    android:layout_weight="2.5"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/call_button"
@@ -108,9 +105,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2.5"
                     android:gravity="center">
 
                     <ImageView
@@ -120,13 +117,32 @@
                         android:layout_alignParentRight="true"
                         android:padding="7dp"
                         android:src="@drawable/gray_message" />
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:id="@+id/ll_whatsapp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:gravity="center"
+                    android:visibility="visible">
 
-                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/ivWhatsApp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="7dp"
+                        android:src="@drawable/blue_whatsapp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/iv_email"
@@ -137,7 +153,9 @@
                         android:src="@drawable/gray_mail" />
 
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <View
@@ -164,13 +182,11 @@
                 android:orientation="vertical">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mobile"
                     android:textColor="@color/label_color_gray"
                     android:textSize="15sp" />
-
 
                 <TextView
                     android:id="@+id/tv_mobile"
@@ -194,6 +210,41 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_mobile_secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_mobile_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/view_color_blue"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_email"
@@ -203,7 +254,6 @@
                 android:paddingTop="10dp">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email"
@@ -227,7 +277,45 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/separator_height"
                         android:background="@color/seperator_color" />
+
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_email_secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_email_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/view_color_blue"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -371,7 +459,7 @@
 
             </LinearLayout>
 
-
+            <!--start fax layout -->
             <LinearLayout
                 android:id="@+id/ll_faxNo"
                 android:layout_width="match_parent"
@@ -409,6 +497,7 @@
 
             </LinearLayout>
 
+            <!--start classification -->
             <LinearLayout
                 android:id="@+id/ll_classification"
                 android:layout_width="match_parent"
@@ -447,7 +536,322 @@
 
             </LinearLayout>
 
+            <!--start keywords -->
+            <LinearLayout
+                android:id="@+id/ll_keywords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Keywords"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_keywords"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start club designation -->
+
+            <LinearLayout
+                android:id="@+id/ll_club_designation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Club Designation"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_club_designation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start club name -->
+
+            <LinearLayout
+                android:id="@+id/ll_club_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Club Name"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_club_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start rotary id -->
+
+            <LinearLayout
+                android:id="@+id/ll_rotary_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rotary ID"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_rotaryId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start blood group -->
+
+            <LinearLayout
+                android:id="@+id/ll_blood_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blood Group"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_blood_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start Donor Recognition-->
+            <LinearLayout
+                android:id="@+id/ll_donor_recognition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Donor Recognition"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_donor_recognition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start birthday-->
+            <LinearLayout
+                android:id="@+id/ll_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Birthday"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--start Anniversary-->
+            <LinearLayout
+                android:id="@+id/ll_anniversary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anniversary"
+                    android:textColor="@color/label_color_gray"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_anniversary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>
+
 </LinearLayout>

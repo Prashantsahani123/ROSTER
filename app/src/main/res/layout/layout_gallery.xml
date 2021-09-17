@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionBarGalleryFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
@@ -32,14 +32,13 @@
             android:id="@+id/ll_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="3"
             android:background="@drawable/border"
             android:gravity="center_vertical"
-            android:layout_marginRight="5dp"
             android:orientation="horizontal"
-
-            android:layout_marginTop="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/edt_search"
@@ -59,19 +58,92 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/close_blue"
                 android:visibility="gone" />
+
         </RelativeLayout>
-        <Spinner
+
+        <RelativeLayout
+            android:id="@+id/ll_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/sp_service"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="6"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/serviceFilter"
+                android:gravity="center"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+
+        <!-- Added By Gaurav-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_serach_club"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="6"
+                android:background="@drawable/border_bg_white"
+                android:hint="Search"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:singleLine="true" />
+
+            <!-- <ImageView
+                 android:id="@+id/iv_search"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:padding="8dp"
+                 android:src="@drawable/search_blue" />-->
+
+
+            <Spinner
+                android:id="@+id/sp_year"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="4"
+                android:drawSelectorOnTop="true"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+      <!--  <Spinner
             android:id="@+id/sp_year"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:drawSelectorOnTop="true"
             android:textSize="15sp"
             android:layout_weight="6"
+            android:textAlignment="center"
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            />
+            />-->
+
     </LinearLayout>
 
     <View
@@ -91,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="No albums found"
+            android:text="No data found"
             android:visibility="gone" />
 
         <GridView
@@ -199,7 +271,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:gravity="center"
-                                android:text="Beneficiaries"
+                                android:text="Direct Beneficiaries"
                                 android:textColor="@color/white"
                                 android:textSize="12dp" />
 
@@ -261,7 +333,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="5dp"
                                 android:gravity="center"
-                                android:text="Rotarians"
+                                android:text="Rotarians Involved"
                                 android:textColor="@color/white"
                                 android:textSize="12dp" />
 
@@ -282,10 +354,11 @@
                             android:layout_height="1dp"
                             android:background="@color/seperator_color" />
                     </LinearLayout>
+
                 </HorizontalScrollView>
 
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -296,7 +369,7 @@
 
         </ScrollView>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -309,7 +382,6 @@
             app:backgroundTint="@color/view_color_blue"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
-
             />
 
         <com.github.clans.fab.FloatingActionMenu
@@ -366,6 +438,15 @@
                 android:src="@drawable/f_delete"
                 app:fab_label="Delete Album"
                 app:fab_size="mini" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/material_design_floating_action_menu_item3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/mov"
+                app:fab_label="Move to service project "
+                app:fab_size="mini" />
+
+
 
         </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>

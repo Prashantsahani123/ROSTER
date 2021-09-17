@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,9 +10,10 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/actionbar_fragment" />
 
     <View
         android:layout_width="match_parent"
@@ -146,6 +148,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/llShareWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -204,10 +207,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="In District Event, post your  District's internal events.In District Project post all district projects. The content posted in District Project will be displayed to all ROW users globally."
+                    android:justificationMode="inter_word"
+                    android:text="@string/distEventInfo_new"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/ll_category"
@@ -221,7 +224,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/leftMargin"
-                        android:text="Category"
+                        android:text="Area Of focus"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -246,7 +249,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:hint="Enter the category name"
+                        android:hint="Enter the Area of focus"
                         android:inputType="textCapSentences"
                         android:padding="5dp"
                         android:singleLine="true"
@@ -265,6 +268,177 @@
                     <!--/>-->
 
                 </LinearLayout>
+
+                <!--  //Add this two By Gaurav-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_subcategory"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Category"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_subcategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_subcategoryName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the Category name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_subtosubcategory"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="sub Category"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_subtosubcategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_subtosubcategoryName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the Sub Category name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/et_category"-->
+                    <!--style="@style/TBEditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:inputType="textCapSentences"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:singleLine="true"-->
+
+                    <!--/>-->
+
+                </LinearLayout>
+
+                <!--  end this two value-->
+
+                <!-- funding layout added by Gaurav-->
+                <LinearLayout
+                    android:id="@+id/ll_funding"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Funding"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/rightMargin"
+                        android:background="@drawable/border_bg_white_dropdown">
+
+                        <Spinner
+                            android:id="@+id/sp_funding"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_fundingName"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter the funding name"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+
+                <!-- closed funding layout-->
+
+
+
 
                 <View
                     android:layout_width="fill_parent"
@@ -388,7 +562,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/leftMargin"
-                            android:text="Beneficiaries"
+                            android:text="Direct Beneficiaries"
                             android:textSize="16sp" />
 
 
@@ -399,7 +573,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:digits="0123456789"
-                            android:hint="Enter Beneficiary"
+                            android:hint="Enter Direct Beneficiaries"
                             android:inputType="number"
                             android:padding="5dp"
                             android:singleLine="true" />
@@ -490,7 +664,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/leftMargin"
-                            android:text="Rotarians"
+                            android:text="Rotarians Involved"
                             android:textSize="16sp" />
 
                         <EditText
@@ -504,10 +678,43 @@
                             android:singleLine="true" />
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/separator_height"
                         android:background="@color/seperator_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rotarctors_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    >
+
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Rotaractors Involved"
+                        android:textSize="16sp" />
+
+
+                    <EditText
+                        android:id="@+id/et_rotractors"
+                        style="@style/TBEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:digits="0123456789"
+                        android:inputType="number"
+                        android:hint="Enter Rotaractors Involved"
+                        android:padding="5dp"
+                        android:singleLine="true" />
+
                 </LinearLayout>
 
 
@@ -578,12 +785,12 @@
                     <EditText
                         android:id="@+id/et_evetDesc"
                         android:layout_width="fill_parent"
-                        android:layout_height="130dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border_bg_white"
                         android:gravity="top|left"
                         android:inputType="textCapSentences|textMultiLine"
-                        android:maxLines="4"
+                        android:maxLines="5"
                         android:padding="10dp" />
 
                 </LinearLayout>
@@ -592,6 +799,148 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
+
+                <!--this field added By Gaurav for service project in club-->
+
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:id="@+id/media_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/mediatitle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftMargin"
+                        android:text="Has the Project been covered by any Print Media?"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:text="Has the project been covered by any Print Media ?"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/mediaradiolayot"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <RadioButton
+                                android:id="@+id/radio_mediaprint_yes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="Yes" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <RadioButton
+                                android:id="@+id/radio_mediaprint_No"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:onClick="onRadioButtonClicked"
+                                android:text="No" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:visibility="gone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/separator_height"
+                        android:background="@color/seperator_color" />
+
+                    <LinearLayout
+                        android:id="@+id/authlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftMargin"
+                            android:text="Please upload the picture of the article for Authentication"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/iv_album_photo_auth"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:background="@drawable/asset" />
+
+                            <ImageView
+                                android:id="@+id/close2_auth"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/close"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/et_album_photo1_auth"
+                            style="@style/TBEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="0dp"
+                            android:gravity="start"
+                            android:hint="Enter image description here (Optional)" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+                <!--field added clossed-->
 
                 <LinearLayout
                     android:layout_width="fill_parent"

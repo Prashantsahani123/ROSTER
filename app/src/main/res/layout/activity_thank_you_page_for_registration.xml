@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tk"
+    android:orientation="vertical"
+    android:gravity="center|bottom">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:text="@string/exit_btn"
+                android:textColor="@color/blue"
+                android:textSize="30sp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/margin"
+            android:layout_width="@dimen/separator_height"
+            android:layout_height="match_parent"
+            android:background="@color/view_color" />
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_margin"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="@dimen/activity_vertical_margin"-->
+        <!--android:text="|"-->
+        <!--android:textColor="@color/view_color"-->
+        <!--android:visibility="gone"/>-->
+
+       <!-- <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_accept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textStyle="bold"
+                android:text="@string/accept_btn"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                android:visibility="visible" />
+
+        </LinearLayout>-->
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

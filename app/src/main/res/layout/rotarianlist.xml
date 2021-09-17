@@ -8,7 +8,7 @@
         android:id="@+id/fragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        class="com.SampleApp.row.ActionbarFragment"/>
+        class="com.NEWROW.row.ActionbarFragment"/>
 
     <View
         android:layout_width="fill_parent"
@@ -47,12 +47,11 @@
         android:orientation="vertical"
         >
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:id="@+id/recyclerview"
-            />
+            android:scrollbars="vertical" />
 
         <TextView
             android:id="@+id/tv_no_records_found"

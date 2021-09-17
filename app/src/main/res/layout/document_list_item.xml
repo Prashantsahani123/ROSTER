@@ -109,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:padding="7dp"
                     android:src="@drawable/download_blue" />
+
                 <ImageView
                     android:id="@+id/iv_view"
                     android:layout_width="wrap_content"

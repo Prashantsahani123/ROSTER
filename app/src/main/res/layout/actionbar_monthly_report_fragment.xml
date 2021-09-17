@@ -19,11 +19,35 @@
             android:padding="15dp"
             android:src="@drawable/back_btn_blue" />
 
+        <!--<ImageView
+            android:id="@+id/iv_backbuttond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
+            android:src="@drawable/add_plus" />-->
+
+        <Spinner
+            android:id="@+id/sp_year"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:drawSelectorOnTop="true"
+            android:textSize="15sp"
+            android:gravity="left"
+            android:layout_gravity="left"
+            android:paddingRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/sp_year"
             android:layout_toRightOf="@id/iv_backbutton"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
@@ -36,10 +60,10 @@
             android:textSize="20dp" />
 
 
-
     </RelativeLayout>
 
-    <View
+    <TextView
+        android:id="@+id/tv_border"
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
         android:background="@color/seperator_color" />

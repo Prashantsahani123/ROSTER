@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.SampleApp.row.SettingActivity">
+    tools:context="com.NEWROW.row.SettingActivity">
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -18,7 +18,7 @@
         android:layout_height="@dimen/separator_height"
         android:background="@color/seperator_color"
         />
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_grpListForSetting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

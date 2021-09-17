@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/relative_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_backbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="15dp"
+                android:src="@drawable/back_btn" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:id="@+id/buttonWrapper">
+
+                <ImageView
+                    android:id="@+id/iv_actionbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="15dp"
+                    android:src="@drawable/add_blue"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_actionbtn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="15dp"
+                    android:src="@drawable/overflow_btn_blue"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                   android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/share_white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/buttonWrapper"
+                android:layout_toRightOf="@id/iv_backbutton"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:padding="15dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:textColor="@color/white"
+                android:text="mini text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_title"
+                android:visibility="gone"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/tv_minititle"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

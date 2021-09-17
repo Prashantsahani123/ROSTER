@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionBarMonthlyReportFragment"
+        class="com.NEWROW.row.ActionBarMonthlyReportFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -17,13 +17,260 @@
         android:layout_height="@dimen/separator_height"
         android:background="@color/view_color" />
 
+    <!-- district dues start -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="District Dues"
+                android:textColor="@color/view_color_blue"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="@color/seperator_color" />
+
+    <!-- district dues end -->
+
+    <!-- R.I Semi Annual 1 start -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="R.I Semi Annual 1"
+                android:textColor="@color/view_color_blue"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="@color/seperator_color" />
+
+    <!-- R.I Semi Annual 1 end -->
+
+    <!-- R.I Semi Annual 2 start -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="R.I Semi Annual 2"
+                android:textColor="@color/view_color_blue"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="@color/seperator_color" />
+
+    <!-- R.I Semi Annual 2 end -->
+
+    <!-- Rotary News Trust start -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Rotary News Trust"
+                android:textColor="@color/view_color_blue"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="@color/seperator_color" />
+
+    <!-- Rotary News Trust end -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Monthly Report"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/view_color_blue"
+        android:layout_weight="3"
+        android:textSize="17dp" />
+
+   <!-- <Spinner
+        android:id="@+id/sp_year"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:drawSelectorOnTop="true"
+        android:textSize="15sp"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />-->
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/separator_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="@color/seperator_color" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-          <android.support.v7.widget.RecyclerView
+          <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMonths"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -38,9 +285,6 @@
                 android:text="@string/labelNoRecords"
                 android:visibility="gone" />
 
-
-
     </LinearLayout>
-
 
 </LinearLayout>

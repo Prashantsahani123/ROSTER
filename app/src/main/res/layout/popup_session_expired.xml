@@ -11,7 +11,6 @@
         android:layout_margin="10dp"
         android:background="@color/white"
         android:orientation="vertical"
-
         android:paddingTop="20dp">
 
         <TextView
@@ -23,10 +22,10 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text=""
             android:visibility="gone"
             android:textColor="@color/dark_gray"
             android:textSize="22sp" />
+
         <TextView
             android:id="@+id/tv_line1"
             android:layout_width="fill_parent"
@@ -66,6 +65,7 @@
 
 
         </LinearLayout>
+
     </LinearLayout>
 
 

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/actionbar_fragment" />
@@ -64,7 +64,7 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView_birthday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -101,12 +101,12 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView_anniversary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border_calendar"
-            android:visibility="gone"></android.support.v7.widget.RecyclerView>
+            android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 </LinearLayout>

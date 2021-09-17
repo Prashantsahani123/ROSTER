@@ -1,304 +1,563 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    >
+    tools:openDrawer="start">
 
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
-
-
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:local="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <TextView
-            android:id="@+id/action_bar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Activity name"
-            android:textColor="@color/black"
-            android:textSize="22dp"
-            android:layout_weight="8"
-            android:gravity="center"
-            />
-
-    </android.support.v7.widget.Toolbar>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
-
-        <TextView
-            android:id="@+id/img_def"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textSize="22sp"
-            android:text="Loading...Please Wait..."
-            />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone" />
-
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            app:ci_drawable="@drawable/selected_indicator"
-            app:ci_drawable_unselected="@drawable/unselected_indicator"
-            app:ci_gravity="center"
-            app:ci_orientation="horizontal" />
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll_findClub"
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <ImageView
-                android:id="@+id/img_findClub"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/action_bar_title"
+                android:layout_width="130dp"
+                android:layout_height="40sp"
                 android:layout_gravity="center"
-                android:src="@drawable/find_club" />
+                android:layout_marginRight="40dp"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:src="@drawable/logoo"
+                app:srcCompat="@drawable/logoo" />
 
-            <TextView
+
+
+
+            <!--  <TextView
+                android:id="@+id/bellcounttxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Find Club"
-                android:textSize="11dp" />
-        </LinearLayout>
+                android:layout_gravity="right|end|top"
+                android:background="@drawable/badge_circle"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/belliconimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+
+                android:background="@drawable/ic_notifications_blue" />-->
+
+            <TextView
+                android:id="@+id/bellcounttxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end|top"
+                android:layout_marginStart="-12sp"
+                android:layout_marginLeft="-12sp"
+                android:layout_marginTop="-5sp"
+                android:background="@drawable/add_c"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/belliconimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:layout_marginTop="-5sp"
+                android:background="@drawable/ic_notifications_blue" />
+
+<!--            <ImageView-->
+<!--                android:id="@+id/img_refresh"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="right"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                app:srcCompat="@drawable/refresh" />-->
+<!--            <ImageView-->
+<!--                android:id="@+id/mypro"-->
+<!--                android:layout_width="26dp"-->
+<!--                android:layout_height="26dp"-->
+<!--                android:layout_gravity="right"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                app:srcCompat="@drawable/mypro" />-->
+
+
+
+            <ImageView
+                android:id="@+id/mypro"
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/profd"
+               ></ImageView>
+            <ImageView
+                android:id="@+id/img_refresh"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                app:srcCompat="@drawable/refresh" />
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
-            android:id="@+id/ll_findRotarian"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/img_findRotarian"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/find_rorarian" />
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/username_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Find a Rotarian"
-                android:textSize="11dp" />
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:text="@string/user_name"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_showcase"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/showcase" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Showcase"
-                android:textSize="11dp" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll_library"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
+                <RelativeLayout
+                    android:id="@+id/birthday_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="180dp">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/library" />
+                    <TextView
+                        android:id="@+id/img_def"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="@string/loading_please_wait"
+                        android:textSize="22sp"
+                        android:visibility="visible" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Library"
-                android:textSize="11dp" />
-        </LinearLayout>
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:visibility="gone" />
 
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_alignParentBottom="true"
+                        app:ci_drawable="@drawable/selected_indicator"
+                        app:ci_drawable_unselected="@drawable/unselected_indicator"
+                        app:ci_gravity="center"
+                        app:ci_orientation="horizontal" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_findClub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/img_findClub"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/find_club" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/find_club"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_findRotarian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/img_findRotarian"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/find_rorarian" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/find_a_rotarian"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_licovid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/covid" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:maxLines="2"
+                            android:text="@string/fightagainstcovid"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_showcase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/showcase" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/projects"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" />
+
+                <!-- Extra fields commented By gaurav-->
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="2dp"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_RotaryWorld"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="0.5"
+                        android:background="#e2f5ff"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/rotaryworldlogo_new1" />
+
+                        <!-- <TextView
+                             android:layout_marginLeft="15dp"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="5dp"
+                             android:text="Rotary India"
+                             android:layout_gravity="center"
+                             android:textSize="11dp" />-->
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/ll_RotaryIndia1"
+                        android:layout_width="68dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="0.5"
+                        android:background="#e2f5ff"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="8dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/rotaryindia_logo" />
+
+
+                    </LinearLayout>
+
+                    <!-- <LinearLayout
+                         android:visibility="gone"
+                         android:id="@+id/ll_RotaryCashback"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="2.5"
+                         android:orientation="vertical"
+                         android:padding="5dp">
+
+                         <ImageView
+                             android:layout_width="40dp"
+                             android:layout_height="40dp"
+                             android:layout_gravity="center"
+                             android:src="@drawable/cashback" />
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_marginTop="5dp"
+                             android:text="Cashback"
+                             android:textSize="11dp" />
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:visibility="gone"
+                         android:id="@+id/ll_GlobalRewards"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="2.5"
+                         android:orientation="vertical"
+                         android:padding="5dp">
+
+                         <ImageView
+                             android:layout_width="40dp"
+                             android:layout_height="40dp"
+                             android:layout_gravity="center"
+                             android:src="@drawable/reward" />
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_marginTop="5dp"
+                             android:text="Global Rewards"
+                             android:textSize="11dp" />
+
+                     </LinearLayout>-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:id="@+id/ll_RotaryIndia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/rotary_india1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/rotary_india"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_Rotaryorg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/rotary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/rotary_org"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+
+                    <!--
+                                <LinearLayout
+                                    android:id="@+id/ll_Rics"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2.5"
+                                    android:orientation="vertical"
+                                    android:padding="5dp">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/centennial_summit1" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:text="Centennial Summit"
+                                        android:textSize="11dp" />
+                                </LinearLayout>
+                    -->
+
+                    <LinearLayout
+                        android:id="@+id/ll_Features"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/row1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="       Features"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_Row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/helpline1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="Helpline"
+                            android:textSize="11dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- close extra field-->
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_grpList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="8dp" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/ll_RotaryNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/news" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Rotary News"
-                android:textSize="11dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_RotaryBlog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/blog" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Rotary Blog"
-                android:textSize="11dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_Rotaryorg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/rotary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Rotary.org"
-                android:textSize="11dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_GlobalRewards"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/reward" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="Global Rewards"
-                android:textSize="11dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_grpList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#E5E5E5"
-            android:nestedScrollingEnabled="false"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp" />
-    </LinearLayout>
-    </ScrollView>
-</LinearLayout>
 
 
     <ListView
@@ -309,6 +568,6 @@
         android:background="@color/white"
         android:divider="@null"
         android:groupIndicator="@null"
-        />
+        android:visibility="visible" />
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

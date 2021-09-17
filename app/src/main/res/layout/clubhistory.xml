@@ -8,7 +8,7 @@
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="com.SampleApp.row.ActionbarFragment"/>
+        class="com.NEWROW.row.ActionbarFragment"/>
 
     <View
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
+
                     android:textColor="@color/black"
                     android:padding="10dp"/>
 
@@ -36,12 +37,22 @@
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/view_color"/>
 
+            <TextView
+                android:id="@+id/tv_noData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="No data found"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"/>
+
                 <WebView
                     android:id="@+id/webview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></WebView>
+                    android:layout_height="match_parent"/>
 
         </LinearLayout>
-
 
 </LinearLayout>

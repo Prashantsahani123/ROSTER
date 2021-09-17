@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.SampleApp.row">
+    package="com.NEWROW.row">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,31 +15,62 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission
-        android:name="com.SampleApp.row.gcm.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.SampleApp.row.gcm.permission.C2D_MESSAGE" />
-
-    <!-- <application -->
-    <!-- android:name="android.support.multidex.MultiDexApplication" -->
-    <!-- android:allowBackup="true" -->
-    <!-- android:icon="@drawable/app_icon" -->
-    <!-- android:label="@string/app_name" -->
-    <!-- android:theme="@style/AppTheme"> -->
     <application
-        android:name=".MyApplication"
+        android:name="com.NEWROW.row.MyApplication"
         android:allowBackup="false"
-        android:icon="@drawable/app_icon"
+        android:icon="@drawable/logoo"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name="com.NEWROW.row.Subproject"></activity>
+        <activity android:name="com.NEWROW.row.yourprofile.Ownprofile" />
+        <activity android:name="com.NEWROW.row.OpenPDF" />
+        <activity android:name="com.NEWROW.row.ShowNotification" />
+        <activity android:name="com.NEWROW.row.RotaryWorld" />
+        <activity android:name="com.NEWROW.row.PDFViewActivityDocument" />
         <activity
-            android:name=".Splash"
+            android:name="com.NEWROW.row.DirectOpenLinkInChrome"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.AboutDeveloperNew"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.RegistrationPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.ViewMediaPhoto"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.RotaryIndia"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.ThankYouPageForRegistration"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.RowWebDesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.FeaturesSubActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.PublicImage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.RowWeb"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.NEWROW.row.FeaturesActivity"
+            android:screenOrientation="portrait" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name="com.NEWROW.row.Splash"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -48,156 +80,160 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ServiceDirectoryList"
+            android:name="com.NEWROW.row.GroupDashboardAdmin"
+            android:label="@string/title_activity_group_dashboard_admin"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.NEWROW.row.ServiceDirectoryList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTDirectoryActivity"
+            android:name="com.NEWROW.row.DTDirectoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DistrictCommittee"
+            android:name="com.NEWROW.row.DistrictCommittee"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTClassificationActivity"
+            android:name="com.NEWROW.row.DTClassificationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <!-- <activity android:name="com.soundcloud.android.crop.CropImageActivity" /> -->
+            android:windowSoftInputMode="stateHidden" /> <!-- <activity android:name="com.soundcloud.android.crop.CropImageActivity" /> -->
         <activity
-            android:name=".croputility.CropImageActivity"
+            android:name="com.NEWROW.row.croputility.CropImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SearchAddress"
+            android:name="com.NEWROW.row.SearchAddress"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.NEWROW.row.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ViewAddress"
+            android:name="com.NEWROW.row.ViewAddress"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ServiceDirectoryImageActivity"
+            android:name="com.NEWROW.row.ServiceDirectoryImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ServiceDirectoryDetail"
+            android:name="com.NEWROW.row.ServiceDirectoryDetail"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ServiceDirectoryAdd_new"
+            android:name="com.NEWROW.row.ServiceDirectoryAdd_new"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".GroupDashboard"
+            android:name="com.NEWROW.row.GroupDashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ServiceDirectoryAdd"
+            android:name="com.NEWROW.row.ServiceDirectoryAdd"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".OTP_Screen"
+            android:name="com.NEWROW.row.OTP_Screen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginPage"
+            android:name="com.NEWROW.row.LoginPage"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CreateGroup"
+            android:name="com.NEWROW.row.CreateGroup"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddEvent"
+            android:name="com.NEWROW.row.AddEvent"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SelectCountry"
+            android:name="com.NEWROW.row.SelectCountry"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PreferredLanguage"
+            android:name="com.NEWROW.row.PreferredLanguage"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TermsAndConditionWelcome"
+            android:name="com.NEWROW.row.TermsAndConditionWelcome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GroupsListingDashboard"
+            android:name="com.NEWROW.row.GroupsListingDashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EventDetails"
+            android:name="com.NEWROW.row.EventDetails"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Profile"
+            android:name="com.NEWROW.row.Profile"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".NewProfileActivity"
+            android:name="com.NEWROW.row.NewProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".FamilyProfileActivity"
+            android:name="com.NEWROW.row.FamilyProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Directory"
+            android:name="com.NEWROW.row.Directory"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DirectoryActivity"
+            android:name="com.NEWROW.row.DirectoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ClassificationActivity"
+            android:name="com.NEWROW.row.ClassificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ClassificationDirectoryActivity"
+            android:name="com.NEWROW.row.ClassificationDirectoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".FamilywiseDirectoryActivity"
+            android:name="com.NEWROW.row.FamilywiseDirectoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ShowFeedActivity"
+            android:name="com.NEWROW.row.ShowFeedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".E_Bulletin"
+            android:name="com.NEWROW.row.E_Bulletin"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddE_bulletin"
+            android:name="com.NEWROW.row.AddE_bulletin"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Announcement_details"
+            android:name="com.NEWROW.row.Announcement_details"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Global_Search"
+            android:name="com.NEWROW.row.Global_Search"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".Celebration"
+            android:name="com.NEWROW.row.Celebration"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SubGroupList"
+            android:name="com.NEWROW.row.SubGroupList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DateAndTimeList"
+            android:name="com.NEWROW.row.DateAndTimeList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddEventDateTime"
+            android:name="com.NEWROW.row.AddEventDateTime"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddMembers"
+            android:name="com.NEWROW.row.AddMembers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <!--
@@ -205,81 +241,80 @@
             android:name=".CreateGroup"
             android:windowSoftInputMode="stateHidden"/>
         -->
-
         <activity
-            android:name=".GroupCreated"
+            android:name="com.NEWROW.row.GroupCreated"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditMember"
+            android:name="com.NEWROW.row.EditMember"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditContact"
+            android:name="com.NEWROW.row.EditContact"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Contact_Import"
+            android:name="com.NEWROW.row.Contact_Import"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Documents_upload"
+            android:name="com.NEWROW.row.Documents_upload"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Documents"
+            android:name="com.NEWROW.row.Documents"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".WelcomeScreen"
+            android:name="com.NEWROW.row.WelcomeScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Announcement"
+            android:name="com.NEWROW.row.Announcement"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Events"
+            android:name="com.NEWROW.row.Events"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CreateSubGroup"
+            android:name="com.NEWROW.row.CreateSubGroup"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddAnnouncement"
+            android:name="com.NEWROW.row.AddAnnouncement"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SubGroupDetails"
+            android:name="com.NEWROW.row.SubGroupDetails"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".InitialProfile"
+            android:name="com.NEWROW.row.InitialProfile"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CreateGroupModule"
+            android:name="com.NEWROW.row.CreateGroupModule"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".GroupProfileResult"
+            android:name="com.NEWROW.row.GroupProfileResult"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".GroupInfo"
+            android:name="com.NEWROW.row.GroupInfo"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AdvancedSearchActivity"
+            android:name="com.NEWROW.row.AdvancedSearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AdvancedSearchResultActivity"
+            android:name="com.NEWROW.row.AdvancedSearchResultActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SplashImageSlider"
+            android:name="com.NEWROW.row.SplashImageSlider"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -296,81 +331,79 @@
 
                 <!-- http://rowapi.rosteronwheels.com/TouchBaseInvite/JoinTouchbase.aspx -->
             </intent-filter>
-        </activity>
-
-        <!-- http://servicestest.touchbase.in:8062/TouchBaseInvite/JoinTouchbase.aspx -->
+        </activity> <!-- http://servicestest.touchbase.in:8062/TouchBaseInvite/JoinTouchbase.aspx -->
         <activity
-            android:name=".ImageZoom"
+            android:name="com.NEWROW.row.ImageZoom"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Edit_Screen_Listview"
+            android:name="com.NEWROW.row.Edit_Screen_Listview"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AddFamilyDetailToProfile"
+            android:name="com.NEWROW.row.AddFamilyDetailToProfile"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Settings"
+            android:name="com.NEWROW.row.Settings"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".GroupSettings"
+            android:name="com.NEWROW.row.GroupSettings"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Map"
+            android:name="com.NEWROW.row.Map"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AddMemberToGroup"
+            android:name="com.NEWROW.row.AddMemberToGroup"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".EventVenueSearchAddress"
+            android:name="com.NEWROW.row.EventVenueSearchAddress"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".GroupInfo_New"
+            android:name="com.NEWROW.row.GroupInfo_New"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".GroupInfo_desc"
+            android:name="com.NEWROW.row.GroupInfo_desc"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ShowCaseCategoryActivity"
+            android:name="com.NEWROW.row.ShowCaseCategoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <service
-            android:name=".notification.PushNotificationService"
+            android:name="com.NEWROW.row.services.ReplicaInfoSyncerService"
+            android:exported="false" />
+        <service
+            android:name="com.NEWROW.row.services.UploadPhotoService"
+            android:exported="false" />
+        <service
+            android:name="com.NEWROW.row.services.DirectoryUpdateService"
+            android:exported="false" /> <!-- fcm -->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
+        <service
+            android:name="com.NEWROW.row.notification.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+
+
+
+
             </intent-filter>
         </service>
-        <service
-            android:name=".services.ReplicaInfoSyncerService"
-            android:exported="false" />
-        <service
-            android:name=".services.UploadPhotoService"
-            android:exported="false" />
-        <service
-            android:name=".services.DirectoryUpdateService"
-            android:exported="false" />
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="androidwarriors.gcmdemo" />
-            </intent-filter>
-        </receiver>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -381,8 +414,6 @@
             android:value="AIzaSyC0QpMNH1RJITaaTNUneurkVG_J1N0BdHM"
             />
         -->
-
-
         <!-- old key : android:value="AIzaSyAUZlVScSBi5mhMgiO1jxYdKG5kBbLiZco" -->
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -390,9 +421,7 @@
         -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <!-- For google analytics only -->
+            android:value="@integer/google_play_services_version" /> <!-- For google analytics only -->
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
@@ -404,17 +433,11 @@
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false" />
-
-        <!-- End of  For google analytics only -->
-
-
+            android:exported="false" /> <!-- End of  For google analytics only -->
         <!--
              Following is the part added for the chat module only.
              Please do not delete these lines
         -->
-
-
         <!-- <service android:name="com.SampleApp.row.com.SampleApp.row.chat.XmppConnectService" > -->
         <!-- </service> -->
         <!-- <activity android:name="com.SampleApp.row.com.SampleApp.row.chat.ChatLoginActivity"></activity> -->
@@ -423,8 +446,6 @@
         <!-- android:name="com.SampleApp.row.com.SampleApp.row.chat.SendMessageActivity" -->
         <!-- android:screenOrientation="portrait" -->
         <!-- android:windowSoftInputMode="stateHidden"/> -->
-
-
         <!-- <receiver android:name="com.SampleApp.row.com.SampleApp.row.chat.XmppReceiver" > -->
         <!-- <intent-filter > -->
         <!-- <action android:name="TOUCHBASE_CHAT_CONNECT" /> -->
@@ -434,8 +455,6 @@
         <!-- <action android:name="android.intent.action.QUICKBOOT_POWERON" /> -->
         <!-- <action android:name="android.intent.action.EXTERNAL_APPLICATIONS_AVAILABLE" /> -->
         <!-- <action android:name="android.intent.action.REBOOT" /> -->
-
-
         <!-- <category android:name="android.intent.category.DEFAULT" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
@@ -448,249 +467,238 @@
         <!-- <receiver android:name="com.SampleApp.row.com.SampleApp.row.chat.ConnectionChangeReceiver"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
-
-
         <!-- <category android:name="android.intent.category.DEFAULT" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <!--  -->
         <!--  -->
-
-
         <!-- // Gallery Module Starts// -->
         <activity
-            android:name=".Gallery"
+            android:name="com.NEWROW.row.Gallery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddAlbum"
+            android:name="com.NEWROW.row.AddAlbum"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".GalleryDescription"
+            android:name="com.NEWROW.row.GalleryDescription"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AlbumFolderPage"
+            android:name="com.NEWROW.row.AlbumFolderPage"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddPhoto"
+            android:name="com.NEWROW.row.AddPhoto"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ImageDetailActivity"
+            android:name="com.NEWROW.row.ImageDetailActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Improvement"
+            android:name="com.NEWROW.row.Improvement"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Improvement_details"
+            android:name="com.NEWROW.row.Improvement_details"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddImprovement"
+            android:name="com.NEWROW.row.AddImprovement"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SubGroupSelectionList"
+            android:name="com.NEWROW.row.SubGroupSelectionList"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".NewGroupSelectionActivity"
+            android:name="com.NEWROW.row.NewGroupSelectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AttendanceList"
+            android:name="com.NEWROW.row.AttendanceList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AboutActivity"
+            android:name="com.NEWROW.row.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ProfileActivityV4"
+            android:name="com.NEWROW.row.ProfileActivityV4"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PDFViewActivity"
+            android:name="com.NEWROW.row.PDFViewActivity"
+            android:screenOrientation="portrait" /> <!-- // android:launchMode="singleTop" ,singletop added by gaurav for blank  activity not display// -->
+        <activity
+            android:name="com.NEWROW.row.CallPopupActivity"
+            android:screenOrientation="portrait" /> <!-- // External Link Starts// -->
+        <activity
+            android:name="com.NEWROW.row.ExternalLinkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CallPopupActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- // External Link Starts// -->
-
-        <activity
-            android:name=".ExternalLinkActivity"
+            android:name="com.NEWROW.row.OpenLinkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".OpenLinkActivity"
+            android:name="com.NEWROW.row.AdminSubModuleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddPhotoActivity"
+            android:name="com.NEWROW.row.AddPhotoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditAlbumActivity"
+            android:name="com.NEWROW.row.EditAlbumActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PicturesinsideAlbum"
+            android:name="com.NEWROW.row.PicturesinsideAlbum"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditPhotoActivity"
+            android:name="com.NEWROW.row.EditPhotoActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <!-- Calendar Activity Starts -->
+            android:windowSoftInputMode="stateHidden" /> <!-- Calendar Activity Starts -->
         <activity
-            android:name=".calendar.MonthActivity"
+            android:name="com.NEWROW.row.calendar.MonthActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".calendar.DayActivity"
+            android:name="com.NEWROW.row.calendar.DayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".calendar.YearActivity"
+            android:name="com.NEWROW.row.calendar.YearActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".calendar.ScheduleView"
+            android:name="com.NEWROW.row.calendar.ScheduleView"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".calendar.CalendarNotificationDetails"
-            android:screenOrientation="portrait" />
-        <!-- Calendar Activity Ends -->
-
+            android:name="com.NEWROW.row.calendar.CalendarNotificationDetails"
+            android:screenOrientation="portrait" /> <!-- Calendar Activity Ends -->
         <activity
-            android:name=".ServiceCattegoryList"
+            android:name="com.NEWROW.row.ServiceCattegoryList"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <!-- ROW related Activity starts -->
-
+            android:windowSoftInputMode="stateHidden" /> <!-- ROW related Activity starts -->
         <activity
-            android:name=".LoginPage_Row"
+            android:name="com.NEWROW.row.LoginPage_Row"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Registration"
+            android:name="com.NEWROW.row.Registration"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".FindRotatrianActivity"
+            android:name="com.NEWROW.row.FindRotatrianActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".RotarianList"
+            android:name="com.NEWROW.row.RotarianList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".RotarianBusinessDetails_ProfileActivity"
+            android:name="com.NEWROW.row.RotarianBusinessDetails_ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".BoardOfDirectorsActivity"
+            android:name="com.NEWROW.row.BoardOfDirectorsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".WebLinkActivity"
+            android:name="com.NEWROW.row.WebLinkActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".WebLinkDescription"
+            android:name="com.NEWROW.row.WebLinkDescription"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PastPresidentActivity"
+            android:name="com.NEWROW.row.PastPresidentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".FindAClubActivity"
+            android:name="com.NEWROW.row.FindAClubActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ClubHistoryActivity"
+            android:name="com.NEWROW.row.ClubHistoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".RotaryLibraryActivity"
+            android:name="com.NEWROW.row.RotaryLibraryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".RotaryLibraryDescription"
+            android:name="com.NEWROW.row.RotaryLibraryDescription"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".FeedbackActivity"
+            android:name="com.NEWROW.row.FeedbackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MyClubActivity"
+            android:name="com.NEWROW.row.MyClubActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name="com.NEWROW.row.EditProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".FindAClubResultActivity"
+            android:name="com.NEWROW.row.FindAClubResultActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ClubInfo"
+            android:name="com.NEWROW.row.ClubInfo"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".NewClubInfo"
+            android:name="com.NEWROW.row.NewClubInfo"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DistrictClubActivity"
+            android:name="com.NEWROW.row.DistrictClubActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTEvents"
+            android:name="com.NEWROW.row.DTEvents"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTAlbum"
+            android:name="com.NEWROW.row.DTAlbum"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTNewsLetters"
+            android:name="com.NEWROW.row.DTNewsLetters"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTEventDetails"
+            android:name="com.NEWROW.row.DTEventDetails"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTCalendarEventDetails"
+            android:name="com.NEWROW.row.DTCalendarEventDetails"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTAddAlbum"
+            android:name="com.NEWROW.row.DTAddAlbum"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CalenderActivity"
+            android:name="com.NEWROW.row.CalenderActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DTEditAlbumActivity"
+            android:name="com.NEWROW.row.DTEditAlbumActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.SampleApp.row.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.NEWROW.row.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -698,14 +706,14 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <receiver android:name=".Receiver.PhotoUploadReceiver">
+        <receiver android:name="com.NEWROW.row.Receiver.PhotoUploadReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".Receiver.BootCompletedReceiver">
+        <receiver android:name="com.NEWROW.row.Receiver.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
@@ -715,94 +723,105 @@
         </receiver>
 
         <activity
-            android:name=".DashboardActivity"
+            android:name="com.NEWROW.row.DashboardActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <data
+                    android:host="rosteronwheel.page.link"
+                    android:pathPrefix="/"
+                    android:scheme="https" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.NEWROW.row.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettingActivity"
+            android:name="com.NEWROW.row.RotaryBlog"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RotaryBlog"
+            android:name="com.NEWROW.row.RotaryNews"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RotaryNews"
+            android:name="com.NEWROW.row.DistrictSettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DistrictSettingActivity"
+            android:name="com.NEWROW.row.FAQActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FAQActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ROWHelpline"
+            android:name="com.NEWROW.row.ROWHelpline"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".services.DirectorySyncService"
+            android:name="com.NEWROW.row.services.DirectorySyncService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true" />
         <service
-            android:name=".services.ServiceUpdateService"
+            android:name="com.NEWROW.row.services.ServiceUpdateService"
             android:exported="false" />
 
         <activity
-            android:name=".AddDependent"
+            android:name="com.NEWROW.row.AddDependent"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddedMembers"
+            android:name="com.NEWROW.row.AddedMembers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AttendenceActivity"
+            android:name="com.NEWROW.row.AttendenceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AttendenceDetails"
+            android:name="com.NEWROW.row.AttendenceDetails"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditAttendence"
+            android:name="com.NEWROW.row.EditAttendence"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DependentActivity"
+            android:name="com.NEWROW.row.DependentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".EditDependentActivity"
+            android:name="com.NEWROW.row.EditDependentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".AddedDependentActivity"
+            android:name="com.NEWROW.row.AddedDependentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MonthlyReportActivity"
+            android:name="com.NEWROW.row.MonthlyReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MonthlyReportListActivity"
+            android:name="com.NEWROW.row.MonthlyReportListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".AddDependentMemberActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-
         <activity
-            android:name=".DistrictCommiteeProfile"
+            android:name="com.NEWROW.row.AddDependentMemberActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.NEWROW.row.DistrictCommiteeProfile"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
-            android:name=".LeaderBoardActivity"
+            android:name="com.NEWROW.row.LeaderBoardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-
         <activity
-            android:name=".DistrictCommitteeWithCategory"
+            android:name="com.NEWROW.row.DistrictCommitteeWithCategory"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.NEWROW.row.ActivitiesNotificationDetails" />
     </application>
 
 </manifest>

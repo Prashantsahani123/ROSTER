@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -99,11 +99,11 @@
 
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2.5"
 
-                    android:gravity="right">
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/ivNewCallButton"
@@ -115,9 +115,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2.5"
                     android:gravity="center">
 
                     <ImageView
@@ -130,10 +130,28 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:id="@+id/ll_whatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/ivWhatsApp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="7dp"
+                        android:src="@drawable/blue_whatsapp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_weight="1">
+                    android:layout_weight="2.5"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/ivNewMail"
@@ -154,7 +172,7 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProfileDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

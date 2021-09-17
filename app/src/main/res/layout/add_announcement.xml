@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        class="com.SampleApp.row.ActionbarFragment"
+        class="com.NEWROW.row.ActionbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -30,7 +30,6 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -166,8 +165,6 @@
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:src="@drawable/edit_image"
-
-
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -189,7 +186,6 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-
                         android:text="Title"
                         android:textSize="16sp" />
 
@@ -228,7 +224,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:text="Description"
                             android:textSize="16sp" />
 
@@ -237,14 +232,17 @@
                             android:layout_height="wrap_content">
 
                             <TextView
+                                android:id="@+id/tv_desc_char_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="250"
+                                android:text=""
                                 android:textColor="@color/bluecolor"
                                 android:textSize="15sp"
-                                android:visibility="gone" />
+                                android:visibility="visible" />
+
                         </RelativeLayout>
+
                     </LinearLayout>
 
                     <EditText
@@ -307,7 +305,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="Publish date and time"
+                        android:text="Publish Date and Time"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -377,7 +375,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="Expiry date and time"
+                        android:text="Expiry Date and Time"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -410,7 +408,6 @@
                             android:layout_weight="1">
 
                             <TextView
-
                                 android:id="@+id/tv_expiretime"
                                 style="@style/date_time_wrapper"
                                 android:layout_width="fill_parent"
@@ -418,10 +415,60 @@
                                 android:hint="Enter Date &amp; Time"
                                 android:textColor="@color/black"
                                 android:textSize="17sp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_weight="2"
+                    android:text="Send SMS"/>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:layout_marginRight="7dp"
+                        android:gravity="center">
+
+                    <CheckBox
+                        android:id="@+id/cb_send_sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:button="@drawable/image_checkbox"
+                        android:textColor="@color/grey_dark_shade" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_sms_per_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="No. of messages per user :"
+                    android:visibility="gone"
+                    android:textColor="@color/red" />
 
                 <View
                     android:layout_width="fill_parent"
@@ -434,11 +481,12 @@
                     android:layout_margin="10dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <!--<TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Send SMS To "
-                        android:textSize="16sp" />
+                        android:visibility="gone"
+                        android:textSize="16sp" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -448,20 +496,22 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Balance SMS Count : "
+                            android:text="Balance SMS : "
                             android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/smscount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
+                            android:text=""
                             android:textSize="14sp" />
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="5dp">
 
                         <LinearLayout
@@ -495,12 +545,82 @@
                                 android:layout_alignParentTop="true"
                                 android:text="Non-Smart Phone Users"
                                 android:textColor="@color/grey_dark_shade" />
+
                         </LinearLayout>
+
                     </LinearLayout>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:visibility="gone"
+                    android:background="@color/seperator_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_weight="2"
+                        android:text="Send Email"/>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:layout_marginRight="7dp"
+                        android:gravity="center">
+
+                    <CheckBox
+                        android:id="@+id/cb_send_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:button="@drawable/image_checkbox"
+                        android:textColor="@color/grey_dark_shade" />
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
                 <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/separator_height"
+                    android:visibility="gone"
+                    android:background="@color/seperator_color" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Balance Email : "
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/emailcount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <View
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/separator_height"
                     android:background="@color/seperator_color" />
@@ -541,6 +661,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="7dp"
                                 android:src="@drawable/off_toggle_btn" />
+
                         </RelativeLayout>
 
                     </LinearLayout>

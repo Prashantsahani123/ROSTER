@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.SampleApp.row.AppBarCalendarFragment"
+        android:name="com.NEWROW.row.AppBarCalendarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -296,7 +296,7 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -310,7 +310,7 @@
             android:layout_height="@dimen/separator_height"
             android:background="@color/seperator_color" />
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
