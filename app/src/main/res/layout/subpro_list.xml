@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+
+    android:id="@+id/ll_holder1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:padding="5dp"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:visibility="visible" />-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="3dp">
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/titles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="#313030"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/titles"
+                android:id="@+id/descriptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#757171"
+                android:text="date"
+                android:textSize="13sp"/>
+
+             />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="#757171"/>
+
+</LinearLayout>

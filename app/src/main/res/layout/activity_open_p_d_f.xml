@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/tv_name_pdf"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Name"
+      android:textSize="17sp"
+      android:visibility="gone" />
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <fragment
+        android:id="@+id/fragmentPDF"
+        class="com.NEWROW.row.ActionBarFragmentPDFView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/actionbar_pdf_view_fragment" />
+  </FrameLayout>
+
+
+  <com.github.barteksc.pdfviewer.PDFView
+      android:id="@+id/pdfView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="visible" />
+
+  <WebView
+      android:id="@+id/webview"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="visible" />
+
+</LinearLayout>
